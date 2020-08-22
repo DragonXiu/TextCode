@@ -294,8 +294,11 @@ namespace TextCode
             //int[] a = new int[] { 1, 2, 3, 0, 0, 0 };
             //int[] b = new int[] { 2, 5, 6 };
             //Merge(a, 3, b, 3);
-            int[] nums = new int[] { 1,2,2,6,5,2,8,5,2};
-            Bucket(nums);
+            //int[] nums = new int[] { 1,2,2,6,5,2,8,5,2};
+            //Bucket(nums);
+            //Generate(3);
+            int []price = new int[] { 1, 6, 5, 3, 8, 4 };
+            MaxProfit(price);
             Console.ReadLine();
         }
         public static bool FindStr(string str, string[] a, int length)
@@ -916,10 +919,10 @@ namespace TextCode
 
         #endregion
         #region 桶排序
-        public static void Bucket(int[]nums)
+        public static void Bucket(int[] nums)
         {
-            int[] nums1 = new int[10] ;
-            for (int i=0;i<nums1.Length;i++)
+            int[] nums1 = new int[10];
+            for (int i = 0; i < nums1.Length; i++)
             {
                 for (int j = 0; j < nums.Length; j++)
                 {
@@ -933,57 +936,248 @@ namespace TextCode
             {
                 for (int j = 0; j < nums1[i]; j++)
                 {
-                    Console.WriteLine("输出："+i);
+                    Console.WriteLine("输出：" + i);
                 }
             }
         }
         #endregion
         #region 快速排序
-        int[] a=new int[] { };
-        public void quicksort(int left,int right)
+        int[] a = new int[] { };
+        public void quicksort(int left, int right)
         {
             int i;
             int j;
             int t;
             int temp;
-            if (left>right)
+            if (left > right)
             {
                 return;
             }
             temp = a[left];//temp中存的就是基准数
             i = left;
             j = right;
-            while (i!=j)
+            while (i != j)
             {
                 //顺序很重要，要先从右往左找
-                while (a[j]>=temp&&i<j)
+                while (a[j] >= temp && i < j)
                 {
                     j--;
                 }
                 //再从左往右找
-                while (a[i]<=temp&&i<j)
+                while (a[i] <= temp && i < j)
                 {
                     i--;
                 }
                 //交换两个输在数组的位置
-                if (i<j)
+                if (i < j)
                 {
                     t = a[i];
-                    a[i] =a[j];
+                    a[i] = a[j];
                     a[j] = t;
                 }
             }
             //最终将基准数归位
             a[left] = a[i];
             a[i] = temp;
-            quicksort(left,i-1) ;//继续处理左边，这里是一个递归的过程
-            quicksort(i + 1,right) ;//继续处理右边的，这里是一个递归过程
+            quicksort(left, i - 1);//继续处理左边，这里是一个递归的过程
+            quicksort(i + 1, right);//继续处理右边的，这里是一个递归过程
+        }
+        #endregion
+        #region 平衡二叉树
+        public int leftTree = 0;
+        public int rightTree = 0;
+        public static bool IsBalanced(TreeNode root)
+        {
+            #region 从下倒上
+            return Deep(root) >= 0;
+            #endregion
+            #region 从上到下        
+            if (root == null)
+            {
+                return true;
+            }
+            return Math.Abs(Deep(root.left) - Deep(root.right)) <= 1 && IsBalanced(root.left) && IsBalanced(root.right);
+            #endregion
+        }
+        public static int Deep(TreeNode treeNode)
+        {
+            #region 从下倒上
+            if (treeNode == null)
+            {
+                return 0;
+            }
+            int leftHeight = Deep(treeNode.left);
+            int rightHeight = Deep(treeNode.right);
+            if (leftHeight == -1 || rightHeight == -1 || Math.Abs(leftHeight - rightHeight) > 1)
+            {
+                return -1;
+            }
+            else
+            {
+                return Math.Max(leftHeight, rightHeight) + 1;
+            }
+
+
+            #endregion
+
+            #region 从上倒下
+            //if (treeNode==null)
+            //{
+            //    return 0;
+            //}
+            //else
+            //{
+            //    return Math.Max(Deep(treeNode.left), Deep(treeNode.right)) + 1;
+            //}
+            #endregion
+        }
+        #endregion
+        #region 最小深度
+        public static int MinDepth(TreeNode root)
+        {
+
+            #region 递归法
+            if (root == null)
+            {
+                return 0;
+            }
+            if ((root.left == null) && (root.right == null))
+            {
+                return 1;
+            }
+            int min_depth = 0;
+            if (root.left != null)
+            {
+                min_depth = Math.Min(MinDepth(root.left), min_depth);
+            }
+            if (root.right != null)
+            {
+                min_depth = Math.Min(MinDepth(root.right), min_depth);
+            }
+
+            return min_depth + 1;
+            #endregion
+        }
+        #endregion
+        #region 杨辉三角
+        public static IList<IList<int>> Generate(int numRows)
+        {
+            IList<IList<int>> listAll = new List<IList<int>>();
+            int i = 1;
+            while (i <= numRows)
+            {
+                List<int> list = new List<int>();
+                for (int j = 1; j <= i; j++)
+                {
+                    if (i <= 2)
+                    {
+                        list.Add(1);
+                    }
+                    else if (j == 1 || j == i)
+                    {
+                        list.Add(1);
+                    }
+                    else
+                    {
+                        list.Add(listAll[i - 1][j - 1] + listAll[i - 1][j]);
+                    }
+                }
+                listAll.Add(list);
+                i++;
+            }
+
+            return listAll;
+        }
+        #endregion
+        #region 杨辉三角||
+        public static IList<int> GetRow(int rowIndex)
+        {
+            IList<int> list = new List<int>();
+            if (rowIndex >= 1)
+            {
+                list.Add(1);
+            }
+            if (rowIndex >= 2)
+            {
+                list.Add(1);
+            }
+            int i = 2;
+            while (i <= rowIndex)
+            {
+                int v = 0;
+                int y = 0;
+                for (int j = 1; j <= i; j++)
+                {
+                    if (j == i)
+                    {
+                        list.Add(1);
+                    }
+                    else
+                    {
+                        if (y==0)
+                        {
+                            v = list[j];
+                            list[j] = list[j] + list[j-1];
+                            y = v;
+                        }
+                        else
+                        {
+                            v = list[j];
+                            list[j] = list[j] + y;
+                            y = v;
+                        }
+                      
+                    }
+                }
+                i++;
+            }
+
+
+            return list;
+
+        }
+        #endregion
+        #region 买股票最佳时机
+        public static int MaxProfit(int[] prices)
+        {
+            /*，如果我们真的在买卖股票，我们肯定会想：如果我是在历史最低点买的股票就好了！太好了，在题目中，我们只要用一个变量记录一个历史最低价格 minprice，我们就可以假设自己的股票是在那天买的。那么我们在第 i 天卖出股票能得到的利润就是 prices[i] - minprice。
+
+因此，我们只需要遍历价格数组一遍，记录历史最低点，然后在每一天考虑这么一个问题：如果我是在历史最低点买进的，那么我今天卖出能赚多少钱？当考虑完所有天数之时，我们就得到了最好的答案。
+
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。*/
+            int minprice = int.MaxValue;
+            int maxprofit = 0;
+            for (int i = 0; i < prices.Length; i++)
+            {
+                if (prices[i]<minprice)
+                {
+                    minprice = prices[i];
+                }
+                else if (prices[i]-minprice>maxprofit)
+                {
+                    maxprofit = prices[i] - minprice;
+                }
+            }
+            return maxprofit;
+
+
+            //int num = 0;
+            //int len = prices.Length;
+            //for (int i = 0; i < len; i++)
+            //{
+            //    for (int j = i; j < len; j++)
+            //    {
+            //        if (prices[i]<prices[j])
+            //        {
+            //            num = (prices[j] - prices[i])>num? prices[j] - prices[i]:num;
+            //        }
+            //    }
+            //}
+            //return num;
         }
         #endregion
 
     }
-
-
     public class ListNode
     {
         public int val;
