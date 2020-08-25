@@ -297,8 +297,11 @@ namespace TextCode
             //int[] nums = new int[] { 1,2,2,6,5,2,8,5,2};
             //Bucket(nums);
             //Generate(3);
-            int []price = new int[] { 1, 6, 5, 3, 8, 4 };
-            MaxProfit(price);
+            int []price = new int[] { 7, 1, 3, 5, 9, 8,16};
+            Console.WriteLine( maxProfit2(price));
+            //string s = "abababab";
+           // RepeatedSubstringPattern(s);
+            //Console.WriteLine(RepeatedSubstringPattern(s));
             Console.ReadLine();
         }
         public static bool FindStr(string str, string[] a, int length)
@@ -1143,8 +1146,7 @@ namespace TextCode
             /*，如果我们真的在买卖股票，我们肯定会想：如果我是在历史最低点买的股票就好了！太好了，在题目中，我们只要用一个变量记录一个历史最低价格 minprice，我们就可以假设自己的股票是在那天买的。那么我们在第 i 天卖出股票能得到的利润就是 prices[i] - minprice。
 
 因此，我们只需要遍历价格数组一遍，记录历史最低点，然后在每一天考虑这么一个问题：如果我是在历史最低点买进的，那么我今天卖出能赚多少钱？当考虑完所有天数之时，我们就得到了最好的答案。
-
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。*/
+*/
             int minprice = int.MaxValue;
             int maxprofit = 0;
             for (int i = 0; i < prices.Length; i++)
@@ -1175,6 +1177,108 @@ namespace TextCode
             //}
             //return num;
         }
+        #endregion
+        #region 重复子字符串
+        public static  bool RepeatedSubstringPattern(string s)
+        {
+            int n = s.Length;
+            for (int i = 1; i*2 <= n; ++i)
+            {
+                if (n%i==0)
+                {
+                    bool match = true;
+                    for (int j = i; j < n; ++j)
+                    {
+                        if (s[j]!=s[j-i])
+                        {
+                            match = false;
+                            break;
+                        }
+                    }
+                    if (match)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        #endregion
+        #region 买股票的最佳时机||
+        public static  int maxProfit2(int[] prices)
+        {
+            #region 改进峰值法
+            int maxprofit = 0;
+            for (int i = 1; i < prices.Length; i++)
+            {
+                if (prices[i]>prices[i-1])
+                {
+                    maxprofit += prices[i] - prices[i - 1];
+                }
+            }
+            return maxprofit;
+            #endregion
+            #region 峰值法
+            //int i = 0;
+            //int valley = prices[0];
+            //int peak = prices[0];
+            //int maxprofit = 0;
+            //while (i<prices.Length-1)
+            //{
+            //    while (i<prices.Length-1&&prices[i]>=prices[i+1])
+            //    {
+            //        i++;
+            //    }
+            //    valley = prices[i];
+            //    while (i<prices.Length-1&&prices[i]<=prices[i+1])
+            //    {
+            //        i++;
+            //    }
+            //    peak = prices[i];
+            //    maxprofit += peak - valley;
+            //}
+            //return maxprofit;
+            #endregion
+
+
+            //return calculate(prices, 0);
+        }
+        /// <summary>
+        /// 暴力
+        /// </summary>
+        /// <param name="prices"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public int calculate(int[] prices, int s)
+        {
+            if (s>=prices.Length)
+            {
+                return 0;
+            }
+            int max = 0;
+            for (int start = s; start < prices.Length; start++)
+            {
+                int maxprofit = 0;
+                for (int i = start+1; i < prices.Length; i++)
+                {
+                    if (prices[start]<prices[i])
+                    {
+                        int profit = calculate(prices, i + 1) + prices[i] - prices[start];
+                        if (profit>maxprofit)
+                        {
+                            maxprofit = profit;
+                        }
+                    }
+                    if (maxprofit>max)
+                    {
+                        max = maxprofit;
+                    }
+                }       
+            }       
+            return max;
+        }
+        
         #endregion
 
     }
