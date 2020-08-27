@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+//using System.Text.RegularExpressions;
 //using System.Linq;
 using System.Threading;
 
@@ -297,10 +298,11 @@ namespace TextCode
             //int[] nums = new int[] { 1,2,2,6,5,2,8,5,2};
             //Bucket(nums);
             //Generate(3);
-            int []price = new int[] { 7, 1, 3, 5, 9, 8,16};
-            Console.WriteLine( maxProfit2(price));
+            int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
+            string s = "race a car";
+            Console.WriteLine(IsPalindrome(s));
             //string s = "abababab";
-           // RepeatedSubstringPattern(s);
+            // RepeatedSubstringPattern(s);
             //Console.WriteLine(RepeatedSubstringPattern(s));
             Console.ReadLine();
         }
@@ -1117,10 +1119,10 @@ namespace TextCode
                     }
                     else
                     {
-                        if (y==0)
+                        if (y == 0)
                         {
                             v = list[j];
-                            list[j] = list[j] + list[j-1];
+                            list[j] = list[j] + list[j - 1];
                             y = v;
                         }
                         else
@@ -1129,7 +1131,7 @@ namespace TextCode
                             list[j] = list[j] + y;
                             y = v;
                         }
-                      
+
                     }
                 }
                 i++;
@@ -1151,11 +1153,11 @@ namespace TextCode
             int maxprofit = 0;
             for (int i = 0; i < prices.Length; i++)
             {
-                if (prices[i]<minprice)
+                if (prices[i] < minprice)
                 {
                     minprice = prices[i];
                 }
-                else if (prices[i]-minprice>maxprofit)
+                else if (prices[i] - minprice > maxprofit)
                 {
                     maxprofit = prices[i] - minprice;
                 }
@@ -1179,17 +1181,17 @@ namespace TextCode
         }
         #endregion
         #region 重复子字符串
-        public static  bool RepeatedSubstringPattern(string s)
+        public static bool RepeatedSubstringPattern(string s)
         {
             int n = s.Length;
-            for (int i = 1; i*2 <= n; ++i)
+            for (int i = 1; i * 2 <= n; ++i)
             {
-                if (n%i==0)
+                if (n % i == 0)
                 {
                     bool match = true;
                     for (int j = i; j < n; ++j)
                     {
-                        if (s[j]!=s[j-i])
+                        if (s[j] != s[j - i])
                         {
                             match = false;
                             break;
@@ -1206,13 +1208,13 @@ namespace TextCode
 
         #endregion
         #region 买股票的最佳时机||
-        public static  int maxProfit2(int[] prices)
+        public static int maxProfit2(int[] prices)
         {
             #region 改进峰值法
             int maxprofit = 0;
             for (int i = 1; i < prices.Length; i++)
             {
-                if (prices[i]>prices[i-1])
+                if (prices[i] > prices[i - 1])
                 {
                     maxprofit += prices[i] - prices[i - 1];
                 }
@@ -1252,7 +1254,7 @@ namespace TextCode
         /// <returns></returns>
         public int calculate(int[] prices, int s)
         {
-            if (s>=prices.Length)
+            if (s >= prices.Length)
             {
                 return 0;
             }
@@ -1260,25 +1262,138 @@ namespace TextCode
             for (int start = s; start < prices.Length; start++)
             {
                 int maxprofit = 0;
-                for (int i = start+1; i < prices.Length; i++)
+                for (int i = start + 1; i < prices.Length; i++)
                 {
-                    if (prices[start]<prices[i])
+                    if (prices[start] < prices[i])
                     {
                         int profit = calculate(prices, i + 1) + prices[i] - prices[start];
-                        if (profit>maxprofit)
+                        if (profit > maxprofit)
                         {
                             maxprofit = profit;
                         }
                     }
-                    if (maxprofit>max)
+                    if (maxprofit > max)
                     {
                         max = maxprofit;
                     }
-                }       
-            }       
+                }
+            }
             return max;
         }
-        
+
+        #endregion
+        #region 验证回文串
+        public static bool IsPalindrome(string s)
+        {
+            s = s.Trim();
+            s = s.ToLower();
+            int left = 0;
+            int right = s.Length - 1;
+            string patternInt = @"^\d*$";
+            string patternStr = @"^[A-Za-z]+$";
+            bool flag = true;
+            while (left < right)
+            {
+                while (!IsChar(s[left]) && left < right)
+                {
+                    ++left;
+                    if (left > right)
+                    {
+                        return false;
+                    }
+                }
+                while (!IsChar(s[right]) && left < right)
+                {
+                    --right;
+
+                }
+                if (left < right)
+                {
+                    if (s[left] != s[right])
+                    {
+                        return false;
+                    }
+                    left++;
+                    right--;
+                }
+            }
+
+
+            return flag;
+        }
+        private static bool IsChar(char c)
+        {
+            int num = (int)c;
+            if (num >= 48 && num <= 57)
+                return true;
+            if (num >= 65 && num <= 90)
+                return true;
+            if (num >= 97 && num <= 122)
+                return true;
+            return false;
+        }
+        #endregion
+        #region 电话号码的字母组合
+        public IList<string> LetterCombinations(string digits)
+        {
+            int i = 0;
+            int num = digits.Length;
+            IList<string> list = new List<string>();
+            Dictionary<string, List<string>> dic = new Dictionary<string, List<string>>() {
+                { "2",new List<string>{ "a","b","c" } },
+                { "3",new List<string>{ "d","e","f"}  },
+                { "4",new List<string>{ "g", "h", "i" } },
+                { "5",new List<string>{ "j", "k", "l" } },
+                { "6",new List<string>{ "m", "n", "o" } },
+                { "7",new List<string>{ "p", "q", "s" } },
+                { "8",new List<string>{ "t", "u", "v" } },
+                { "9",new List<string>{ "w", "x", "y", "z" } }
+            };
+            while (i<num)
+            {
+
+            }
+
+            return list;
+        }
+        #endregion
+        #region 只出现一次的数字
+        public int SingleNumber(int[] nums)
+        {
+            int num = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                num ^= nums[i];
+            }
+            return num;
+            //for (int i = 0; i < nums.Length; i++)
+            //{
+            //    bool flag = false;
+            //    if (nums[i]==int.MinValue)
+            //    {
+            //        continue;
+            //    }
+            //    for (int j = i+1; j < nums.Length; j++)
+            //    {
+            //        if (nums[j]==int.MinValue)
+            //        {
+            //            continue;
+            //        }
+            //        if (nums[i]==nums[j])
+            //        {
+            //            nums[i] = int.MinValue;
+            //            nums[j] = int.MinValue;
+            //            flag = true;
+            //            break;
+            //        }
+            //    }
+            //    if (!flag)
+            //    {
+            //        return nums[i];
+            //    }
+            //}
+            //return 0;
+        }
         #endregion
 
     }
