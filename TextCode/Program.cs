@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 //using System.Text.RegularExpressions;
 //using System.Linq;
 using System.Threading;
@@ -300,8 +301,8 @@ namespace TextCode
             //Generate(3);
             //int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
             //string s = "race a car";
-            SolveNQueens(4);
-            Console.WriteLine(TitleToNumber("AB"));
+            //SolveNQueens(4);
+            Console.WriteLine(TrailingZeroes(300));
             //string s = "abababab";
             // RepeatedSubstringPattern(s);
             //Console.WriteLine(RepeatedSubstringPattern(s));
@@ -1966,6 +1967,102 @@ namespace TextCode
                 path.Add(a);
             }
             return path;
+        }
+        #endregion
+        #region 阶乘后的零
+        public static  int TrailingZeroes(int n)
+        {
+            int num = 0;
+            while (n>0)
+            {
+                num += n / 5;
+                n = n / 5;
+            }
+            return num;
+
+
+            //Int64 a = 1;
+            //int result = 0;
+            //for (int i = 1; i <= n; i++)
+            //{
+            //    a = a * i;
+            //}
+            //string s = a.ToString();
+            //for (int i =s.Length-1; i >0 ; i--)
+            //{
+            //    if (s[i]=='0')
+            //    {
+            //        result++;
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //}
+            //return result;
+        }
+        #endregion
+        #region 二叉树的所有路径
+        public IList<string> BinaryTreePaths(TreeNode root)
+        {
+            #region 深度优先搜索
+            //List<string> paths = new List<string>();
+            //constructPaths(root,"",paths);
+            //return paths;
+            #endregion
+            #region MyRegion
+            List<string> paths = new List<string>();
+            if (root == null)
+            {
+                return paths;
+            }
+            Queue<TreeNode> nodeQueue = new Queue<TreeNode>();
+            Queue<string> pathQueue = new Queue<string>();
+            nodeQueue.Enqueue(root);
+            pathQueue.Enqueue(root.val.ToString());
+            while (!(nodeQueue.Count<1))
+            {
+                TreeNode node = nodeQueue.Dequeue();
+                string path = pathQueue.Dequeue     ();
+                if (node.left==null&&node.right==null)
+                {
+                    paths.Add(path);
+                }
+                else
+                {
+                    if (node.left != null)
+                    {
+                        nodeQueue.Enqueue(node.left);
+                        pathQueue.Enqueue(new StringBuilder(path).Append(node.left.val).ToString());
+                    }
+                }
+                if (node.right!=null)
+                {
+                    nodeQueue.Enqueue(node.right);
+                    pathQueue.Enqueue(new StringBuilder(path).Append(node.right.val).ToString());
+                }
+            }
+            return paths;
+            #endregion
+        }
+        private void constructPaths(TreeNode root,string path,List<string> paths)
+        {
+            if (root!=null)
+            {
+                StringBuilder pathSB = new StringBuilder(path);
+                pathSB.Append(root.val.ToString());//转化string
+                if (root.left==null&&root.right==null)//当前节点是叶子节点
+                {
+                    paths.Add(pathSB.ToString());//把路径加入答案中
+                }
+                else
+                {
+                    pathSB.Append("->");//当前节点不是叶子节点
+                    constructPaths(root.left, pathSB.ToString(), paths);
+                    constructPaths(root.right, pathSB.ToString(), paths);
+                }
+
+            }
         }
         #endregion
     }
