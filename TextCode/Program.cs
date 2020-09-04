@@ -298,14 +298,18 @@ namespace TextCode
             //int[] nums = new int[] { 1,2,2,6,5,2,8,5,2};
             //Bucket(nums);
             //Generate(3);
-            int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
-            string s = "race a car";
-            Console.WriteLine(IsPalindrome(s));
+            //int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
+            //string s = "race a car";
+            SolveNQueens(4);
+            Console.WriteLine(TitleToNumber("AB"));
             //string s = "abababab";
             // RepeatedSubstringPattern(s);
             //Console.WriteLine(RepeatedSubstringPattern(s));
             Console.ReadLine();
         }
+        #region 查找字符串
+
+
         public static bool FindStr(string str, string[] a, int length)
         {
             bool flag = false;
@@ -330,6 +334,10 @@ namespace TextCode
             }
             return flag;
         }
+        #endregion
+        #region 简单数据
+
+
         public static int SingleStr(string str)
         {
             int a = 0;
@@ -380,6 +388,7 @@ namespace TextCode
             }
             return a;
         }
+        #endregion
         #region        合并两个有序的链表
         public static ListNode mergeTwoListNode(ListNode l1, ListNode l2)
         {
@@ -991,6 +1000,8 @@ namespace TextCode
         #region 平衡二叉树
         public int leftTree = 0;
         public int rightTree = 0;
+
+
         public static bool IsBalanced(TreeNode root)
         {
             #region 从下倒上
@@ -1349,15 +1360,15 @@ namespace TextCode
                 { "8",new List<string>{ "t", "u", "v" } },
                 { "9",new List<string>{ "w", "x", "y", "z" } }
             };
-            while (i<num)
+            while (i < num)
             {
 
             }
 
             return list;
         }
-        #endregion              
-         #region 只出现一次的数字
+        #endregion
+        #region 只出现一次的数字
         public int SingleNumber(int[] nums)
         {
             int num = 0;
@@ -1427,15 +1438,15 @@ namespace TextCode
              * 跑者在慢跑者之后两步或三步的情况。 其实不难想到，因为在下一次或者下下次迭代后
              * ，又会变成上面提到的情况 A。
 */
-            if (head == null||head.next==null)
+            if (head == null || head.next == null)
             {
                 return false;
             }
             ListNode slow = head;
             ListNode fast = head.next;
-            while (slow!=fast)
+            while (slow != fast)
             {
-                if (fast==null||fast.next ==null)
+                if (fast == null || fast.next == null)
                 {
                     return false;
                 }
@@ -1454,7 +1465,7 @@ namespace TextCode
             //水平
             int level = 0;
             int i = 0;
-            while (i<moves.Length)
+            while (i < moves.Length)
             {
                 switch (moves[i])
                 {
@@ -1473,12 +1484,528 @@ namespace TextCode
                 }
                 i++;
             }
-            return vertical==0&&level==0;
+            return vertical == 0 && level == 0;
         }
-   
 
+
+        #endregion
+        #region 最短回文串
+        public static string ShortestPalindrome(string s)
+        {
+            List<char> list = new List<char>();
+            string before = "";
+            int start = 0;
+            int end = s.Length - 1;
+            while (start < end)
+            {
+                if (s[start] != s[end])
+                {
+                    end--;
+                    before = before + s[end];
+                }
+                else
+                {
+                    start++;
+                    end--;
+                }
+            }
+            return before + s;
+        }
+        #endregion
+        #region 相交链表
+        public ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        {
+            if (headA == null || headB == null)
+            {
+                return null;
+            }
+            ListNode pA = headA;
+            ListNode pB = headB;
+            while (pA != pB)
+            {
+                pA = pA == null ? headB : pA.next;
+                pB = pB == null ? headA : pB.next;
+            }
+            return pA;
+
+        }
+        #endregion
+        #region 钥匙和房间
+        public bool CanVisitAllRooms(IList<IList<int>> rooms)
+        {
+            return false;
+        }
+        #endregion
+        #region Excel列表名称
+        public static string ConvertToTitle(int n)
+        {
+            string[] array = new string[26] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+            System.Text.StringBuilder result = new System.Text.StringBuilder();
+            while (n > 0)
+            {
+                // n -= 1;
+                int a = n / 26;
+                int b = n % 26;
+                if (b == 0)
+                {
+                    b = 26;
+                    n -= 1;
+                }
+                result.Insert(0, array[b - 1]);
+                n = n / 26;
+            }
+            //if (n<=26)
+            //{
+            //    result = array[n-1];
+            //}
+            //else 
+            //{
+            //    int a = 0;
+            //    if (n % 26 == 0)
+            //    {
+            //        a = 26;
+            //        n = n - 26;
+            //    }
+            //    else
+            //    {
+            //        a = n % 26;
+            //    }
+            //    while (n/26>26)
+            //    {
+            //        result += "A";
+            //        n = n / 26;
+            //    }
+            //    if (n % 26 == 0)
+            //    {
+            //        result= result+array[n/26 - 1] + array[a-1];
+            //    }
+            //    else if(n<52)
+            //    {
+            //        result = result + array[n - 26 - 1] + array[a-1];
+            //    }
+            //    else
+            //    {
+            //        result = result + array[n / 26 - 1] + array[a - 1];
+            //    }
+
+            //}
+            return result.ToString();
+        }
+        #endregion
+        #region 多数元素
+        public int MajorityElement(int[] nums)
+        {
+            #region 随机法
+            Random rand = new Random();
+            int mCount = nums.Length / 2;
+            while (true)
+            {
+                int candidate = nums[randRange(rand, 0, nums.Length)];
+                if (countOccurences(nums, candidate) > mCount)
+                {
+                    return candidate;
+                }
+            }
+
+            #endregion
+            #region p排序法
+
+
+            //Array.Sort(nums);
+            //return nums[nums.Length/2];
+            #endregion
+            //System.Collections.Hashtable keyValues = new System.Collections.h();
+            //foreach (int item in nums)
+            //{
+            //    if (keyValues.ContainsKey(item))
+            //    {
+            //        keyValues.Add(item, 1);
+            //    }
+            //    else
+            //    {
+            //        keyValues.Add(item,keyValues.ite(item)+1);
+            //    }
+            //}
+            //return 0;
+        }
+        private int randRange(Random rand, int min, int max)
+        {
+            return rand.Next(max - min) + min;
+        }
+        private int countOccurences(int[] nums, int num)
+        {
+            int count = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == num)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+        #endregion
+        #region 表示数值的字符串
+        enum Dp
+        {
+            Start,//可以进入E以外的任意状态
+            Symbol,//首位的符号位,可以进入Number状态或FP状态
+            Number,//数字,可以进入E状态或者Point状态
+            E,//可以进入AE状态
+            ES,//E后的第一个符号位,可以进入AE
+            AE,//After E,捕获任意数字后退出
+            Point,//可以进入E状态,捕获任意数字后退出
+            FP,//首位是小数点,奇怪的状态增加了
+        };
+
+        public bool IsNumber(string s)
+        {
+            //朴素的思路就是判断符不符合规范，不符合直接False
+            s = s.Trim();
+            if (string.IsNullOrEmpty(s)) return false;
+            char[] number = new char[] { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+            char[] symbol = new char[] { '+', '-' };
+            char[] e = new char[] { 'E', 'e' };
+            Dp dp = Dp.Start;//状态
+                             //朴素的状态机
+            foreach (char i in s)
+            {
+                switch (dp)
+                {
+                    case Dp.Start:
+                        if (symbol.Contains(i)) dp = Dp.Symbol;
+                        else if (number.Contains(i)) dp = Dp.Number;
+                        else if ('.'.Equals(i)) dp = Dp.FP;
+                        else return false;
+                        break;
+                    case Dp.Symbol:
+                        if (number.Contains(i)) dp = Dp.Number;
+                        else if ('.'.Equals(i)) dp = Dp.FP;
+                        else return false;
+                        break;
+                    case Dp.Number:
+                        if (number.Contains(i)) break;//数字状态的延续
+                        else if (e.Contains(i)) dp = Dp.E;
+                        else if ('.'.Equals(i)) dp = Dp.Point;
+                        else return false;
+                        break;
+                    case Dp.E:
+                        if (symbol.Contains(i)) dp = Dp.ES;//e后第一位可以是符号位
+                        else if (number.Contains(i)) dp = Dp.AE;
+                        else return false;
+                        break;
+                    case Dp.ES:
+                        if (number.Contains(i)) dp = Dp.AE;
+                        else return false;
+                        break;
+                    case Dp.AE:
+                        if (number.Contains(i)) break;//AE的延续
+                        else return false;
+                        break;
+                    case Dp.Point:
+                        if (number.Contains(i)) break;//Point的延续
+                        else if (e.Contains(i)) dp = Dp.E;
+                        else return false;
+                        break;
+                    case Dp.FP:
+                        if (number.Contains(i)) dp = Dp.Point;//进入Point
+                        else return false;
+                        break;
+                }
+
+            }
+            if (dp == Dp.E || dp == Dp.Symbol || dp == Dp.ES || dp == Dp.FP) return false;
+            return true;
+        }
+        //public static bool IsNumber(string s)
+        //{
+        //    Dictionary<State, Dictionary<CharType, State>> transfer = new Dictionary<State, Dictionary<CharType, State>>();
+        //    Dictionary<CharType, State> initialMap = new Dictionary<CharType, State>();
+        //    initialMap.Add(CharType.CHAR_SPACE, State.STATE_INITIAL);
+        //    initialMap.Add(CharType.CHAR_NUMBER, State.STATE_INTEGER);
+        //    initialMap.Add(CharType.CHAR_POINT, State.STATE_POINT_WITHOUT_INT);
+        //    initialMap.Add(CharType.CHAR_SIGN, State.STATE_INT_SIGN);
+        //    transfer.Add(State.STATE_INITIAL, initialMap);
+
+        //    Dictionary<CharType, State> intSignMap = new Dictionary<CharType, State>();
+        //    intSignMap.Add(CharType.CHAR_NUMBER, State.STATE_INTEGER);
+        //    intSignMap.Add(CharType.CHAR_POINT, State.STATE_POINT_WITHOUT_INT);
+        //    transfer.Add(State.STATE_INT_SIGN, initialMap);
+
+
+
+        //    Dictionary<CharType, State> integerMap = new Dictionary<CharType, State>();
+        //    integerMap.Add(CharType.CHAR_NUMBER, State.STATE_INTEGER);
+        //    integerMap.Add(CharType.CHAR_EXP, State.STATE_EXP);
+        //    integerMap.Add(CharType.CHAR_POINT, State.STATE_POINT);
+        //    integerMap.Add(CharType.CHAR_SPACE, State.STATE_END);
+        //    transfer.Add(State.STATE_INTEGER, integerMap);
+
+        //    Dictionary<CharType, State> pointMap = new Dictionary<CharType, State>();
+        //    pointMap.Add(CharType.CHAR_NUMBER, State.STATE_FRACTION);
+        //    pointMap.Add(CharType.CHAR_EXP, State.STATE_EXP);
+        //    pointMap.Add(CharType.CHAR_SPACE, State.STATE_END);
+        //    transfer.Add(State.STATE_POINT, pointMap);
+
+
+        //    Dictionary<CharType, State> pointWithoutIntMap = new Dictionary<CharType, State>();
+        //    pointWithoutIntMap.Add(CharType.CHAR_NUMBER, State.STATE_FRACTION);
+        //    transfer.Add(State.STATE_POINT_WITHOUT_INT, pointWithoutIntMap);
+
+        //    Dictionary<CharType, State> fractionMap = new Dictionary<CharType, State>();
+        //    fractionMap.Add(CharType.CHAR_NUMBER, State.STATE_FRACTION);
+        //    fractionMap.Add(CharType.CHAR_EXP, State.STATE_EXP);
+        //    fractionMap.Add(CharType.CHAR_SPACE, State.STATE_END);
+        //    transfer.Add(State.STATE_FRACTION, fractionMap);
+
+        //    Dictionary<CharType, State> expMap = new Dictionary<CharType, State>();
+        //    expMap.Add(CharType.CHAR_NUMBER, State.STATE_EXP_NUMBER);
+        //    expMap.Add(CharType.CHAR_SIGN, State.STATE_EXP_SIGN);
+        //    transfer.Add(State.STATE_EXP, expMap);
+
+
+        //    Dictionary<CharType, State> expNumberMap = new Dictionary<CharType, State>();
+        //    expNumberMap.Add(CharType.CHAR_NUMBER, State.STATE_EXP_NUMBER);
+        //    expNumberMap.Add(CharType.CHAR_SPACE, State.STATE_END);
+        //    transfer.Add(State.STATE_EXP_NUMBER, expNumberMap);
+
+        //    Dictionary<CharType, State> endMap = new Dictionary<CharType, State>();
+        //    endMap.Add(CharType.CHAR_SPACE, State.STATE_END);
+        //    transfer.Add(State.STATE_END, endMap);
+
+        //    int len = s.Length;
+        //    State state = State.STATE_INITIAL;      
+        //    Dictionary<CharType, State> sb;
+        //    for (int i = 0; i < len; i++)
+        //    {
+        //        CharType type = toCharType(s[i]);
+        //        transfer.TryGetValue(state, out sb);
+        //        if (!sb.ContainsKey(type))
+        //        {
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            sb.TryGetValue(type,out state);
+        //        }
+        //    }
+
+        //    return state == State.STATE_INTEGER || state == State.STATE_POINT || state == State.STATE_FRACTION || state == State.STATE_EXP_NUMBER || state == State.STATE_END;
+
+
+        //}
+        //public enum State
+        //{
+        //    STATE_INITIAL,
+        //    STATE_INT_SIGN,
+        //    STATE_INTEGER,
+        //    STATE_POINT,
+        //    STATE_POINT_WITHOUT_INT,
+        //    STATE_FRACTION,
+        //    STATE_EXP,
+        //    STATE_EXP_SIGN,
+        //    STATE_EXP_NUMBER,
+        //    STATE_END,
+        //}
+        //public enum CharType
+        //{
+        //    CHAR_NUMBER,
+        //    CHAR_EXP,
+        //    CHAR_POINT,
+        //    CHAR_SIGN,
+        //    CHAR_SPACE,
+        //    CHAR_ILLEGAL,
+        //}
+        //public static CharType toCharType(char ch)
+        //{
+        //    if (ch >= '0' && ch <= '9')
+        //    {
+        //        return CharType.CHAR_NUMBER;
+        //    }
+        //    else if (ch == 'e' || ch == 'E')
+        //    {
+        //        return CharType.CHAR_EXP;
+        //    }
+        //    else if (ch == '.')
+        //    {
+        //        return CharType.CHAR_POINT;
+        //    }
+        //    else if (ch == '+' || ch == '-')
+        //    {
+        //        return CharType.CHAR_SIGN;
+        //    }
+        //    else if (ch == ' ')
+        //    {
+        //        return CharType.CHAR_SPACE;
+        //    }
+        //    else
+        //    {
+        //        return CharType.CHAR_ILLEGAL;
+        //    }
+        //}
+        #endregion
+        #region Excel序号
+        public static int TitleToNumber(string s)
+        {
+            char[] array = new char[26] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+            int n = s.Length - 1;
+            int i = 0;
+            int a = 0;
+            while (i < s.Length)
+            {
+                int p = Array.IndexOf(array, s[i]);
+                a = (int)(a + (Math.Pow(26.0, n) * (p + 1)));
+                i++;
+                n--;
+            }
+            return a;
+        }
+        #endregion
+        #region N皇后
+        //回溯法
+        public static IList<IList<string>> SolveNQueens(int n)
+        {
+            IList<IList<string>> res = new List<IList<string>>();
+            char[][] chess = new char[n][];       
+            for (int i = 0; i < n; i++)
+            {
+                chess[i] = new char[n];
+                for (int j = 0; j < n; j++)
+                {
+                    chess[i][j] = '.';
+                }
+            }
+            backtrack(chess,0,res);
+            return res;
+        }
+        private static void backtrack(char[][] chess,int row, IList<IList<string>> res ){
+            //终止条件，最后一行都走完了,说明找到了最后一组，把它加入集合res
+            if (row==chess.Length)
+            {
+                res.Add(construct(chess));
+                return;
+            }
+            int n = chess.Length;
+            for (int i = 0; i < n; i++)
+            {
+                if (isValid(chess,row,i))
+                {
+                    continue;
+                    //复制数组
+                    //copy(chess);
+                    chess[row][i] = 'Q';
+                    backtrack(chess, row + 1, res);
+                    chess[row][i] = '.';
+                }           
+            }
+        }
+        private static char[][] copy(char[][] chess)
+        {
+            char[][] temp = new char[chess.Length][];
+            Array.Copy(chess,temp,chess.Length);
+            //for (int i = 0; i < chess.Length; i++)
+            //{
+            //    for (int j = 0; j < chess.Length; j++)
+            //    {
+            //        temp[i, j] = chess[i, j];
+            //    }
+            //}
+            return temp;
+        }
+
+        /// <summary>
+        /// 判断queue
+        /// </summary>
+        /// <returns></returns>
+        private static bool isValid(char[][]chess,int row,int col)
+        {
+            //判断当前有没有皇后，因为它是一行行向下遍历
+            //只需检查走过的行数即可
+            int n = chess.Length;
+            //检查同列
+            for (int i = 0; i < row; i++)
+            {
+                if (chess[i][col]=='Q')
+                {
+                    return false;
+                }
+            }
+            //右上
+            for (int i = row-1, j =col+1; i >= 0&&j<n; i--,j++)
+            {
+                if (chess[i][j]=='Q')
+                {
+                    return false;
+                }
+            }
+            //左上
+            for (int i = row-1,j=col-1; i >=0&&j>=0; i--,j--)
+            {
+                if (chess[i][j]=='Q')
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// 数组转化list
+        /// </summary>
+        /// <param name="chess"></param>
+        /// <returns></returns>
+        private static List<string> construct(char[][]chess)
+        {
+            List<string> path = new List<string>();
+            for (int i = 0; i < chess.Length; i++)
+            {
+                string a = "";
+                for (int j = 0; j < chess.Length; j++)
+                {
+                    a.Append(chess[i][j]);
+                }
+                path.Add(a);
+            }
+            return path;
+        }
+        #endregion
+    }
+    #region 最小栈
+    public class MinStack
+    {
+        Stack<int> x_stack;
+        Stack<int> min_stack;
+        /** initialize your data structure here. */
+        public MinStack()
+        {
+            min_stack.Push(int.MaxValue);
+        }
+
+        public void Push(int x)
+        {
+            x_stack.Push(x);
+            min_stack.Push(Math.Min(min_stack.Peek(), x));
+        }
+
+        public void Pop()
+        {
+            x_stack.Pop();
+            min_stack.Pop();
+        }
+
+        public int Top()
+        {
+            return x_stack.Peek();
+        }
+
+        public int GetMin()
+        {
+            return min_stack.Peek();
+        }
+
+    }
     #endregion
- }
+    #region MyRegion
+
 
     public class ListNode
     {
@@ -1489,6 +2016,7 @@ namespace TextCode
             this.val = val;
         }
     }
+    #endregion
 }
 
 
