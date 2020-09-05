@@ -302,7 +302,7 @@ namespace TextCode
             //int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
             //string s = "race a car";
             //SolveNQueens(4);
-            Console.WriteLine(TrailingZeroes(300));
+            Console.WriteLine(getPermutation(3,5));
             //string s = "abababab";
             // RepeatedSubstringPattern(s);
             //Console.WriteLine(RepeatedSubstringPattern(s));
@@ -2063,6 +2063,38 @@ namespace TextCode
                 }
 
             }
+        }
+        #endregion
+        #region 第k个排列
+        public static string getPermutation(int n, int k)
+        {
+            //定义数组
+            int[] factorial = new int[n];
+            factorial[0] = 1;
+            for (int i = 1; i < n; ++i)
+            {
+                factorial[i] = factorial[i - 1] * i;
+            }
+            --k;
+            StringBuilder sb = new StringBuilder();
+            int[] valid = new int[n + 1];
+            Array.Fill(valid,1);
+            for (int i = 1; i <=n ; ++i)
+            {
+                int order = k / factorial[n - i] + 1;
+                for (int j = 1; j <= n; ++j)
+                {
+                    order -= valid[j];
+                    if (order==0)
+                    {
+                        sb.Append(j);
+                        valid[j] = 0;
+                        break;
+                    }
+                }
+                k%= factorial[n - i];
+            }
+            return sb.ToString();
         }
         #endregion
     }
