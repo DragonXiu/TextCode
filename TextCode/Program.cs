@@ -3,8 +3,13 @@ using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Collections;
 //using System.Text.RegularExpressions;
 //using System.Linq;
 using System.Threading;
@@ -13,6 +18,14 @@ namespace TextCode
 {
     class Program
     {
+        static List<Person> lista = new List<Person>() {
+            new Person(){Name="Rose",Age=19},
+            new Person(){Name="Steve",Age=45},
+            new Person(){Name="Jessica",Age=20}
+        };
+        static AutoResetEvent autoSet = new AutoResetEvent(false);
+        //泛型没有非泛型线程互斥属性SyncRoot，需要自己new一个
+        static object syncObj = new object();
         static void Main(string[] args)
         {
             #region MyRegion
@@ -282,6 +295,83 @@ namespace TextCode
             //Console.WriteLine(SearchInsert(nums, target));
             //Console.WriteLine(string.Format("{0:00}:{1:00}", minute, second););
             #endregion
+            #region 编写质量
+            //Employee mike = new Employee() { IDCode = "NB123", Age = 30, Department = new Department() { Name = "Depi" } };
+            //Employee rose = mike.Clone() as Employee;
+            //Console.WriteLine(rose.IDCode);
+            //
+            #region dynamic            
+            DynamicSample dynamicSample = new DynamicSample();
+            var addMethod = typeof(DynamicSample).GetMethod("Add");
+            int re = (int)addMethod.Invoke(dynamicSample, new object[] { 1, 2 });
+            dynamic dynamicSample2 = new DynamicSample();
+            int res = dynamicSample2.Add(1,2);
+
+            int time = 100000;
+            DynamicSample reflectSample = new DynamicSample();
+            var add_Method = typeof(DynamicSample).GetMethod("Add");
+            Stopwatch watch1 = Stopwatch.StartNew();
+            for (var  i = 0; i < time; i++)
+            {
+                add_Method.Invoke(reflectSample, new object[] { 1, 2 });
+            }
+            Console.WriteLine(string.Format("反射耗时:{0}毫秒", watch1.ElapsedMilliseconds));
+            dynamic dynamicSample3= new DynamicSample();
+            Stopwatch watch2 = Stopwatch.StartNew();
+            for (int i = 0; i < time; i++)
+            {
+                dynamicSample3.Add(1,2);
+            }
+            Console.WriteLine(string.Format("dynamic耗时:{0}毫秒",watch2.ElapsedMilliseconds));
+
+            DynamicSample reflectSampleBetter = new DynamicSample();
+            var addMthod2 = typeof(DynamicSample).GetMethod("Add");
+            var delg = (Func<DynamicSample, int, int, int>)Delegate.CreateDelegate(typeof(Func<DynamicSample, int, int, int>), addMthod2);
+            Stopwatch watch3 = Stopwatch.StartNew();
+            for (var  i = 0; i < time; i++)
+            {
+                delg(reflectSampleBetter,1,2);
+            }
+            Console.WriteLine(string.Format("优化的反射耗时:{0}毫秒",watch3.ElapsedMilliseconds));
+            #endregion
+            #region 数组
+            ClassForExtensions.ResizeArray();
+            ClassForExtensions.ResizeList();
+            #endregion
+            #region 集合安全
+            Thread t1 = new Thread(() =>
+            {
+                //确保等待t2开始之后才运行下面的代码
+                autoSet.WaitOne();
+
+                lock (syncObj)
+                {
+                    foreach (var item in lista)
+                    {
+                        Console.WriteLine("t1:" + item.Name);
+                        Thread.Sleep(1000);
+                    }
+                }
+               
+            });
+            t1.Start();
+            Thread t2 = new Thread(() =>
+            {
+                //通知t1可以执行代码
+                autoSet.Set();
+                //沉睡1秒是为了确保删除操作在t1的迭代过程中
+                Thread.Sleep(1000);
+                lock (syncObj)
+                {
+                    lista.RemoveAt(2);
+                    Console.WriteLine("删除成功");
+                }
+                
+            });
+            t2.Start();
+            #endregion
+            #endregion
+            #region 算法
             //decimal a = 0;
             //Console.WriteLine(decimal.TryParse("",out a));
             //Console.WriteLine(a);
@@ -302,12 +392,15 @@ namespace TextCode
             //int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
             //string s = "race a car";
             //SolveNQueens(4);
-            Console.WriteLine(getPermutation(3,5));
+            int[] result = new int[6] { 1, 1, 1, 2, 2, 3 };
+            Console.WriteLine(TopKFrequent(result,2));
             //string s = "abababab";
             // RepeatedSubstringPattern(s);
-            //Console.WriteLine(RepeatedSubstringPattern(s));
+            //Console.WriteLine(RepeatedSubstringPattern(s));            
+            #endregion
             Console.ReadLine();
         }
+        #region 算法       
         #region 查找字符串
 
 
@@ -1867,7 +1960,7 @@ namespace TextCode
         public static IList<IList<string>> SolveNQueens(int n)
         {
             IList<IList<string>> res = new List<IList<string>>();
-            char[][] chess = new char[n][];       
+            char[][] chess = new char[n][];
             for (int i = 0; i < n; i++)
             {
                 chess[i] = new char[n];
@@ -1876,12 +1969,13 @@ namespace TextCode
                     chess[i][j] = '.';
                 }
             }
-            backtrack(chess,0,res);
+            backtrack(chess, 0, res);
             return res;
         }
-        private static void backtrack(char[][] chess,int row, IList<IList<string>> res ){
+        private static void backtrack(char[][] chess, int row, IList<IList<string>> res)
+        {
             //终止条件，最后一行都走完了,说明找到了最后一组，把它加入集合res
-            if (row==chess.Length)
+            if (row == chess.Length)
             {
                 res.Add(construct(chess));
                 return;
@@ -1889,7 +1983,7 @@ namespace TextCode
             int n = chess.Length;
             for (int i = 0; i < n; i++)
             {
-                if (isValid(chess,row,i))
+                if (isValid(chess, row, i))
                 {
                     continue;
                     //复制数组
@@ -1897,13 +1991,13 @@ namespace TextCode
                     chess[row][i] = 'Q';
                     backtrack(chess, row + 1, res);
                     chess[row][i] = '.';
-                }           
+                }
             }
         }
         private static char[][] copy(char[][] chess)
         {
             char[][] temp = new char[chess.Length][];
-            Array.Copy(chess,temp,chess.Length);
+            Array.Copy(chess, temp, chess.Length);
             //for (int i = 0; i < chess.Length; i++)
             //{
             //    for (int j = 0; j < chess.Length; j++)
@@ -1918,7 +2012,7 @@ namespace TextCode
         /// 判断queue
         /// </summary>
         /// <returns></returns>
-        private static bool isValid(char[][]chess,int row,int col)
+        private static bool isValid(char[][] chess, int row, int col)
         {
             //判断当前有没有皇后，因为它是一行行向下遍历
             //只需检查走过的行数即可
@@ -1926,23 +2020,23 @@ namespace TextCode
             //检查同列
             for (int i = 0; i < row; i++)
             {
-                if (chess[i][col]=='Q')
+                if (chess[i][col] == 'Q')
                 {
                     return false;
                 }
             }
             //右上
-            for (int i = row-1, j =col+1; i >= 0&&j<n; i--,j++)
+            for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++)
             {
-                if (chess[i][j]=='Q')
+                if (chess[i][j] == 'Q')
                 {
                     return false;
                 }
             }
             //左上
-            for (int i = row-1,j=col-1; i >=0&&j>=0; i--,j--)
+            for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
             {
-                if (chess[i][j]=='Q')
+                if (chess[i][j] == 'Q')
                 {
                     return false;
                 }
@@ -1954,7 +2048,7 @@ namespace TextCode
         /// </summary>
         /// <param name="chess"></param>
         /// <returns></returns>
-        private static List<string> construct(char[][]chess)
+        private static List<string> construct(char[][] chess)
         {
             List<string> path = new List<string>();
             for (int i = 0; i < chess.Length; i++)
@@ -1970,10 +2064,10 @@ namespace TextCode
         }
         #endregion
         #region 阶乘后的零
-        public static  int TrailingZeroes(int n)
+        public static int TrailingZeroes(int n)
         {
             int num = 0;
-            while (n>0)
+            while (n > 0)
             {
                 num += n / 5;
                 n = n / 5;
@@ -2020,11 +2114,11 @@ namespace TextCode
             Queue<string> pathQueue = new Queue<string>();
             nodeQueue.Enqueue(root);
             pathQueue.Enqueue(root.val.ToString());
-            while (!(nodeQueue.Count<1))
+            while (!(nodeQueue.Count < 1))
             {
                 TreeNode node = nodeQueue.Dequeue();
-                string path = pathQueue.Dequeue     ();
-                if (node.left==null&&node.right==null)
+                string path = pathQueue.Dequeue();
+                if (node.left == null && node.right == null)
                 {
                     paths.Add(path);
                 }
@@ -2036,7 +2130,7 @@ namespace TextCode
                         pathQueue.Enqueue(new StringBuilder(path).Append(node.left.val).ToString());
                     }
                 }
-                if (node.right!=null)
+                if (node.right != null)
                 {
                     nodeQueue.Enqueue(node.right);
                     pathQueue.Enqueue(new StringBuilder(path).Append(node.right.val).ToString());
@@ -2045,13 +2139,13 @@ namespace TextCode
             return paths;
             #endregion
         }
-        private void constructPaths(TreeNode root,string path,List<string> paths)
+        private void constructPaths(TreeNode root, string path, List<string> paths)
         {
-            if (root!=null)
+            if (root != null)
             {
                 StringBuilder pathSB = new StringBuilder(path);
                 pathSB.Append(root.val.ToString());//转化string
-                if (root.left==null&&root.right==null)//当前节点是叶子节点
+                if (root.left == null && root.right == null)//当前节点是叶子节点
                 {
                     paths.Add(pathSB.ToString());//把路径加入答案中
                 }
@@ -2078,25 +2172,57 @@ namespace TextCode
             --k;
             StringBuilder sb = new StringBuilder();
             int[] valid = new int[n + 1];
-            Array.Fill(valid,1);
-            for (int i = 1; i <=n ; ++i)
+            Array.Fill(valid, 1);
+            for (int i = 1; i <= n; ++i)
             {
                 int order = k / factorial[n - i] + 1;
                 for (int j = 1; j <= n; ++j)
                 {
                     order -= valid[j];
-                    if (order==0)
+                    if (order == 0)
                     {
                         sb.Append(j);
                         valid[j] = 0;
                         break;
                     }
                 }
-                k%= factorial[n - i];
+                k %= factorial[n - i];
             }
             return sb.ToString();
         }
         #endregion
+        #region 前K个高频元素
+        public static int[] TopKFrequent(int[] nums, int k)
+        {
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int value = 0;
+                if (dic.ContainsKey(nums[i]))
+                {
+                    dic.TryGetValue(nums[i], out value);
+                    dic.Remove(nums[i]);
+                    dic.Add(nums[i],value+1);
+                }
+                else
+                {
+                    dic.Add(nums[i],1);
+                }
+            }
+             var a = from p in dic orderby p.Value descending select p;
+            List<int> result = new List<int>();
+            foreach (KeyValuePair<int,int> item in a)
+            {   
+                if (k>0)
+                {
+                    result.Add(item.Key);
+                }
+                k--;
+            }
+            return result.ToArray();
+        }
+        #endregion
+
     }
     #region 最小栈
     public class MinStack
@@ -2145,6 +2271,257 @@ namespace TextCode
             this.val = val;
         }
     }
+    #endregion
+    #endregion
+
+    #region 编写质量
+    #region 正确实现浅拷贝和深拷贝
+    [Serializable]
+    class Employee : ICloneable
+    {
+        public string IDCode { get; set; }
+        public int Age { get; set; }
+        public Department Department { get; set; }
+        #region ICloneable 成员
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        //深拷贝
+        public Employee DeepClone()
+        {
+            using (Stream objectStream = new MemoryStream())
+            {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(objectStream,this);
+                objectStream.Seek(0,SeekOrigin.Begin);
+                return formatter.Deserialize(objectStream) as Employee;
+            }
+        }
+        public Employee ShallowClone()
+        {
+            return Clone() as Employee;
+        }
+
+    }
+    class Department
+    {
+        public string Name { get; set; }
+        public override string ToString()
+        {
+            return this.Name;
+        }
+        #endregion
+    }
+    #endregion
+    #region 使用dynamic /daɪˈnæmɪk/
+    /*var是语法糖,支持智能感知，编译时实际类
+     * 型来替换该变量，dynamic是到运行时解析*/
+    public class DynamicSample
+    {
+        public string Name { get; set; }
+        public int Add(int a,int b)
+        {
+            return a + b;
+        }
+    }
+    #endregion
+    #region 元素数量可变的情况下不要使用数组
+    class ArrayLZ
+    {
+        public void a()
+        {
+            int [] iArr = new int[]  { 1,2,3,4,5,6,7};
+            ArrayList arrayList = ArrayList.Adapter(iArr);//数组转换ArrayList
+            arrayList.Add(7);
+            List<int> list = iArr.ToList<int>();//将数组转换List<T>
+            list.Add(8);
+            iArr = (int[])iArr.Resize(10);
+
+
+        }
+    }
+    //ReSize
+    public static  class ClassForExtensions
+    {
+        public static Array Resize(this Array array,int newSize)
+        {
+            Type t = array.GetType().GetElementType();
+            Array newArray = Array.CreateInstance(t,newSize);
+            Array.Copy(array,0,newArray,0,Math.Min(array.Length,newSize));
+            return newArray;
+        }
+        //测试速度
+        public static void ResizeArray()
+        {
+            int[] iArr = {0,1,2,3,4,5,6 };
+            Stopwatch watch1 = new Stopwatch();
+            watch1.Start();
+            iArr = (int[])iArr.Resize(10);
+            watch1.Stop();
+            Console.WriteLine("ResizeArray："+watch1.Elapsed);
+        }
+        public static void ResizeList()
+        {
+            List<int> iArr = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6 });
+            Stopwatch watch2 = new Stopwatch();
+            watch2.Start();
+            iArr.Add(0);
+            iArr.Add(0);
+            iArr.Add(0);
+            watch2.Stop();
+            Console.WriteLine("ResizeList:"+watch2.Elapsed);
+
+        }
+    }
+
+    #endregion
+    #region 多数情况下使用foreach,for索引器，foreach迭代器
+    //迭代器模式
+    public class Iterator
+    {
+        public void IteratorA()
+        {
+            //使用接口IMyEnumerable代替MyList
+            IMyEnumerable list = new MyList();
+            //得到迭代器，再循环中针对迭代器编码，而不是集合MyList
+            IMyEnumerator enumerator = list.GetMyEnumerator();
+            for (int i = 0; i < list.Count; i++)
+            {
+                object current = enumerator.Current;
+                enumerator.MoveNext();
+            }
+            while (enumerator.MoveNext())
+            {
+                object current = enumerator.Current;
+            }
+        }
+        /// <summary>
+        /// 要求所有迭代器全部实现该接口
+        /// </summary>
+        interface IMyEnumerator
+        {
+            bool MoveNext();
+            object Current { get; }
+        }
+
+        /// <summary>
+        /// 要求所有的集合实现该接口
+        /// 这样客户端就可以针对该接口编码
+        /// 而无需关注集体实现
+        /// </summary>
+        interface IMyEnumerable
+        {
+            IMyEnumerator GetMyEnumerator();
+            int Count { get; }
+        }
+        class MyList : IMyEnumerable
+        {
+            object[] item = new object[10];
+            IMyEnumerator myEnumerator;
+            public object this[int i]
+            {
+                get { return item[i]; }
+                set { this.item[i] = value; }
+            }
+            public int Count
+            {
+                get { return item.Length; }
+            }
+            public IMyEnumerator GetMyEnumerator()
+            {
+                if (myEnumerator==null)
+                {
+                    myEnumerator = new MyEnumerator(this);
+                }
+                return myEnumerator;
+            }
+        }
+        class MyEnumerator : IMyEnumerator
+        {
+            int index = 0;
+            MyList myList;
+            public MyEnumerator(MyList myList)
+            {
+                this.myList = myList;
+            }
+            public bool MoveNext()
+            {
+                if (index+1>myList.Count)
+                {
+                    index = 1;
+                    return false;
+                }
+                else
+                {
+                    index++;
+                    return true;
+                }
+            }
+            public object Current
+            {
+                get { return myList[index - 1]; }
+            }
+        }
+    }
+
+    #endregion
+    #region 使用泛型集合代替非泛型集合
+    public class Generic
+    {
+        static int collectionCount = 0;
+        static Stopwatch watch = null;
+        static int testCount = 10000000;
+        static void TestBegin()
+        {
+            GC.Collect();//强制对所用代码进行即时垃圾回收
+            GC.WaitForPendingFinalizers();//挂起线程，执行终结器队列中的终结器(即析构方法)
+            GC.Collect();//再次对所用代码垃圾回收，主要包括终结器队列中出来的对象
+            collectionCount = GC.CollectionCount(0);//返回在0代中执行垃圾回收次数
+            watch = new Stopwatch();
+            watch.Start();
+        }
+        static void TestEnd()
+        {
+            watch.Stop();
+            Console.WriteLine("耗时:"+watch.ElapsedMilliseconds.ToString());
+            Console.WriteLine("垃圾回收次数:" + (GC.CollectionCount(0) - collectionCount));
+        }
+        static void TestArrayList()
+        {
+            ArrayList al = new ArrayList();
+            int temp = 0;
+            for (int i = 0; i < testCount; i++)
+            {
+                al.Add(i);
+                temp = (int)al[i];
+            }
+            al = null;
+        }
+        static void TestGenericList()
+        {
+            List<int> listT = new List<int>();
+            int temp = 0;
+            for (int i = 0; i < testCount; i++)
+            {
+                listT.Add(i);
+                temp = listT[i];
+            }
+            listT = null;
+        }
+    }
+    #endregion
+    #region 避免List<T>作为自定义集合类的基类
+
+    #endregion
+    #region 确保线性安全
+    class Person 
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+    }
+    #endregion
     #endregion
 }
 
