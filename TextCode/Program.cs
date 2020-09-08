@@ -392,7 +392,8 @@ namespace TextCode
             //int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
             //string s = "race a car";
             //SolveNQueens(4);
-            int[] result = new int[6] { 1, 1, 1, 2, 2, 3 };
+            int[] result =  { 1, 2, 3, 4, 5, 6, 7 };
+            Rotate(result,3);
             Console.WriteLine(TopKFrequent(result,2));
             //string s = "abababab";
             // RepeatedSubstringPattern(s);
@@ -2222,7 +2223,52 @@ namespace TextCode
             return result.ToArray();
         }
         #endregion
+        #region 旋转数组
+        public static  void Rotate(int[] nums, int k)
+        {
+            #region 环状替换
+            int num = nums.Length - 1;
+            k = k % nums.Length;
+            int count = 0;
+            for (int start  = 0; start < nums.Length; start++)
+            {
+                int current = start;
+                int prev = nums[start];
+                do
+                {
+                    int next = (current + k) % nums.Length;
+                    int temp = nums[next];
+                    nums[next] = prev;
+                    prev = temp;
+                    current = next;
+                    count++;
+                } while (start!=current);
+                //int temp = 0;
 
+            }
+            #endregion
+            #region 暴力解      
+            //int a = 0;
+            //int num = nums.Length-1;
+            //for (int i = 0; i < k; i++)
+            //{
+            //    a = nums[num];
+            //    for (int j = num; j >= 0; j--)
+            //    {
+            //        if (j!=0)
+            //        {
+            //            nums[j] = nums[j - 1];
+            //        }
+            //        else
+            //        {
+            //            nums[0] = a;
+            //        }
+
+            //    }
+            //}
+            #endregion
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
