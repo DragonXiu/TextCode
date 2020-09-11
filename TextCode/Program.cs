@@ -305,34 +305,34 @@ namespace TextCode
             var addMethod = typeof(DynamicSample).GetMethod("Add");
             int re = (int)addMethod.Invoke(dynamicSample, new object[] { 1, 2 });
             dynamic dynamicSample2 = new DynamicSample();
-            int res = dynamicSample2.Add(1,2);
+            int res = dynamicSample2.Add(1, 2);
 
             int time = 100000;
             DynamicSample reflectSample = new DynamicSample();
             var add_Method = typeof(DynamicSample).GetMethod("Add");
             Stopwatch watch1 = Stopwatch.StartNew();
-            for (var  i = 0; i < time; i++)
+            for (var i = 0; i < time; i++)
             {
                 add_Method.Invoke(reflectSample, new object[] { 1, 2 });
             }
             Console.WriteLine(string.Format("反射耗时:{0}毫秒", watch1.ElapsedMilliseconds));
-            dynamic dynamicSample3= new DynamicSample();
+            dynamic dynamicSample3 = new DynamicSample();
             Stopwatch watch2 = Stopwatch.StartNew();
             for (int i = 0; i < time; i++)
             {
-                dynamicSample3.Add(1,2);
+                dynamicSample3.Add(1, 2);
             }
-            Console.WriteLine(string.Format("dynamic耗时:{0}毫秒",watch2.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("dynamic耗时:{0}毫秒", watch2.ElapsedMilliseconds));
 
             DynamicSample reflectSampleBetter = new DynamicSample();
             var addMthod2 = typeof(DynamicSample).GetMethod("Add");
             var delg = (Func<DynamicSample, int, int, int>)Delegate.CreateDelegate(typeof(Func<DynamicSample, int, int, int>), addMthod2);
             Stopwatch watch3 = Stopwatch.StartNew();
-            for (var  i = 0; i < time; i++)
+            for (var i = 0; i < time; i++)
             {
-                delg(reflectSampleBetter,1,2);
+                delg(reflectSampleBetter, 1, 2);
             }
-            Console.WriteLine(string.Format("优化的反射耗时:{0}毫秒",watch3.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("优化的反射耗时:{0}毫秒", watch3.ElapsedMilliseconds));
             #endregion
             #region 数组
             ClassForExtensions.ResizeArray();
@@ -352,7 +352,7 @@ namespace TextCode
                         Thread.Sleep(1000);
                     }
                 }
-               
+
             });
             t1.Start();
             Thread t2 = new Thread(() =>
@@ -366,7 +366,7 @@ namespace TextCode
                     lista.RemoveAt(2);
                     Console.WriteLine("删除成功");
                 }
-                
+
             });
             t2.Start();
             #endregion
@@ -392,9 +392,10 @@ namespace TextCode
             //int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
             //string s = "race a car";
             //SolveNQueens(4);
-            int[] result =  { 1, 2, 3, 4, 5, 6, 7 };
-            Rotate(result,3);
-            Console.WriteLine(TopKFrequent(result,2));
+            int[] result = { 1, 2, 3, 4, 5, 6, 7 };
+            Rotate(result, 3);
+            Console.WriteLine(TopKFrequent(result, 2));
+            Console.WriteLine();
             //string s = "abababab";
             // RepeatedSubstringPattern(s);
             //Console.WriteLine(RepeatedSubstringPattern(s));            
@@ -2203,18 +2204,18 @@ namespace TextCode
                 {
                     dic.TryGetValue(nums[i], out value);
                     dic.Remove(nums[i]);
-                    dic.Add(nums[i],value+1);
+                    dic.Add(nums[i], value + 1);
                 }
                 else
                 {
-                    dic.Add(nums[i],1);
+                    dic.Add(nums[i], 1);
                 }
             }
-             var a = from p in dic orderby p.Value descending select p;
+            var a = from p in dic orderby p.Value descending select p;
             List<int> result = new List<int>();
-            foreach (KeyValuePair<int,int> item in a)
-            {   
-                if (k>0)
+            foreach (KeyValuePair<int, int> item in a)
+            {
+                if (k > 0)
                 {
                     result.Add(item.Key);
                 }
@@ -2224,28 +2225,45 @@ namespace TextCode
         }
         #endregion
         #region 旋转数组
-        public static  void Rotate(int[] nums, int k)
+        public static void Rotate(int[] nums, int k)
         {
+            #region 反转
+            /* public void rotate(int[] nums, int k) {
+        k %= nums.length;
+        reverse(nums, 0, nums.length - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.length - 1);
+    }
+    public void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+    }*/
+            #endregion
             #region 环状替换
-            int num = nums.Length - 1;
-            k = k % nums.Length;
-            int count = 0;
-            for (int start  = 0; start < nums.Length; start++)
-            {
-                int current = start;
-                int prev = nums[start];
-                do
-                {
-                    int next = (current + k) % nums.Length;
-                    int temp = nums[next];
-                    nums[next] = prev;
-                    prev = temp;
-                    current = next;
-                    count++;
-                } while (start!=current);
-                //int temp = 0;
+            //int num = nums.Length - 1;
+            //k = k % nums.Length;
+            //int count = 0;
+            //for (int start  = 0; start < nums.Length; start++)
+            //{
+            //    int current = start;
+            //    int prev = nums[start];
+            //    do
+            //    {
+            //        int next = (current + k) % nums.Length;
+            //        int temp = nums[next];
+            //        nums[next] = prev;
+            //        prev = temp;
+            //        current = next;
+            //        count++;
+            //    } while (start!=current);
+            //int temp = 0;
 
-            }
+
             #endregion
             #region 暴力解      
             //int a = 0;
@@ -2264,10 +2282,117 @@ namespace TextCode
             //            nums[0] = a;
             //        }
 
-            //    }
+            //    }    
+
             //}
             #endregion
         }
+            #endregion
+        #region 组合
+         List<IList<int>> result = new List<IList<int>>();
+          List<int> nums = new List<int>();
+        public IList<IList<int>> Combine(int n, int k)
+        {
+
+            dfs(1,n,k);
+            return result;
+        }
+        public void dfs(int cur,int n,int k)
+        {
+            //剪枝：temp长度加上区间[cur,n]的长度小于k，不同于长度为k的temp
+            if (nums.Count+(n-cur+1)<k)
+            {
+                return;
+            }
+            //记录合法的答案
+            if (nums.Count==k)
+            {
+                result.Add(nums);
+                return;
+            }
+            //考虑当前位置
+            nums.Add(cur);
+            dfs(cur+1,n,k);
+            nums.Remove(nums.Count-1);
+            //考虑不选择当前位置
+            dfs(cur+1,n,k);
+
+        }
+
+        #endregion
+        #region 颠倒二进制位
+        public static uint reverseBits(uint n)
+        {
+            uint result = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                result += ((n & (1U << (31 - i))) != 0 ? 1U << i : 0);
+            }
+            return result;
+        }
+        #endregion
+        #region 位1的数
+        public int HammingWeight(uint n)
+        {
+            int num = 0;
+            while (n!=0)
+            {
+                num++;
+                n &= (n - 1);
+
+            }
+            //uint mask = 1;
+            //for (int i = 0; i < 32; i++)
+            //{
+            //    if ((n&mask)!=0)
+            //    {
+            //        num++;
+            //    }
+            //    mask <<= 1;
+            //}
+            return num;
+        }
+        #endregion
+        #region  组合总和 II
+        public IList<IList<int>> CombinationSum2(int[] candidates, int target)
+        {
+            List<IList<int>> result = new List<IList<int>>();
+            List<int> nums = new List<int>();
+            //关键步骤
+            Array.Sort(candidates);
+            dfs(0, target, result,candidates,nums);
+            return result;
+        }
+        private void dfs(int index,int target, List<IList<int>> result, int[] candidates,List<int> nums)
+        {
+            if (target==0)
+            {
+                if (!result.Contains(nums))
+                {
+                    result.Add(new List<int>(nums));
+                }
+                return;
+            }
+            else
+            {
+                for (int i = index; i < candidates.Length; i++)
+                {
+                    if (candidates[i]>target)
+                    {
+                        break;
+                    }
+                    nums.Add(candidates[i]);
+                    dfs(i+1,target-candidates[i],result,candidates,nums);
+                    nums.RemoveAt(nums.Count-1);
+                    while (i<candidates.Length&&candidates[i]==candidates[i+1])
+                    {
+                        i++;
+                    }
+                }
+            }
+
+        }
+     
         #endregion
     }
     #region 最小栈
@@ -2340,8 +2465,8 @@ namespace TextCode
             using (Stream objectStream = new MemoryStream())
             {
                 IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(objectStream,this);
-                objectStream.Seek(0,SeekOrigin.Begin);
+                formatter.Serialize(objectStream, this);
+                objectStream.Seek(0, SeekOrigin.Begin);
                 return formatter.Deserialize(objectStream) as Employee;
             }
         }
@@ -2367,7 +2492,7 @@ namespace TextCode
     public class DynamicSample
     {
         public string Name { get; set; }
-        public int Add(int a,int b)
+        public int Add(int a, int b)
         {
             return a + b;
         }
@@ -2378,7 +2503,7 @@ namespace TextCode
     {
         public void a()
         {
-            int [] iArr = new int[]  { 1,2,3,4,5,6,7};
+            int[] iArr = new int[] { 1, 2, 3, 4, 5, 6, 7 };
             ArrayList arrayList = ArrayList.Adapter(iArr);//数组转换ArrayList
             arrayList.Add(7);
             List<int> list = iArr.ToList<int>();//将数组转换List<T>
@@ -2389,24 +2514,24 @@ namespace TextCode
         }
     }
     //ReSize
-    public static  class ClassForExtensions
+    public static class ClassForExtensions
     {
-        public static Array Resize(this Array array,int newSize)
+        public static Array Resize(this Array array, int newSize)
         {
             Type t = array.GetType().GetElementType();
-            Array newArray = Array.CreateInstance(t,newSize);
-            Array.Copy(array,0,newArray,0,Math.Min(array.Length,newSize));
+            Array newArray = Array.CreateInstance(t, newSize);
+            Array.Copy(array, 0, newArray, 0, Math.Min(array.Length, newSize));
             return newArray;
         }
         //测试速度
         public static void ResizeArray()
         {
-            int[] iArr = {0,1,2,3,4,5,6 };
+            int[] iArr = { 0, 1, 2, 3, 4, 5, 6 };
             Stopwatch watch1 = new Stopwatch();
             watch1.Start();
             iArr = (int[])iArr.Resize(10);
             watch1.Stop();
-            Console.WriteLine("ResizeArray："+watch1.Elapsed);
+            Console.WriteLine("ResizeArray：" + watch1.Elapsed);
         }
         public static void ResizeList()
         {
@@ -2417,7 +2542,7 @@ namespace TextCode
             iArr.Add(0);
             iArr.Add(0);
             watch2.Stop();
-            Console.WriteLine("ResizeList:"+watch2.Elapsed);
+            Console.WriteLine("ResizeList:" + watch2.Elapsed);
 
         }
     }
@@ -2477,7 +2602,7 @@ namespace TextCode
             }
             public IMyEnumerator GetMyEnumerator()
             {
-                if (myEnumerator==null)
+                if (myEnumerator == null)
                 {
                     myEnumerator = new MyEnumerator(this);
                 }
@@ -2494,7 +2619,7 @@ namespace TextCode
             }
             public bool MoveNext()
             {
-                if (index+1>myList.Count)
+                if (index + 1 > myList.Count)
                 {
                     index = 1;
                     return false;
@@ -2531,7 +2656,7 @@ namespace TextCode
         static void TestEnd()
         {
             watch.Stop();
-            Console.WriteLine("耗时:"+watch.ElapsedMilliseconds.ToString());
+            Console.WriteLine("耗时:" + watch.ElapsedMilliseconds.ToString());
             Console.WriteLine("垃圾回收次数:" + (GC.CollectionCount(0) - collectionCount));
         }
         static void TestArrayList()
@@ -2562,7 +2687,7 @@ namespace TextCode
 
     #endregion
     #region 确保线性安全
-    class Person 
+    class Person
     {
         public string Name { get; set; }
         public int Age { get; set; }
@@ -2570,6 +2695,7 @@ namespace TextCode
     #endregion
     #endregion
 }
+
 
 
 
