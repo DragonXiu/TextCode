@@ -392,9 +392,9 @@ namespace TextCode
             //int[] price = new int[] { 7, 1, 3, 5, 9, 8, 16 };
             //string s = "race a car";
             //SolveNQueens(4);
-            int[] result = { 1, 2, 3, 4, 5, 6, 7 };
+            int[] result = { 2, 1, 1, 2 };
             Rotate(result, 3);
-            Console.WriteLine(TopKFrequent(result, 2));
+            Console.WriteLine(Rob(result));
             Console.WriteLine();
             //string s = "abababab";
             // RepeatedSubstringPattern(s);
@@ -2287,35 +2287,35 @@ namespace TextCode
             //}
             #endregion
         }
-            #endregion
+        #endregion
         #region 组合
-         List<IList<int>> result = new List<IList<int>>();
-          List<int> nums = new List<int>();
+        List<IList<int>> result = new List<IList<int>>();
+        List<int> nums = new List<int>();
         public IList<IList<int>> Combine(int n, int k)
         {
 
-            dfs(1,n,k);
+            dfs(1, n, k);
             return result;
         }
-        public void dfs(int cur,int n,int k)
+        public void dfs(int cur, int n, int k)
         {
             //剪枝：temp长度加上区间[cur,n]的长度小于k，不同于长度为k的temp
-            if (nums.Count+(n-cur+1)<k)
+            if (nums.Count + (n - cur + 1) < k)
             {
                 return;
             }
             //记录合法的答案
-            if (nums.Count==k)
+            if (nums.Count == k)
             {
                 result.Add(nums);
                 return;
             }
             //考虑当前位置
             nums.Add(cur);
-            dfs(cur+1,n,k);
-            nums.Remove(nums.Count-1);
+            dfs(cur + 1, n, k);
+            nums.Remove(nums.Count - 1);
             //考虑不选择当前位置
-            dfs(cur+1,n,k);
+            dfs(cur + 1, n, k);
 
         }
 
@@ -2335,7 +2335,7 @@ namespace TextCode
         public int HammingWeight(uint n)
         {
             int num = 0;
-            while (n!=0)
+            while (n != 0)
             {
                 num++;
                 n &= (n - 1);
@@ -2360,12 +2360,12 @@ namespace TextCode
             List<int> nums = new List<int>();
             //关键步骤
             Array.Sort(candidates);
-            dfs(0, target, result,candidates,nums);
+            dfs(0, target, result, candidates, nums);
             return result;
         }
-        private void dfs(int index,int target, List<IList<int>> result, int[] candidates,List<int> nums)
+        private void dfs(int index, int target, List<IList<int>> result, int[] candidates, List<int> nums)
         {
-            if (target==0)
+            if (target == 0)
             {
                 if (!result.Contains(nums))
                 {
@@ -2377,14 +2377,14 @@ namespace TextCode
             {
                 for (int i = index; i < candidates.Length; i++)
                 {
-                    if (candidates[i]>target)
+                    if (candidates[i] > target)
                     {
                         break;
                     }
                     nums.Add(candidates[i]);
-                    dfs(i+1,target-candidates[i],result,candidates,nums);
-                    nums.RemoveAt(nums.Count-1);
-                    while (i<candidates.Length&&candidates[i]==candidates[i+1])
+                    dfs(i + 1, target - candidates[i], result, candidates, nums);
+                    nums.RemoveAt(nums.Count - 1);
+                    while (i < candidates.Length && candidates[i] == candidates[i + 1])
                     {
                         i++;
                     }
@@ -2392,7 +2392,239 @@ namespace TextCode
             }
 
         }
-     
+
+        #endregion
+        #region 二叉树的层平均值
+        public IList<double> AverageOfLevels(TreeNode root)
+        {
+            //深度优先搜索
+            List<double> result = new List<double>();
+            //List<TreeNode> root = new List<TreeNode>();
+            List<int> counts = new List<int>();
+            dfs(root, 0, counts, result);
+            List<double> averages = new List<double>();
+            int size = result.Count();
+            #region 广度优先搜索
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            while (!(queue.Count() != 0))
+            {
+                double sum = 0;
+                int len = queue.Count();
+                for (int i = 0; i < len; i++)
+                {
+                    TreeNode node = queue.Peek();
+                    sum += node.val;
+                    TreeNode left = node.left;
+                    TreeNode right = node.right;
+                    if (left != null)
+                    {
+                        queue.Enqueue(left);
+                    }
+                    if (right != null)
+                    {
+                        queue.Enqueue(right);
+                    }
+                }
+            }
+            #endregion
+            for (int i = 0; i < size; i++)
+            {
+                averages.Add(result[i] / counts[i]);
+            }
+            return averages;
+
+        }
+        public void dfs(TreeNode root, int level, List<int> counts, List<double> sums)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            if (level < sums.Count())
+            {
+                sums[level] = sums[level] + root.val;
+                counts[level] = counts[level] + 1;
+            }
+            else
+            {
+                sums.Add(1.0 * root.val);
+                counts.Add(1);
+            }
+            dfs(root.left, level + 1, counts, sums);
+            dfs(root.right, level + 1, counts, sums);
+        }
+        #endregion
+        #region 二叉树的中序遍历
+        public List<int> inorderTraversal(TreeNode root)
+        {
+            List<int> res = new List<int>();
+
+            return res;
+        }
+        public void inorder(TreeNode root, List<int> res)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            inorder(root.left, res);
+            res.Add(root.val);
+            inorder(root.right, res);
+        }
+        #endregion
+        #region 解数独
+        public void SolveSudoku(char[][] board)
+        {
+
+        }
+        #endregion
+        #region 翻转二叉树
+        public TreeNode InvertTree(TreeNode root)
+        {
+            if (root == null)
+            {
+                return root;
+            }
+            TreeNode left = InvertTree(root.left);
+            TreeNode right = InvertTree(root.right);
+            root.left = right;
+            root.right = left;
+            return root;
+
+        }
+        #endregion
+        #region 打家劫舍
+        public static int Rob(int[] nums)
+        {
+            if (nums == null || nums.Length == 0)
+            {
+
+                return 0;
+            }
+            int len = nums.Length;
+            if (len == 1)
+            {
+                return nums[0];
+            }
+            int first = nums[0];
+            int second = Math.Max(first, nums[1]);
+            for (int i = 2; i < len; i++)
+            {
+                int temp = second;
+                second = Math.Max(first + nums[i], second);
+                first = temp;
+            }
+            return second;
+            //int len = nums.Length;
+            //int result = 0;
+            //int n = 0;
+            //while (n<2)
+            //{
+            //    int sum = 0;
+            //    for (int i = 0; i < len; i += 2)
+            //    {
+            //        sum += nums[i];
+            //    }
+            //    if (sum>result)
+            //    {
+            //        result = sum;
+            //    }
+            //    n++;
+            //}
+
+            //return result;
+        }
+        #endregion
+        #region 快乐数
+        public bool IsHappy(int n)
+        {
+            HashSet<int> seen = new HashSet<int>();
+            while (n != 1 && !seen.Contains(n))
+            {
+                seen.Add(n);
+                n = getNext(n);
+            }
+            return n == 1;
+        }
+        private int getNext(int n)
+        {
+            int totalSum = 0;
+            while (n > 0)
+            {
+                int d = n % 10;
+                n = n / 10;
+                totalSum += d * d;
+            }
+            return totalSum;
+        }
+        #endregion
+        #region 移除链表元素
+        public ListNode RemoveElements(ListNode head, int val)
+        {
+            //新建一个哨兵
+            ListNode sendinel = new ListNode(0);
+            sendinel.next = head;
+            ListNode prev = sendinel;
+            ListNode curr = head;
+            while (curr != null)
+            {
+                if (curr.val == val)
+                {
+                    prev.next = curr.next;
+                }
+                else
+                {
+                    prev = curr.next;
+                }
+                curr = curr.next;
+            }
+            return sendinel.next;
+        }
+        #endregion
+        #region 全排列 II
+        public IList<IList<int>> PermuteUnique(int[] nums)
+        {
+            Array.Sort(nums);
+            if (nums.Length == 0)
+            {
+                return new List<IList<int>>();
+            }
+            List<IList<int>> res = new List<IList<int>>();
+            List<int> temp = new List<int>();
+            int[] flag = new int[nums.Length];
+            for (int i = 0; i < flag.Length; ++i)
+            {
+                flag[i]=0;
+            }
+            dfs(ref res,nums,flag,temp);
+            return res;
+
+        }
+        private void dfs(ref List<IList<int>> res, int[] nums, int[] flag,List<int>temp)
+        {
+            if (temp.Count==nums.Length)
+            {
+                res.Add(new List<int>(temp));
+                return;
+            }
+            for (int i = 0; i < nums.Length;++i)
+            {
+                if (flag[i]==1)
+                {
+                    continue;
+                }
+                flag[i] = 1;
+                temp.Add(nums[i]);
+                dfs(ref res,nums,flag,temp);
+                temp.RemoveAt(temp.Count - 1);
+                flag[i] = 0;
+                while (i<nums.Length-1&&nums[i+1]==nums[i])
+                {
+                    i++;
+                }
+            }
+        }
         #endregion
     }
     #region 最小栈
