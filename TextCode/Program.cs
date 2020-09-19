@@ -2595,31 +2595,31 @@ namespace TextCode
             int[] flag = new int[nums.Length];
             for (int i = 0; i < flag.Length; ++i)
             {
-                flag[i]=0;
+                flag[i] = 0;
             }
-            dfs(ref res,nums,flag,temp);
+            dfs(ref res, nums, flag, temp);
             return res;
 
         }
-        private void dfs(ref List<IList<int>> res, int[] nums, int[] flag,List<int>temp)
+        private void dfs(ref List<IList<int>> res, int[] nums, int[] flag, List<int> temp)
         {
-            if (temp.Count==nums.Length)
+            if (temp.Count == nums.Length)
             {
                 res.Add(new List<int>(temp));
                 return;
             }
-            for (int i = 0; i < nums.Length;++i)
+            for (int i = 0; i < nums.Length; ++i)
             {
-                if (flag[i]==1)
+                if (flag[i] == 1)
                 {
                     continue;
                 }
                 flag[i] = 1;
                 temp.Add(nums[i]);
-                dfs(ref res,nums,flag,temp);
+                dfs(ref res, nums, flag, temp);
                 temp.RemoveAt(temp.Count - 1);
                 flag[i] = 0;
-                while (i<nums.Length-1&&nums[i+1]==nums[i])
+                while (i < nums.Length - 1 && nums[i + 1] == nums[i])
                 {
                     i++;
                 }
@@ -2629,13 +2629,71 @@ namespace TextCode
         #region 左叶子之和
         public int SumOfLeftLeaves(TreeNode root)
         {
-            int result = 0;
-            if (root==null)
+            if (root == null)
             {
                 return 0;
             }
-            result += root.left.val;
-            return result;
+
+            return dfs(root, false);
+        }
+        private int dfs(TreeNode root, bool isLeft)
+        {
+            if (root.left == null && root.right == null && isLeft)
+            {
+                return root.val;
+            }
+            return dfs(root.left, true) + dfs(root.right, false);
+        }
+
+
+        #endregion
+        #region 计数质数
+        public int CountPrimes(int n)
+        {
+            #region 厄拉多塞筛选法
+            int count = 0;
+            bool[] signs = new bool[n];
+            for (int i = 2; i < n; i++)
+            {
+               
+                //因为C#布尔默认值为假
+                if (!signs[i])
+                {
+                    count++;
+                    for (int j = i+i; j < n; j+=i)
+                    {
+                        //排除不是质数的值
+                        signs[j] = true;
+                    }
+                }
+               
+            } return count;
+            #endregion
+            #region 暴力超时
+            //if (n < 2)
+            //{
+            //    return 0;
+            //}
+            //int result = 0;
+            //int num =2;
+            //while (num<n)
+            //{
+            //    bool flag = false;
+            //    for (int i = 2; i < n; i++)
+            //    {
+            //        if (n%i==0)
+            //        {
+            //            flag = true;
+            //            break;
+            //        }
+            //    }
+            //    if (!flag)
+            //    {
+            //        result++;
+            //    }
+            //}
+            //return result;
+            #endregion
         }
         #endregion
     }
