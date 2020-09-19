@@ -2626,6 +2626,17 @@ namespace TextCode
             }
         }
         #endregion
+        #region 左叶子之和
+        public int SumOfLeftLeaves(TreeNode root)
+        {
+            int result = 0;
+            if (root==null)
+            {
+                return 0;
+            }
+            result += root.left.val;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
