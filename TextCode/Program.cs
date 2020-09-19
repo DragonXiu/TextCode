@@ -2635,6 +2635,7 @@ namespace TextCode
                 return 0;
             }
             result += root.left.val;
+            return result;
         }
         #endregion
     }
