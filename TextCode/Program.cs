@@ -2696,6 +2696,102 @@ namespace TextCode
             #endregion
         }
         #endregion
+        #region 把搜索二叉树转换成累加二叉树
+        int sum = 0;
+        public TreeNode ConvertBST(TreeNode root)
+        {
+            if (root != null)
+            {
+                ConvertBST(root.right);
+                sum += root.val;
+                root.val = sum;
+                ConvertBST(root.left);
+            }
+            return root;
+        }
+        #endregion
+        #region 字符串同构
+        public bool IsIsomorphic(string s, string t)
+        {
+            return oo(s, t) && oo(t, s);
+
+        }
+        private bool oo(string s,string t)
+        {
+            int n = s.Length;
+            Dictionary<char, char> dic = new Dictionary<char, char>();
+            for (int i = 0; i < n; i++)
+            {
+                char c1 = s[i];
+                char c2 = t[i];
+                if (dic.ContainsKey(c1))
+                {
+                    char o;
+                    dic.TryGetValue(c1, out o);
+                    if (o != c2 || dic.ContainsKey(c2))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    dic.Add(c1, c2);
+                }
+            }
+            return true;
+        }
+        #endregion
+        #region 反转链表
+        public ListNode ReverseList(ListNode head)
+        {
+
+            #region 迭代
+            /*在遍历列表时，将当前节点的 next 指针改为指向前一个元素。由于节点没有引用其上一个节点，因此必须事先存储其前一个元素。在更改引用之前，还需要另一个指针来存储下一个节点。不要忘记在最后返回新的头引用！
+            */
+            //ListNode prev = null;
+            //ListNode curr = head;
+            //while (curr!=null)
+            //{
+            //    ListNode nextTemp = curr.next;
+            //    curr.next = prev;
+            //    prev = curr;
+            //    curr = nextTemp;
+            //}
+            //return prev;
+            #endregion
+            #region 递归
+            if (head==null||head.next==null)
+            {
+                return head;
+            }
+            ListNode p = ReverseList(head.next);
+            head.next.next = head;
+            head.next = null;
+            return p;
+            #endregion
+        }
+        #endregion
+        #region 监控二叉树
+        public int MinCameraCover(TreeNode root)
+        {
+            int[] array = dfs(root);
+            return array[1];
+        }
+        private int[] dfs(TreeNode root)
+        {
+            if (root==null)
+            {
+                return new int[] { int.MaxValue / 2,0, 0 };
+            }
+            int[] leftArray = dfs(root.left);
+            int[] rightArray= dfs(root.right);
+            int[] array = new int[3];
+            array[0] = leftArray[2] + rightArray[2] + 1;
+            array[1] = Math.Min(array[0], Math.Min(leftArray[0] + rightArray[1], rightArray[0] + leftArray[1]));
+            array[2] = Math.Min(array[0], leftArray[1] + rightArray[1]);
+            return array;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
