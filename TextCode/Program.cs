@@ -2792,6 +2792,195 @@ namespace TextCode
             return array;
         }
         #endregion
+        #region 合并二叉树
+        public TreeNode MergeTrees(TreeNode t1, TreeNode t2)
+        {
+            #region 深度优先搜索
+            //if (t1==null)
+            //{
+            //    return t1;
+            //}
+            //if (t2==null)
+            //{
+            //    return t1;
+            //}
+            //TreeNode root = new TreeNode(t1.val+t2.val);
+            //root.left = MergeTrees(t1.left,t2.left);
+            //root.right = MergeTrees(t1.right,t2.right);
+            //return root;
+            #endregion
+            #region 广度优先搜索
+                if (t1==null)
+                {
+                    return t2;
+                }
+                if (t2==null)
+                {
+                    return t1;
+                }
+                TreeNode root = new TreeNode(t1.val+t2.val);
+                Queue<TreeNode> queue = new Queue<TreeNode>();
+                Queue<TreeNode> queue2 = new Queue<TreeNode>();
+                Queue<TreeNode> queue3 = new Queue<TreeNode>();
+                queue.Enqueue(root);
+                queue2.Enqueue(t1);
+                queue3.Enqueue(t2);
+                while (!(queue2 == null) && !(queue3 == null))
+                {
+                    TreeNode node = queue.Dequeue();
+                    TreeNode node1 = queue2.Dequeue();
+                    TreeNode node2 = queue3.Dequeue();
+                    TreeNode left1 = node1.left;
+                    TreeNode left2 = node2.left;
+                    TreeNode right1 = node1.right;
+                    TreeNode right2 = node2.right;
+                    if (left1 != null && left2 != null)
+                    {
+                        if (left1 != null && left2 != null)
+                        {
+                            TreeNode left = new TreeNode(left1.val + left2.val);
+                            node.left = left;
+                            queue.Enqueue(left);
+                            queue2.Enqueue(left1);
+                            queue3.Enqueue(left2);
+                        }
+                        else if (left1 != null)
+                        {
+                            node.left = left1;
+                        }
+                        else if (left2 != null)
+                        {
+                            node.left = left2;
+                        }
+                    }
+                    if (right1 != null && right2 != null)
+                    {
+                        if (right1 != null && right2 != null)
+                        {
+                            TreeNode right = new TreeNode(right1.val + right1.val);
+                            node.right = right;
+                            queue.Enqueue(right);
+                            queue2.Enqueue(right1);
+                            queue3.Enqueue(right2);
+                        }
+                        else if (right1 != null)
+                        {
+                            node.right = right1;
+                        }
+                        else if (right2 != null)
+                        {
+                            node.right = right2;
+                        }
+                    }
+                }
+                return root;
+            #endregion
+
+        }
+        #endregion
+        #region 是否存在重复元素
+        public bool ContainsDuplicate(int[] nums)
+        {
+            Array.Sort(nums);
+            bool flag = false;
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i-1]==nums[i])
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            return flag;
+        }
+        #endregion
+        #region 二叉搜索树中的众数
+        int bases;
+        int count;
+        int maxCount;
+        List<int> answer = new List<int>();
+        public int[] FindMode(TreeNode root)
+        {
+            TreeNode cur = root;
+            TreeNode pre = null;
+            while (cur!=null)
+            {
+                if (cur.left==null)
+                {
+                    update(cur.val);
+                    cur = cur.right;
+                    continue;
+                }
+                pre = cur.left;
+                while (pre.right!=null&&pre.right!=cur)
+                {
+                    pre = pre.right;
+                }
+                if (pre.right==null)
+                {
+                    pre.right = cur;
+                    cur = cur.left;
+                }
+                else
+                {
+                    pre.right = null;
+                    update(cur.val);
+                    cur = cur.right;
+                }
+            }
+            int n = answer.Count();
+            int[] mode = new int[n] ;
+            for (int i = 0; i < n; i++)
+            {
+                mode[i] = answer[i];
+            }
+
+            return mode;
+        }
+        private void update(int x)
+        {
+            if (x==bases)
+            {
+                ++count;
+            }
+            else
+            {
+                count = 1;
+                bases = x;
+            }
+            if (count==maxCount)
+            {
+                answer.Add(bases);
+            }
+            if (count>maxCount)
+            {
+                maxCount = count;
+                answer.Clear();
+                answer.Add(bases);
+            }
+        }
+        #endregion
+        #region 存在重复的元素||
+        public bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            HashSet<int> hs = new HashSet<int>();
+            int i = 0;
+            while (i<nums.Length)
+            {
+                if (hs.Contains(nums[i]))
+                {
+                    return true;
+                }
+                hs.Add(nums[i]);
+                if (hs.Count()>k)
+                {
+                    hs.Remove(nums[i-k]);
+                }
+                i++;
+            }
+            return false;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
