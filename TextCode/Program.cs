@@ -2981,6 +2981,98 @@ namespace TextCode
             return false;
         }
         #endregion
+        #region 从中序与后序遍历序列构造二叉树
+        //int post_idx;
+        //int[] postorder;
+        //int[] inorder1;
+        //Dictionary<int, int> idx_map = new Dictionary<int, int>();
+        private TreeNode helper(int[] inorder, int[] postorder, Dictionary<int, int> dictionary, int start, int end, int index)
+        {
+            var root = new TreeNode(postorder[index]);
+            if (start==end)
+            {
+                return root;
+            }
+            int pos = dictionary[postorder[index]];
+            if (pos>start)
+            {
+                root.left = helper(inorder,postorder,dictionary,start,pos-1,pos+index-end-1);
+            }
+            if (pos<end)
+            {
+                root.right = helper(inorder,postorder,dictionary,pos+1,end,index-1);
+            }
+            return root;
+            ////如果这里没有节点构造二叉树，就结束
+            //if (in_left>in_right)
+            //{
+            //    return null;
+            //}
+            ////选择post_idx位置的元素作为当前子树根节点
+            //int root_val = postorder[post_idx];
+            //TreeNode root = new TreeNode(root_val);
+            ////根据root所在位置分成左右两棵子树
+            //int index;
+            //idx_map.TryGetValue(root_val,out index);
+            ////下标减一
+            //post_idx--;
+            ////构造右子树
+            //root.left = helper(in_left+1,in_right);
+            ////构造左子树
+            //root.right = helper(in_left, index - 1);
+            //return root;
+        }
+        public TreeNode BuildTree(int[] inorder, int[] postorder)
+        {
+            if (inorder == null||postorder==null||inorder.Length<=0||postorder.Length<=0)
+            {
+                return null;
+            }
+            var dictionary = new Dictionary<int, int>();
+            for (int i = 0; i < inorder.Length;++i)
+            {
+                dictionary.Add(inorder[i],i);
+            }
+            return helper(inorder, postorder, dictionary, 0, postorder.Length - 1,postorder.Length-1) ;
+            //this.postorder = postorder;
+            //this.inorder1 = inorder;
+            ////从后序遍历的最后一个元素开始
+            //post_idx = postorder.Length - 1;
+            ////建立（元素，下标）键值对的哈希表
+            //int idx = 0;
+            //for (int i = 0; i < inorder1.Length; i++)
+            //{
+            //    idx_map.Add(i,idx++);
+            //}
+            //return helper(0, inorder1.Length-1);
+        }
+        #endregion
+        #region 用队列实现栈
+        /*使用一个队列实现栈：只能实现存和取两个操作其中一个时间复杂度O(1)，另一个O(n)
+         作为本题Pop和Top两个读取操作，所以采取的模式是写入O(n)，读取为O(1)，所谓实现栈和O(n)
+        就是在入队或者出队循环前n-1各节点，从队后立即再加入队排在队尾，即实现队反序*/
+        Queue<int> queue = new Queue<int>();
+        public void Push(int x)
+        {
+            queue.Enqueue(x);
+            for (int index = 0; index < this.queue.Count-1; index++)
+            {
+                queue.Enqueue(queue.Dequeue());
+            }
+        }
+        public int Pop()
+        {
+            return queue.Count > 0 ? queue.Dequeue() : -1;
+        }
+        public int Top()
+        {
+            return queue.Count >0?queue.Peek():-1;
+        }
+        public bool Empty()
+        {
+            return queue.Count == 0;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
