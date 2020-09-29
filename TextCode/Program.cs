@@ -2655,19 +2655,20 @@ namespace TextCode
             bool[] signs = new bool[n];
             for (int i = 2; i < n; i++)
             {
-               
+
                 //因为C#布尔默认值为假
                 if (!signs[i])
                 {
                     count++;
-                    for (int j = i+i; j < n; j+=i)
+                    for (int j = i + i; j < n; j += i)
                     {
                         //排除不是质数的值
                         signs[j] = true;
                     }
                 }
-               
-            } return count;
+
+            }
+            return count;
             #endregion
             #region 暴力超时
             //if (n < 2)
@@ -2716,7 +2717,7 @@ namespace TextCode
             return oo(s, t) && oo(t, s);
 
         }
-        private bool oo(string s,string t)
+        private bool oo(string s, string t)
         {
             int n = s.Length;
             Dictionary<char, char> dic = new Dictionary<char, char>();
@@ -2760,7 +2761,7 @@ namespace TextCode
             //return prev;
             #endregion
             #region 递归
-            if (head==null||head.next==null)
+            if (head == null || head.next == null)
             {
                 return head;
             }
@@ -2779,12 +2780,12 @@ namespace TextCode
         }
         private int[] dfs(TreeNode root)
         {
-            if (root==null)
+            if (root == null)
             {
-                return new int[] { int.MaxValue / 2,0, 0 };
+                return new int[] { int.MaxValue / 2, 0, 0 };
             }
             int[] leftArray = dfs(root.left);
-            int[] rightArray= dfs(root.right);
+            int[] rightArray = dfs(root.right);
             int[] array = new int[3];
             array[0] = leftArray[2] + rightArray[2] + 1;
             array[1] = Math.Min(array[0], Math.Min(leftArray[0] + rightArray[1], rightArray[0] + leftArray[1]));
@@ -2810,70 +2811,70 @@ namespace TextCode
             //return root;
             #endregion
             #region 广度优先搜索
-                if (t1==null)
+            if (t1 == null)
+            {
+                return t2;
+            }
+            if (t2 == null)
+            {
+                return t1;
+            }
+            TreeNode root = new TreeNode(t1.val + t2.val);
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            Queue<TreeNode> queue2 = new Queue<TreeNode>();
+            Queue<TreeNode> queue3 = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            queue2.Enqueue(t1);
+            queue3.Enqueue(t2);
+            while (!(queue2 == null) && !(queue3 == null))
+            {
+                TreeNode node = queue.Dequeue();
+                TreeNode node1 = queue2.Dequeue();
+                TreeNode node2 = queue3.Dequeue();
+                TreeNode left1 = node1.left;
+                TreeNode left2 = node2.left;
+                TreeNode right1 = node1.right;
+                TreeNode right2 = node2.right;
+                if (left1 != null && left2 != null)
                 {
-                    return t2;
-                }
-                if (t2==null)
-                {
-                    return t1;
-                }
-                TreeNode root = new TreeNode(t1.val+t2.val);
-                Queue<TreeNode> queue = new Queue<TreeNode>();
-                Queue<TreeNode> queue2 = new Queue<TreeNode>();
-                Queue<TreeNode> queue3 = new Queue<TreeNode>();
-                queue.Enqueue(root);
-                queue2.Enqueue(t1);
-                queue3.Enqueue(t2);
-                while (!(queue2 == null) && !(queue3 == null))
-                {
-                    TreeNode node = queue.Dequeue();
-                    TreeNode node1 = queue2.Dequeue();
-                    TreeNode node2 = queue3.Dequeue();
-                    TreeNode left1 = node1.left;
-                    TreeNode left2 = node2.left;
-                    TreeNode right1 = node1.right;
-                    TreeNode right2 = node2.right;
                     if (left1 != null && left2 != null)
                     {
-                        if (left1 != null && left2 != null)
-                        {
-                            TreeNode left = new TreeNode(left1.val + left2.val);
-                            node.left = left;
-                            queue.Enqueue(left);
-                            queue2.Enqueue(left1);
-                            queue3.Enqueue(left2);
-                        }
-                        else if (left1 != null)
-                        {
-                            node.left = left1;
-                        }
-                        else if (left2 != null)
-                        {
-                            node.left = left2;
-                        }
+                        TreeNode left = new TreeNode(left1.val + left2.val);
+                        node.left = left;
+                        queue.Enqueue(left);
+                        queue2.Enqueue(left1);
+                        queue3.Enqueue(left2);
                     }
-                    if (right1 != null && right2 != null)
+                    else if (left1 != null)
                     {
-                        if (right1 != null && right2 != null)
-                        {
-                            TreeNode right = new TreeNode(right1.val + right1.val);
-                            node.right = right;
-                            queue.Enqueue(right);
-                            queue2.Enqueue(right1);
-                            queue3.Enqueue(right2);
-                        }
-                        else if (right1 != null)
-                        {
-                            node.right = right1;
-                        }
-                        else if (right2 != null)
-                        {
-                            node.right = right2;
-                        }
+                        node.left = left1;
+                    }
+                    else if (left2 != null)
+                    {
+                        node.left = left2;
                     }
                 }
-                return root;
+                if (right1 != null && right2 != null)
+                {
+                    if (right1 != null && right2 != null)
+                    {
+                        TreeNode right = new TreeNode(right1.val + right1.val);
+                        node.right = right;
+                        queue.Enqueue(right);
+                        queue2.Enqueue(right1);
+                        queue3.Enqueue(right2);
+                    }
+                    else if (right1 != null)
+                    {
+                        node.right = right1;
+                    }
+                    else if (right2 != null)
+                    {
+                        node.right = right2;
+                    }
+                }
+            }
+            return root;
             #endregion
 
         }
@@ -2885,7 +2886,7 @@ namespace TextCode
             bool flag = false;
             for (int i = 1; i < nums.Length; i++)
             {
-                if (nums[i-1]==nums[i])
+                if (nums[i - 1] == nums[i])
                 {
                     flag = true;
                     break;
@@ -2903,20 +2904,20 @@ namespace TextCode
         {
             TreeNode cur = root;
             TreeNode pre = null;
-            while (cur!=null)
+            while (cur != null)
             {
-                if (cur.left==null)
+                if (cur.left == null)
                 {
                     update(cur.val);
                     cur = cur.right;
                     continue;
                 }
                 pre = cur.left;
-                while (pre.right!=null&&pre.right!=cur)
+                while (pre.right != null && pre.right != cur)
                 {
                     pre = pre.right;
                 }
-                if (pre.right==null)
+                if (pre.right == null)
                 {
                     pre.right = cur;
                     cur = cur.left;
@@ -2929,7 +2930,7 @@ namespace TextCode
                 }
             }
             int n = answer.Count();
-            int[] mode = new int[n] ;
+            int[] mode = new int[n];
             for (int i = 0; i < n; i++)
             {
                 mode[i] = answer[i];
@@ -2939,7 +2940,7 @@ namespace TextCode
         }
         private void update(int x)
         {
-            if (x==bases)
+            if (x == bases)
             {
                 ++count;
             }
@@ -2948,11 +2949,11 @@ namespace TextCode
                 count = 1;
                 bases = x;
             }
-            if (count==maxCount)
+            if (count == maxCount)
             {
                 answer.Add(bases);
             }
-            if (count>maxCount)
+            if (count > maxCount)
             {
                 maxCount = count;
                 answer.Clear();
@@ -2965,16 +2966,16 @@ namespace TextCode
         {
             HashSet<int> hs = new HashSet<int>();
             int i = 0;
-            while (i<nums.Length)
+            while (i < nums.Length)
             {
                 if (hs.Contains(nums[i]))
                 {
                     return true;
                 }
                 hs.Add(nums[i]);
-                if (hs.Count()>k)
+                if (hs.Count() > k)
                 {
-                    hs.Remove(nums[i-k]);
+                    hs.Remove(nums[i - k]);
                 }
                 i++;
             }
@@ -2989,18 +2990,18 @@ namespace TextCode
         private TreeNode helper(int[] inorder, int[] postorder, Dictionary<int, int> dictionary, int start, int end, int index)
         {
             var root = new TreeNode(postorder[index]);
-            if (start==end)
+            if (start == end)
             {
                 return root;
             }
             int pos = dictionary[postorder[index]];
-            if (pos>start)
+            if (pos > start)
             {
-                root.left = helper(inorder,postorder,dictionary,start,pos-1,pos+index-end-1);
+                root.left = helper(inorder, postorder, dictionary, start, pos - 1, pos + index - end - 1);
             }
-            if (pos<end)
+            if (pos < end)
             {
-                root.right = helper(inorder,postorder,dictionary,pos+1,end,index-1);
+                root.right = helper(inorder, postorder, dictionary, pos + 1, end, index - 1);
             }
             return root;
             ////如果这里没有节点构造二叉树，就结束
@@ -3024,16 +3025,16 @@ namespace TextCode
         }
         public TreeNode BuildTree(int[] inorder, int[] postorder)
         {
-            if (inorder == null||postorder==null||inorder.Length<=0||postorder.Length<=0)
+            if (inorder == null || postorder == null || inorder.Length <= 0 || postorder.Length <= 0)
             {
                 return null;
             }
             var dictionary = new Dictionary<int, int>();
-            for (int i = 0; i < inorder.Length;++i)
+            for (int i = 0; i < inorder.Length; ++i)
             {
-                dictionary.Add(inorder[i],i);
+                dictionary.Add(inorder[i], i);
             }
-            return helper(inorder, postorder, dictionary, 0, postorder.Length - 1,postorder.Length-1) ;
+            return helper(inorder, postorder, dictionary, 0, postorder.Length - 1, postorder.Length - 1);
             //this.postorder = postorder;
             //this.inorder1 = inorder;
             ////从后序遍历的最后一个元素开始
@@ -3055,7 +3056,7 @@ namespace TextCode
         public void Push(int x)
         {
             queue.Enqueue(x);
-            for (int index = 0; index < this.queue.Count-1; index++)
+            for (int index = 0; index < this.queue.Count - 1; index++)
             {
                 queue.Enqueue(queue.Dequeue());
             }
@@ -3066,11 +3067,314 @@ namespace TextCode
         }
         public int Top()
         {
-            return queue.Count >0?queue.Peek():-1;
+            return queue.Count > 0 ? queue.Peek() : -1;
         }
         public bool Empty()
         {
             return queue.Count == 0;
+        }
+        #endregion
+        #region 路径总和 II
+        public IList<IList<int>> PathSum(TreeNode root, int sum)
+        {
+            #region 深度优先搜索
+            //IList<IList<int>> result = new List<IList<int>>();
+            //List<int> data = new List<int>();
+            //dfs(result, data, sum, root);
+            //return result;
+            #endregion
+            #region 广度优先搜索
+            IList<IList<int>> result = new List<IList<int>>();
+            var dic = new Dictionary<TreeNode, int>();
+            if (root == null)
+            {
+                return result;
+            }
+            Queue<TreeNode> queueNode = new Queue<TreeNode>();
+            Queue<int> queueSum = new Queue<int>();
+            queueNode.Enqueue(root);
+            queueSum.Enqueue(0);
+            while (!(queueNode == null))
+            {
+                TreeNode node = queueNode.Dequeue();
+                int rec = queueSum.Dequeue() + node.val;
+                if (node.left == null && node.right == null)
+                {
+                    if (rec == sum)
+                    {
+
+                    }
+                }
+            }
+            return result;
+            #endregion
+
+        }
+        private void getPath(TreeNode node, IList<IList<int>> result, Dictionary<TreeNode, int> map)
+        {
+            List<int> temp = new List<int>();
+            while (node != null)
+            {
+                temp.Add(node.val);
+                //map.TryGetValue(node,out node);
+            }
+        }
+        private void dfs(IList<IList<int>> result, List<int> data, int sum, TreeNode root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            sum -= root.val;
+            data.Add(root.val);
+            if (root.left == null && root.right == null && sum == 0)
+            {
+                result.Add(data);
+            }
+            dfs(result, data, sum, root.left);
+            dfs(result, data, sum, root.right);
+            data.Clear();
+        }
+        #endregion
+        #region 2的幂
+        public bool IsPowerOfTwo(int n)
+        {
+            return n > 0 && (n & (n - 1)) == 0;
+        }
+        #endregion
+        #region  二叉搜索树的最近公共祖先
+        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        {
+            //TreeNode ancestor = null;
+            //List<TreeNode> path_p = getpath(root,p);
+            //List<TreeNode> path_q = getpath(root,q);
+
+            //for (int i = 0; i < path_p.Count()&&path_q.Count()>i; i++)
+            //{
+            //    if (path_p[i]==path_q[i])
+            //    {
+            //        ancestor = path_p[i];
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //}
+            //return ancestor;
+            if (root.val > p.val && root.val > q.val)
+            {
+                return LowestCommonAncestor(root.left, p, q);
+            }
+            if (root.val < q.val && root.val < p.val)
+            {
+                return LowestCommonAncestor(root.right, p, q);
+            }
+            return root;
+        }
+        public List<TreeNode> getpath(TreeNode root, TreeNode target)
+        {
+            List<TreeNode> path = new List<TreeNode>();
+            TreeNode node = root;
+            while (node != target)
+            {
+                path.Add(node);
+                if (target.val < node.val)
+                {
+                    node = node.left;
+                }
+                else
+                {
+                    node = node.right;
+                }
+            }
+            path.Add(node);
+            return path;
+        }
+        #endregion
+        #region 请判断一个链表是否为回文链表。
+        public bool IsPalindrome(ListNode head)
+        {
+            List<int> vals = new List<int>();
+            ListNode T = head;
+            while (T != null)
+            {
+                vals.Add(T.val);
+                T = T.next;
+            }
+            int first = 0;
+            int second = vals.Count() - 1;
+            while (first < second)
+            {
+                if (vals[first] != vals[second])
+                {
+                    return false;
+                }
+                first++;
+                second--;
+            }
+            return true;
+        }
+        #endregion
+        #region  填充每个节点的下一个右侧节点指针 II
+        public Node Connect(Node root)
+        {
+            Node last = null;
+            Node nextStart = null;
+            if (root == null)
+            {
+                return null;
+            }
+            Node start = root;
+            while (start != null)
+            {
+                last = null;
+                nextStart = null;
+                for (Node p = start; p != null; p = p.next)
+                {
+                    if (p.left != null)
+                    {
+                        handle(p.left, last, nextStart);
+                    }
+                    if (p.right != null)
+                    {
+                        handle(p.right, last, nextStart);
+                    }
+                }
+                start = nextStart;
+            }
+            return root;
+            //if (root==null)
+            //{
+            //    return null;
+            //}
+            //Queue<Node> queue = new Queue<Node>();
+            //while (!(queue==null))
+            //{
+            //    int n = queue.Count();
+            //    Node last = null;
+            //    for (int i = 0; i <=n; ++i)
+            //    {
+            //        Node f = queue.Dequeue();
+            //        if (f.left!=null)
+            //        {
+            //            queue.Enqueue(f.left);
+            //        }
+            //        if (f.right!=null)
+            //        {
+            //            queue.Enqueue(f.right);
+            //        }
+            //        if (i!=1)
+            //        {
+            //            last.next = f;
+            //        }
+            //        last = f;
+            //    }
+            //}
+            //return root;
+        }
+        private void handle(Node p, Node last, Node nextStart)
+        {
+            if (last != null)
+            {
+                last.next = p;
+            }
+            if (nextStart == null)
+            {
+                nextStart = p;
+            }
+            last = p;
+        }
+        #endregion
+        #region 二叉树的后序遍历
+        public IList<int> PostorderTraversal(TreeNode root)
+        {
+            #region 递归
+
+            //List<int> result = new List<int>();
+            //if (root == null)
+            //{
+            //    return result;
+            //}
+            //dfs(root.left, result);
+            //dfs(root.left, result);
+            //result.Add(root.val);
+            //return result;
+
+            #endregion
+            #region Morris 
+            List<int> res = new List<int>();
+            if (root==null)
+            {
+                return res;
+            }
+            TreeNode p1 = root;
+            TreeNode p2 = null;
+            while (p1!=null)
+            {
+                p2 = p1.left;
+                if (p2!=null)
+                {
+                    while (p2.right!=null&&p2.right!=p1)
+                    {
+                        p2 = p2.right;
+                    }
+                    if (p2.right==null)
+                    {
+                        p2.right = p1;
+                        p1 = p1.left;
+                        continue;
+                    }
+                    else
+                    {
+                        p2.right = null;
+                        addPath(res,p1.left);
+                    }
+                }
+                p1 = p1.right;
+            }
+            addPath(res,root);
+            return res;
+            #endregion
+
+        }
+        private void addPath(List<int>res,TreeNode node)
+        {
+            List<int> tmp = new List<int>();
+            while (node!=null)
+            {
+                tmp.Add(node.val);
+                node = node.right;
+            }
+            for (int i = tmp.Count(); i >=0; --i)
+            {
+                res.Add(tmp[i]);
+            }
+        }
+        private void dfs(TreeNode root, List<int> result)
+        {
+            if (root == null)
+            {
+                result.Add(root.val);
+                return;
+            }
+            if (root.left != null)
+            {
+                dfs(root.left, result);
+            }
+            if (root.right != null)
+            {
+                dfs(root.right, result);
+            }
+            result.Add(root.val);
+
+
+        }
+        #endregion
+        #region 删除链表
+        public void DeleteList(ListNode node)
+        {
+            node.val = node.next.val;
+            node.next = node.next.next;
         }
         #endregion
     }
@@ -3373,6 +3677,28 @@ namespace TextCode
     }
     #endregion
     #endregion
+    public class Node
+    {
+        public int val;
+        public Node left;
+        public Node right;
+        public Node next;
+
+        public Node() { }
+
+        public Node(int _val)
+        {
+            val = _val;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next)
+        {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
+    }
 }
 
 
