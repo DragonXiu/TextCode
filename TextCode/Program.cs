@@ -3377,6 +3377,113 @@ namespace TextCode
             node.next = node.next.next;
         }
         #endregion
+        #region 二叉搜索树中的插入操作
+        public TreeNode InsertIntoBST(TreeNode root, int val)
+        {
+            if (root==null)
+            {
+                return new TreeNode(val);
+            }
+            TreeNode ns = root;
+            while (ns!=null)
+            {
+                if (ns.val>val)
+                {
+                    if (ns.left == null)
+                    {
+                        ns.left = new TreeNode(val);
+                        break;
+                    }
+                    else
+                    {
+                        ns = ns.left;
+                    }
+                }
+                else
+                {
+                    if (ns.right == null)
+                    {
+                        ns.right = new TreeNode(val);
+                        break;
+                    }
+                    else
+                    {
+                        ns = ns.right;
+                    }
+                }
+            }
+            return root;
+        }
+        #endregion
+        #region 有效的字母异位词
+        public bool IsAnagram(string s, string t)
+        {
+
+            if (s.Length!=t.Length)
+            {
+                return false;
+            }
+            int[] arr = new int[26];
+            for (int i = 0; i < s.Length; i++)
+            {
+                arr[s[i]-'a']++;
+                arr[t[i]- 'a']--;
+            }
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i]>0)
+                {
+                    return false;
+                }
+            }
+            return true;
+            //int one = s.Length;
+            //int two = t.Length;
+            //if (one!=two)
+            //{
+            //    return false;
+            //}
+            //Dictionary<char, int> dic = new Dictionary<char, int>();
+            //for (int i = 0; i < one-1; i++)
+            //{
+            //    if (dic.ContainsKey(s[i]))
+            //    {
+            //        int value;
+            //        dic.TryGetValue(s[i],out value);
+            //        value += 1;
+            //        dic.Remove(s[i]);
+            //        dic.Add(s[i],value);
+            //    }
+            //    else
+            //    {
+            //        dic.Add(s[i],1);
+            //    }
+            //}
+            //for (int i = 0; i < one - 1; i++)
+            //{
+            //    if (dic.ContainsKey(t[i]))
+            //    {
+            //        int value;
+            //        dic.TryGetValue(t[i], out value);
+            //        value -= 1;
+            //        dic.Remove(t[i]);
+            //        dic.Add(t[i], value);
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //foreach (var item in dic.Values)
+            //{
+            //    if (item!=0)
+            //    {
+            //        return false;
+            //    }
+            //}
+            //return true;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
