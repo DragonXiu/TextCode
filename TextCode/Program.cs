@@ -3484,6 +3484,96 @@ namespace TextCode
             //return true;
         }
         #endregion
+        #region 颜色分类
+        public void SortColors(int[] nums)
+        {
+            #region 单指针
+            //int len = nums.Length;
+            //int ptr = 0;
+            //for (int i = 0; i < len; i++)
+            //{
+            //    if (nums[i]==0)
+            //    {
+            //        int temp = 0;
+            //        temp= nums[ptr];
+            //        nums[ptr] = nums[i];
+            //        nums[i] = temp;
+            //        ++ptr;
+            //    }
+            //}
+            //for (int i = ptr; i < len; i++)
+            //{
+            //    if (nums[i]==1)
+            //    {
+            //        int temp = 0;
+            //        temp = nums[ptr];
+            //        nums[ptr] = nums[i];
+            //        nums[i] = temp;
+            //        ++ptr;
+            //    }
+            //}
+            #endregion
+            #region 双指针01(左左)
+            //int n = nums.Length;
+            //int p0 = 0;
+            //int p1 = 0;
+            //for (int i = 0; i < n; i++)
+            //{
+            //    if (nums[i]==1)
+            //    {
+            //        int temp = nums[i];
+            //        nums[i] = nums[p1];
+            //        nums[p1] = temp;
+            //        ++p1;
+            //    }
+            //    else if (nums[i]==0)
+            //    {
+            //        int temp = nums[i];
+            //        nums[i] = nums[p0];
+            //        nums[p0] = temp;
+            //        if (p0<p1)
+            //        {
+            //            temp = nums[i];
+            //            nums[i] = nums[p1];
+            //            nums[p1] = temp;
+            //        }
+            //        ++p0;
+            //        ++p1;
+            //    }
+            //}
+
+            #endregion
+            #region 双指针02(左右)
+            int n = nums.Length;
+            int p0 = 0;
+            int p2 = n - 1;
+            for (int i = 0; i <n; ++i)
+            {
+                while (i<=p2&&nums[i]==2)
+                {
+                    int temp = nums[i];
+                    nums[i] = nums[p2];
+                    nums[p2] = temp;
+                    --p2;
+                }
+                if (nums[i]==0)
+                {
+                    int temp = nums[i];
+                    nums[i] = nums[p0];
+                    nums[p0] = temp;
+                    ++p0;
+                }
+            }
+            #endregion
+
+        }
+        #endregion
+        #region 各位相加
+        public int AddDigits(int num)
+        {
+            return (num - 1) % 9 + 1;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
