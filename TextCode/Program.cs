@@ -3574,6 +3574,36 @@ namespace TextCode
             return (num - 1) % 9 + 1;
         }
         #endregion
+        #region 反转字符串
+        public void ReverseString(char[] s)
+        {
+            int one = 0;
+            int two = s.Length-1;
+            while (one<two)
+            {
+                char temp = s[one];
+                s[one] = s[two];
+                s[two] = temp;
+                one++;
+                two--;
+            }
+
+        }
+        #endregion
+        #region 丑数
+        public bool IsUgly(int num)
+        {
+            if (num == 0) { return false; }
+            while (num != 1)
+            {
+                if (num % 2 == 0) { num /= 2; continue; }
+                if (num % 3 == 0) { num /= 3; continue; }
+                if (num % 5 == 0) { num /= 5; continue; }
+                return false;
+            }
+            return true;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
