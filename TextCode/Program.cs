@@ -3303,22 +3303,22 @@ namespace TextCode
             #endregion
             #region Morris 
             List<int> res = new List<int>();
-            if (root==null)
+            if (root == null)
             {
                 return res;
             }
             TreeNode p1 = root;
             TreeNode p2 = null;
-            while (p1!=null)
+            while (p1 != null)
             {
                 p2 = p1.left;
-                if (p2!=null)
+                if (p2 != null)
                 {
-                    while (p2.right!=null&&p2.right!=p1)
+                    while (p2.right != null && p2.right != p1)
                     {
                         p2 = p2.right;
                     }
-                    if (p2.right==null)
+                    if (p2.right == null)
                     {
                         p2.right = p1;
                         p1 = p1.left;
@@ -3327,25 +3327,25 @@ namespace TextCode
                     else
                     {
                         p2.right = null;
-                        addPath(res,p1.left);
+                        addPath(res, p1.left);
                     }
                 }
                 p1 = p1.right;
             }
-            addPath(res,root);
+            addPath(res, root);
             return res;
             #endregion
 
         }
-        private void addPath(List<int>res,TreeNode node)
+        private void addPath(List<int> res, TreeNode node)
         {
             List<int> tmp = new List<int>();
-            while (node!=null)
+            while (node != null)
             {
                 tmp.Add(node.val);
                 node = node.right;
             }
-            for (int i = tmp.Count(); i >=0; --i)
+            for (int i = tmp.Count(); i >= 0; --i)
             {
                 res.Add(tmp[i]);
             }
@@ -3380,14 +3380,14 @@ namespace TextCode
         #region 二叉搜索树中的插入操作
         public TreeNode InsertIntoBST(TreeNode root, int val)
         {
-            if (root==null)
+            if (root == null)
             {
                 return new TreeNode(val);
             }
             TreeNode ns = root;
-            while (ns!=null)
+            while (ns != null)
             {
-                if (ns.val>val)
+                if (ns.val > val)
                 {
                     if (ns.left == null)
                     {
@@ -3419,19 +3419,19 @@ namespace TextCode
         public bool IsAnagram(string s, string t)
         {
 
-            if (s.Length!=t.Length)
+            if (s.Length != t.Length)
             {
                 return false;
             }
             int[] arr = new int[26];
             for (int i = 0; i < s.Length; i++)
             {
-                arr[s[i]-'a']++;
-                arr[t[i]- 'a']--;
+                arr[s[i] - 'a']++;
+                arr[t[i] - 'a']--;
             }
             for (int i = 0; i < arr.Length; i++)
             {
-                if (arr[i]>0)
+                if (arr[i] > 0)
                 {
                     return false;
                 }
@@ -3547,16 +3547,16 @@ namespace TextCode
             int n = nums.Length;
             int p0 = 0;
             int p2 = n - 1;
-            for (int i = 0; i <n; ++i)
+            for (int i = 0; i < n; ++i)
             {
-                while (i<=p2&&nums[i]==2)
+                while (i <= p2 && nums[i] == 2)
                 {
                     int temp = nums[i];
                     nums[i] = nums[p2];
                     nums[p2] = temp;
                     --p2;
                 }
-                if (nums[i]==0)
+                if (nums[i] == 0)
                 {
                     int temp = nums[i];
                     nums[i] = nums[p0];
@@ -3578,8 +3578,8 @@ namespace TextCode
         public void ReverseString(char[] s)
         {
             int one = 0;
-            int two = s.Length-1;
-            while (one<two)
+            int two = s.Length - 1;
+            while (one < two)
             {
                 char temp = s[one];
                 s[one] = s[two];
@@ -3602,6 +3602,103 @@ namespace TextCode
                 return false;
             }
             return true;
+        }
+        #endregion
+        #region 缺失数字
+        public int MissingNumber(int[] nums)
+        {
+            Array.Sort(nums);
+            if (nums[nums.Length - 1] != nums.Length)
+            {
+                return nums.Length;
+            }
+            // 判断 0 是否出现在首位
+            else if (nums[0] != 0)
+            {
+                return 0;
+            }
+
+            int result = -1;
+            // 此时缺失的数字一定在 (0, n) 中
+            for (int i = 1; i < nums.Length; i++)
+            {
+                int expectedNum = nums[i - 1] + 1;
+                if (nums[i]  != expectedNum)
+                {
+                    result = expectedNum;
+                }
+            }
+            // 未缺失任何数字（保证函数有返回值）
+            return result;
+        }
+        #endregion
+        #region 第一个错误的版本
+    
+        #endregion
+        #region 环形链表||
+        public ListNode DetectCycle(ListNode head)
+        {
+            #region 哈希表
+            ListNode pos = head;
+            HashSet<ListNode> hs = new HashSet<ListNode>();
+            while (pos!=null)
+            {
+                if (hs.Contains(pos))
+                {
+                    return pos;
+                }
+                else
+                {
+                    hs.Add(pos);
+                }
+                pos = pos.next;
+            }
+            return null;
+            #endregion
+            #region 快慢指针
+            ListNode fast =head;
+            ListNode slow = head;
+            while (fast != null)
+            {
+                slow = slow.next;
+                if (fast.next==null)
+                {
+                    return null;
+                }
+                fast = fast.next.next;
+                if (fast==slow)
+                {
+                    ListNode ptr = head;
+                    while (ptr != slow)
+                    {
+                        ptr = ptr.next;
+                        slow = slow.next;
+                    }
+                    return ptr;
+                }
+            }
+            #endregion
+        }
+        #endregion
+        #region 移动零
+        public void MoveZeroes(int[] nums)
+        {
+            if (nums.Length==0)
+            {
+                return;
+            }
+            int a = 0;
+            int b = 0;
+            while (a<nums.Length)
+            {
+                if (nums[a]!=0)
+                {
+                    int temp = nums[a];
+                    nums[a] = nums[b];
+                    nums[b++] = temp;
+                }
+                a++;
+            }
         }
         #endregion
     }
