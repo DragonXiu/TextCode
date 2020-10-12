@@ -13,6 +13,7 @@ using System.Collections;
 //using System.Text.RegularExpressions;
 //using System.Linq;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace TextCode
 {
@@ -400,6 +401,7 @@ namespace TextCode
             // RepeatedSubstringPattern(s);
             //Console.WriteLine(RepeatedSubstringPattern(s));            
             #endregion
+            WordPattern("abba", "dog cat cat dog");
             Console.ReadLine();
         }
         #region 算法       
@@ -3699,6 +3701,66 @@ namespace TextCode
                 }
                 a++;
             }
+        }
+        #endregion
+        #region 二叉树最小绝对值
+        public int GetMinimumDifference(TreeNode root)
+        {
+            int min = int.MaxValue;
+            int pre = -1;
+            dfs(root, pre, min);
+            return min;
+        }
+        private void dfs(TreeNode root,int pre,int ans)
+        {
+            if (root==null)
+            {
+                return;
+            }
+            dfs(root.left,pre,ans);
+            if (pre==-1)
+            {
+                pre = root.val;
+            }
+            else
+            {
+                ans = Math.Min(ans,root.val-pre);
+                pre = root.val;
+            }
+            dfs(root.right,pre,ans);
+        }
+        #endregion
+        #region 单词规律
+        public static bool WordPattern(string pattern, string s)
+        {
+            List<string> mm =s.Split(" ").ToList<string>();
+            if (mm.Count()!=pattern.Length)
+            {
+                return false;
+            }
+            Dictionary<char, string > dic = new Dictionary< char, string>();
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                if (dic.ContainsKey(pattern[i]))
+                {
+                    string  m;
+                    dic.TryGetValue(pattern[i],out m);
+                    if (m!=mm[i])
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (dic.ContainsValue(mm[i]))
+                    {
+                        return false;
+                    }
+                 
+                    dic.Add(pattern[i], mm[i]);
+                }
+            }
+            return true;
         }
         #endregion
     }
