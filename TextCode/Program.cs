@@ -3625,7 +3625,7 @@ namespace TextCode
             for (int i = 1; i < nums.Length; i++)
             {
                 int expectedNum = nums[i - 1] + 1;
-                if (nums[i]  != expectedNum)
+                if (nums[i] != expectedNum)
                 {
                     result = expectedNum;
                 }
@@ -3635,7 +3635,7 @@ namespace TextCode
         }
         #endregion
         #region 第一个错误的版本
-    
+
         #endregion
         #region 环形链表||
         public ListNode DetectCycle(ListNode head)
@@ -3643,7 +3643,7 @@ namespace TextCode
             #region 哈希表
             ListNode pos = head;
             HashSet<ListNode> hs = new HashSet<ListNode>();
-            while (pos!=null)
+            while (pos != null)
             {
                 if (hs.Contains(pos))
                 {
@@ -3658,17 +3658,17 @@ namespace TextCode
             return null;
             #endregion
             #region 快慢指针
-            ListNode fast =head;
+            ListNode fast = head;
             ListNode slow = head;
             while (fast != null)
             {
                 slow = slow.next;
-                if (fast.next==null)
+                if (fast.next == null)
                 {
                     return null;
                 }
                 fast = fast.next.next;
-                if (fast==slow)
+                if (fast == slow)
                 {
                     ListNode ptr = head;
                     while (ptr != slow)
@@ -3685,15 +3685,15 @@ namespace TextCode
         #region 移动零
         public void MoveZeroes(int[] nums)
         {
-            if (nums.Length==0)
+            if (nums.Length == 0)
             {
                 return;
             }
             int a = 0;
             int b = 0;
-            while (a<nums.Length)
+            while (a < nums.Length)
             {
-                if (nums[a]!=0)
+                if (nums[a] != 0)
                 {
                     int temp = nums[a];
                     nums[a] = nums[b];
@@ -3711,41 +3711,41 @@ namespace TextCode
             dfs(root, pre, min);
             return min;
         }
-        private void dfs(TreeNode root,int pre,int ans)
+        private void dfs(TreeNode root, int pre, int ans)
         {
-            if (root==null)
+            if (root == null)
             {
                 return;
             }
-            dfs(root.left,pre,ans);
-            if (pre==-1)
+            dfs(root.left, pre, ans);
+            if (pre == -1)
             {
                 pre = root.val;
             }
             else
             {
-                ans = Math.Min(ans,root.val-pre);
+                ans = Math.Min(ans, root.val - pre);
                 pre = root.val;
             }
-            dfs(root.right,pre,ans);
+            dfs(root.right, pre, ans);
         }
         #endregion
         #region 单词规律
         public static bool WordPattern(string pattern, string s)
         {
-            List<string> mm =s.Split(" ").ToList<string>();
-            if (mm.Count()!=pattern.Length)
+            List<string> mm = s.Split(" ").ToList<string>();
+            if (mm.Count() != pattern.Length)
             {
                 return false;
             }
-            Dictionary<char, string > dic = new Dictionary< char, string>();
+            Dictionary<char, string> dic = new Dictionary<char, string>();
             for (int i = 0; i < pattern.Length; i++)
             {
                 if (dic.ContainsKey(pattern[i]))
                 {
-                    string  m;
-                    dic.TryGetValue(pattern[i],out m);
-                    if (m!=mm[i])
+                    string m;
+                    dic.TryGetValue(pattern[i], out m);
+                    if (m != mm[i])
                     {
                         return false;
                     }
@@ -3756,11 +3756,52 @@ namespace TextCode
                     {
                         return false;
                     }
-                 
+
                     dic.Add(pattern[i], mm[i]);
                 }
             }
             return true;
+        }
+        #endregion
+        #region 两两交换链表中的节点
+        public ListNode SwapPairs(ListNode head)
+        {
+            #region 递归
+            if (head == null || head.next == null)
+            {
+                return head;
+            }
+            ListNode newHead = head.next;
+            head.next = SwapPairs(newHead.next);
+            newHead.next = head;
+            return newHead;
+            #endregion
+            #region 迭代
+            ListNode pre = new ListNode(0);
+            pre.next = head;
+            ListNode temp = pre;
+            while (temp.next!=null&&temp.next.next!=null)
+            {
+                ListNode start = temp.next;
+                ListNode end = temp.next.next;
+                temp.next = end;
+                start.next = end.next;
+                end.next = start;
+                temp=start;
+            }
+            return pre.next;
+         
+
+
+            #endregion
+
+        }
+
+        #endregion
+        #region Nim 游戏
+        public bool CanWinNim(int n)
+        {
+            return (n%4!=0);
         }
         #endregion
     }
