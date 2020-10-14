@@ -3780,17 +3780,17 @@ namespace TextCode
             ListNode pre = new ListNode(0);
             pre.next = head;
             ListNode temp = pre;
-            while (temp.next!=null&&temp.next.next!=null)
+            while (temp.next != null && temp.next.next != null)
             {
                 ListNode start = temp.next;
                 ListNode end = temp.next.next;
                 temp.next = end;
                 start.next = end.next;
                 end.next = start;
-                temp=start;
+                temp = start;
             }
             return pre.next;
-         
+
 
 
             #endregion
@@ -3801,8 +3801,129 @@ namespace TextCode
         #region Nim 游戏
         public bool CanWinNim(int n)
         {
-            return (n%4!=0);
+            return (n % 4 != 0);
         }
+        #endregion
+        #region 查找常用字符
+        public IList<string> CommonChars(string[] A)
+        {
+            /*给定仅有小写字母组成的字符串数组 A，返回列表中的每个字符串中都显示的全部字符（包括重复字符）
+             * 组成的列表。例如，如果一个字符在每个字符串中出现 3 次，但不是 4 次，则需要在最终答案中包含该字符 3 次。
+             * 你可以按任意顺序返回答案。
+             * 示例 1：输入：["bella","label","roller"]输出：["e","l","l"]
+             * 示例 2：输入：["cool","lock","cook"]输出：["c","o"]*/
+            List<string> result = new List<string> { };
+            string  a = A[0];
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (dic.ContainsKey(a[i]))
+                {
+                    int num;
+                    dic.TryGetValue(a[i],out num);
+                    dic.Remove(a[i]);
+                    dic.Add(a[i],num+1);
+                }
+                else
+                {
+                    dic.Add(a[i],1);
+                }
+
+            }
+            for (int i = 0; i < a.Length; i++)
+            {
+                char b = a[i];
+                for (int j = 0; j < A.Length; j++)
+                {
+                    if (!A[j].Contains(b))
+                    {
+                        dic.Remove(b);
+                        break;
+                    }
+                    else
+                    {
+                        int num;
+                        int num1=0;
+                        dic.TryGetValue(a[i], out num);
+                        for (int k = 0; k < A[j].Length; k++)
+                        {
+                            if (A[j][k]==b)
+                            {
+                                num1++;
+                            }
+                        }
+                        if (num>num1)
+                        {
+                            dic.Remove(b);
+                            dic.Add(b, num1);
+                        }                        
+                    }
+                }
+            }
+            foreach (var item in dic)
+            {
+                for (int i = 0; i < item.Value; i++)
+                {
+                    result.Add(item.Key.ToString());
+                }
+            }
+            return result;
+            #region 根据小写字母特性新建一个26数组，根据最小次数
+            var res = new int[26];
+            for (var k = 0; k < 26; k++)
+            {
+                res[k] = int.MaxValue;
+            }
+            foreach (var s in A)
+            {
+                var t = new int[26];
+                foreach (var c in s)
+                {
+                    t[c - 'a']++;
+                }
+                for (var k = 0; k < 26; k++)
+                {
+                    if (t[k] < res[k])
+                    {
+                        res[k] = t[k];
+                    }
+                }
+            }
+            var list = new List<string>();
+            for (var k = 0; k < 26; k++)
+            {
+                if (res[k] < int.MaxValue)
+                {
+                    while (res[k] > 0)
+                    {
+                        list.Add(((char)('a' + k)).ToString());
+                        res[k]--;
+                    }
+                }
+            }
+            return list;
+            #endregion
+        }
+        #endregion
+        #region 区域和检索 - 数组不可变
+        //static int[] sum1;
+        //public NumArray(int[] nums)
+        //{
+        //    sum1 = nums;
+        //    for (int i = 0; i < nums.Length; i++)
+        //    {
+        //        sum1[i] = sum1[i - 1] + sum1[i];
+        //    }
+        //}
+
+        //public int SumRange(int i, int j)
+        //{
+        //    if (i==0)
+        //    {
+        //       return sum1[j];
+        //    }
+        //    return sum1[j]-sum1[i - 1];
+        //}
         #endregion
     }
     #region 最小栈
