@@ -3925,6 +3925,95 @@ namespace TextCode
         //    return sum1[j]-sum1[i - 1];
         //}
         #endregion
+        #region 填充每个节点的下一个右侧节点指针
+        public Node Connect1(Node root)
+        {
+            #region 层次
+
+            if (root==null)
+            {
+                return root;
+            }
+            //初始化队列同时将第一层节点加入队列中，即根节点
+            Queue<Node> queue = new Queue<Node>();
+            queue.Enqueue(root);
+            //外层的while循环迭代是层数
+            while (!(queue.Count==0))
+            {
+                //记录当前队列大小
+                int size = queue.Count;
+                //遍历这一层所有节点
+                for (int i = 0; i < size; i++)
+                {
+                    //从队首取出元素
+                    Node node = queue.Dequeue();
+                    //连接
+                    if (i<size-1)
+                    {
+                        node.next = queue.Peek();
+                    }
+                    //拓宽下一层节点
+                    if (node.left!=null)
+                    {
+                        queue.Enqueue(node.left);
+                    }
+                    if (node.right!=null)
+                    {
+                        queue.Enqueue(node.right);
+                    }
+                }           
+            }
+            //返回根节点
+            return root;
+
+            #endregion
+            #region next
+            if (root ==null)
+            {
+                return root;
+            }
+            //从根节点开始
+            Node leftmost = root;
+            while (leftmost.left!=null)
+            {
+                //遍历这一层次节点组织组织成的链表，为下一层的节点更新next指针
+                Node head = leftmost;
+                while (head!=null)
+                {
+                    //第一种情况
+                    head.left.next = head.right;
+                    //第二种情况
+                    if (head.next!=null)
+                    {
+                        head.right.next = head.next.left;
+                    }
+                    //指针向后移动
+                    head = head.next;
+                }
+                //去一层的最左的节点
+                leftmost = leftmost.left;
+            }
+            return root;
+            #endregion
+        }
+
+        #endregion
+        #region 3的幂
+        public bool IsPowerOfThree(int n)
+        {
+            if (n<1)
+            {
+                return false;
+            }
+            while (n%n==0)
+            {
+                n /= 3;
+            }
+          //double res =   Math.Log10(n) / Math.Log10(3);
+          //  return res - (int)res == 0;
+            return n == 1;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
