@@ -4014,6 +4014,56 @@ namespace TextCode
             return n == 1;
         }
         #endregion
+        #region  有序数组的平方
+        public int[] SortedSquares(int[] A)
+        {
+            /*给定一个按非递减顺序排序的整数数组 A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序。*/
+            int num = A.Length;
+    
+               A[0] = A[0] * A[0];
+         
+            for (int i = 1; i < A.Length; i++)
+            {
+                A[i] = A[i] * A[i];
+                for (int j = i; j >0; j--)
+                {
+                    if (A[j]>A[j-1])
+                    {
+                        int temp = A[j];
+                        A[j] = A[j - 1];
+                        A[j - 1] = temp;
+                    }
+                }
+            }
+            return A;
+            #region 双指针
+            int[] ans = new int[A.Length];
+            for (int i = 0,j= A.Length - 1,pos= A.Length-1; i <=j; )
+            {
+                if (A[i]*A[i]>A[j]*A[j])
+                {
+                    ans[pos] = A[i];
+                    ++i;
+                }
+                else
+                {
+                    ans[pos] = A[j] * A[j];
+                    --j;
+                }
+                --pos;
+            }
+            return ans;
+            #endregion
+        }
+
+        #endregion
+        #region 4的幂
+        public bool IsPowerOfFour(int num)
+        {
+            double res = Math.Log10(num) / Math.Log10(4);
+            return res - (int)res == 0;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
