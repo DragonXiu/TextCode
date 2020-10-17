@@ -3813,20 +3813,20 @@ namespace TextCode
              * 示例 1：输入：["bella","label","roller"]输出：["e","l","l"]
              * 示例 2：输入：["cool","lock","cook"]输出：["c","o"]*/
             List<string> result = new List<string> { };
-            string  a = A[0];
+            string a = A[0];
             Dictionary<char, int> dic = new Dictionary<char, int>();
             for (int i = 0; i < a.Length; i++)
             {
                 if (dic.ContainsKey(a[i]))
                 {
                     int num;
-                    dic.TryGetValue(a[i],out num);
+                    dic.TryGetValue(a[i], out num);
                     dic.Remove(a[i]);
-                    dic.Add(a[i],num+1);
+                    dic.Add(a[i], num + 1);
                 }
                 else
                 {
-                    dic.Add(a[i],1);
+                    dic.Add(a[i], 1);
                 }
 
             }
@@ -3843,20 +3843,20 @@ namespace TextCode
                     else
                     {
                         int num;
-                        int num1=0;
+                        int num1 = 0;
                         dic.TryGetValue(a[i], out num);
                         for (int k = 0; k < A[j].Length; k++)
                         {
-                            if (A[j][k]==b)
+                            if (A[j][k] == b)
                             {
                                 num1++;
                             }
                         }
-                        if (num>num1)
+                        if (num > num1)
                         {
                             dic.Remove(b);
                             dic.Add(b, num1);
-                        }                        
+                        }
                     }
                 }
             }
@@ -3930,7 +3930,7 @@ namespace TextCode
         {
             #region 层次
 
-            if (root==null)
+            if (root == null)
             {
                 return root;
             }
@@ -3938,7 +3938,7 @@ namespace TextCode
             Queue<Node> queue = new Queue<Node>();
             queue.Enqueue(root);
             //外层的while循环迭代是层数
-            while (!(queue.Count==0))
+            while (!(queue.Count == 0))
             {
                 //记录当前队列大小
                 int size = queue.Count;
@@ -3948,42 +3948,42 @@ namespace TextCode
                     //从队首取出元素
                     Node node = queue.Dequeue();
                     //连接
-                    if (i<size-1)
+                    if (i < size - 1)
                     {
                         node.next = queue.Peek();
                     }
                     //拓宽下一层节点
-                    if (node.left!=null)
+                    if (node.left != null)
                     {
                         queue.Enqueue(node.left);
                     }
-                    if (node.right!=null)
+                    if (node.right != null)
                     {
                         queue.Enqueue(node.right);
                     }
-                }           
+                }
             }
             //返回根节点
             return root;
 
             #endregion
             #region next
-            if (root ==null)
+            if (root == null)
             {
                 return root;
             }
             //从根节点开始
             Node leftmost = root;
-            while (leftmost.left!=null)
+            while (leftmost.left != null)
             {
                 //遍历这一层次节点组织组织成的链表，为下一层的节点更新next指针
                 Node head = leftmost;
-                while (head!=null)
+                while (head != null)
                 {
                     //第一种情况
                     head.left.next = head.right;
                     //第二种情况
-                    if (head.next!=null)
+                    if (head.next != null)
                     {
                         head.right.next = head.next.left;
                     }
@@ -4001,16 +4001,16 @@ namespace TextCode
         #region 3的幂
         public bool IsPowerOfThree(int n)
         {
-            if (n<1)
+            if (n < 1)
             {
                 return false;
             }
-            while (n%n==0)
+            while (n % n == 0)
             {
                 n /= 3;
             }
-          //double res =   Math.Log10(n) / Math.Log10(3);
-          //  return res - (int)res == 0;
+            //double res =   Math.Log10(n) / Math.Log10(3);
+            //  return res - (int)res == 0;
             return n == 1;
         }
         #endregion
@@ -4019,15 +4019,15 @@ namespace TextCode
         {
             /*给定一个按非递减顺序排序的整数数组 A，返回每个数字的平方组成的新数组，要求也按非递减顺序排序。*/
             int num = A.Length;
-    
-               A[0] = A[0] * A[0];
-         
+
+            A[0] = A[0] * A[0];
+
             for (int i = 1; i < A.Length; i++)
             {
                 A[i] = A[i] * A[i];
-                for (int j = i; j >0; j--)
+                for (int j = i; j > 0; j--)
                 {
-                    if (A[j]>A[j-1])
+                    if (A[j] > A[j - 1])
                     {
                         int temp = A[j];
                         A[j] = A[j - 1];
@@ -4038,9 +4038,9 @@ namespace TextCode
             return A;
             #region 双指针
             int[] ans = new int[A.Length];
-            for (int i = 0,j= A.Length - 1,pos= A.Length-1; i <=j; )
+            for (int i = 0, j = A.Length - 1, pos = A.Length - 1; i <= j;)
             {
-                if (A[i]*A[i]>A[j]*A[j])
+                if (A[i] * A[i] > A[j] * A[j])
                 {
                     ans[pos] = A[i];
                     ++i;
@@ -4062,6 +4062,121 @@ namespace TextCode
         {
             double res = Math.Log10(num) / Math.Log10(4);
             return res - (int)res == 0;
+        }
+        #endregion
+        #region N皇后 II
+        int n2;
+        int[] res2;
+        int count2 = 0;//总方案数
+        public int TotalNQueens(int n)
+        {
+            HashSet<int> columns = new HashSet<int>();
+            HashSet<int> diagonals1 = new HashSet<int>();
+            HashSet<int> diagonals2 = new HashSet<int>();
+            return backtrack(n, 0, columns, diagonals1, diagonals2);
+            #region 位
+
+            this.n2 = n;
+            this.res2 = new int[n];
+
+            #endregion
+        }
+        private void check(int k)
+        {
+            if (k==n2)
+            {
+                count2++;
+                return;
+            }
+            for (int i = 0; i < n2; i++)
+            {
+                //将位置i放入索引数组第k个
+                res2[k] = i;
+                if (!Judge(k))
+                {
+                    check(k+1);//不冲突的话，回溯放置下一行
+                }
+                //冲突的话试下一个位置
+            }
+        }
+        //判断第k行的位置是否与之前位置冲突
+        private Boolean Judge(int k)
+        {
+            for (int i = 0; i < k; i++)
+            {
+                if (res2[k]==res2[i]||Math.Abs(k-i)==Math.Abs(res2[k]-res2[i]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private int backtrack(int n, int row, HashSet<int> columns, HashSet<int> diagonals1, HashSet<int> diagonals2)
+        {
+            if (row == n)
+            {
+                return 1;
+            }
+            else
+            {
+                int count = 0;
+                for (int i = 0; i < n; i++)
+                {
+                    if (columns.Contains(i))
+                    {
+                        continue;
+                    }
+                    int diagonal1 = row - i;
+                    if (diagonals1.Contains(diagonal1))
+                    {
+                        continue;
+                    }
+                    int diagonal2 = row + i;
+                    if (diagonals2.Contains(diagonal2))
+                    {
+                        continue;
+                    }
+                    columns.Add(i);
+                    diagonals1.Add(diagonal1);
+                    diagonals2.Add(diagonal2);
+                    count += backtrack(n, row + 1, columns, diagonals1, diagonals2);
+                    columns.Remove(i);
+                    diagonals1.Remove(diagonal1);
+                    diagonals2.Remove(diagonal2);
+                }
+                return count;
+            }
+
+        }
+        #endregion
+        #region 反转字符串中的元音字母
+        public string ReverseVowels(string s)
+        {
+            List<char> yuan = new List<char>() { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
+            StringBuilder result =new StringBuilder();
+            result.Append(s);
+            int a = 0;
+            int b = s.Length - 1;
+            while (a<b)
+            {
+                if (!yuan.Contains(result[a]))
+                {
+                    a++;
+                }
+                if (!yuan.Contains(result[b]))
+                {
+                    b--;
+                }
+                if (yuan.Contains(result[a])&& yuan.Contains(result[b]))
+                {
+                    char temp = result[a];
+                    result[a] = result[b];
+                    result[b] = temp;
+                    a++;
+                    b--;
+                }
+            }
+            return result.ToString();
         }
         #endregion
     }
