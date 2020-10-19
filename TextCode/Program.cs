@@ -4274,6 +4274,50 @@ namespace TextCode
         #region  两个数组的交集 II
         public int[] Intersection2(int[] nums1, int[] nums2)
         {
+            Array.Sort(nums1);
+            Array.Sort(nums2);
+            List<int> result = new List<int>();
+            int a = 0;
+            int b = 0;
+            while (a<nums1.Length&&b<nums2.Length)
+            {
+                if (nums1[a]!=nums2[b])
+                {
+                    if (nums1[a] > nums2[b])
+                    {
+                        b++;
+                    }
+                    else
+                    {
+                        a++;
+                    }
+                }
+                else
+                {
+                    result.Add(nums1[a]);
+                    a++;
+                    b++;
+                }
+            }
+            return result.ToArray();
+        }
+        #endregion
+        #region 有效的完全平方数
+        public bool IsPerfectSquare(int num)
+        {
+            #region 牛顿迭代法
+            if (num<2)
+            {
+                return true;
+                long x = num / 2;
+                while (x*x>num)
+                {
+                    x = (x + num / x) / 2;
+                }
+                
+            }
+            return (x * x == num);
+            #endregion
 
         }
         #endregion
