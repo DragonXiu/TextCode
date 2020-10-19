@@ -402,6 +402,7 @@ namespace TextCode
             //Console.WriteLine(RepeatedSubstringPattern(s));            
             #endregion
             WordPattern("abba", "dog cat cat dog");
+            BackspaceCompare("aaa###a", "aaaa###a");
             Console.ReadLine();
         }
         #region 算法       
@@ -4177,6 +4178,97 @@ namespace TextCode
                 }
             }
             return result.ToString();
+        }
+        #endregion
+        #region 比较含退格的字符串
+        public static bool BackspaceCompare(string S, string T)
+        {
+            /*输入：S = "ab#c", T = "ad#c "
+             * 输出：true
+             * 解释：S 和 T 都会变成 “ac”。*/
+            int a =0;
+            StringBuilder temp = new StringBuilder();
+            for (int i = S.Length - 1; i >=0; i--)
+            {
+                if (S[i] == '#')
+                {
+                    a++;
+                }
+                else if (S[i] != '#'&&a > 0)
+                {
+                    a--;
+                }
+                else if (S[i] != '#' && a == 0)
+                {
+                    temp.Insert(0,S[i]);
+                }
+            }
+            a = 0;
+            for (int i = T.Length-1; i >= 0; i--)
+            {
+                if (T[i] == '#')
+                {
+                    a++;
+                }
+                else if (T[i] != '#' && a > 0)
+                {
+                    a--;
+                }
+                else if (T[i] != '#' && a == 0)
+                {
+                    if (temp.Length==0)
+                    {
+                        return false;
+                    }
+                    if (T[i]==temp[temp.Length-1])
+                    {
+                        temp.Remove(temp.Length - 1, 1);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        #endregion
+        #region 两个数组的交集
+        public int[] Intersection(int[] nums1, int[] nums2)
+        {
+            /*给定两个数组，编写一个函数来计算它们的交集*/
+            HashSet<int> temp = new HashSet<int>();
+            List<int> result = new List<int>();
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                if (temp.Contains(nums1[i]))
+                {
+                    continue;
+                }
+                else
+                {
+                    temp.Add(nums1[i]);
+                }
+            }
+            for (int i = 0; i < nums2.Length; i++)
+            {
+                if (temp.Contains(nums2[i]))
+                {
+                    if (result.Contains(nums2[i]))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        result.Add(nums2[i]);
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return result.ToArray();
         }
         #endregion
     }
