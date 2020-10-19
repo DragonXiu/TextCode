@@ -4271,6 +4271,12 @@ namespace TextCode
             return result.ToArray();
         }
         #endregion
+        #region  两个数组的交集 II
+        public int[] Intersection2(int[] nums1, int[] nums2)
+        {
+
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
