@@ -4321,6 +4321,114 @@ namespace TextCode
 
         }
         #endregion
+        #region 重排链表
+        public void ReorderList(ListNode head)
+        {
+            #region 线性表存储该链表
+            if (head==null)
+            {
+                return;
+            }
+            List<ListNode> list = new List<ListNode>();
+            ListNode node = head;
+            while (node!=null)
+            {
+                list.Add(node);
+                node = node.next;
+            }
+            int i = 0;
+            int j = list.Count() - 1;
+            while (i<j)
+            {
+                list[i].next = list[j];
+                i++;
+                if (i==j)
+                {
+                    break;
+                }
+                list[j].next = list[i];
+                j--;
+            }
+            list[i].next = null;
+            #endregion
+            #region MyRegion
+            /*先找处链表L的中间结点，为此设置两个指针p和q，指针p每次走一步，指针q每次走两步，当指针q到达链尾时，指针p正好在链表的中间结点；
+2、然后将L的后半段结点原地逆置；
+3、从单链表前后两段中 依次各取一个结点，按要求重排；
+*/
+            //void reorderList(ListNode* head)
+            //        {
+            //            ListNode* p = head,*q = head,*r,*s = head;
+            //            if (!head)            //head为空，则直接退出
+            //                return;
+            //            while (q->next)
+            //            {      //寻找中间结点
+            //                q = q->next;       //p走一步
+            //                p = p->next;
+            //                if (q->next)
+            //                    q = q->next;     //q走两步
+            //            }
+            //            q = p->next;           //p所指结点为中间结点，q为后半段链表的首结点
+            //            p->next = nullptr;
+            //            while (q)
+            //            {            //将链表后半段逆置
+            //                r = q->next;
+            //                q->next = p->next;
+            //                p->next = q;
+            //                q = r;
+            //            }
+            //            q = p->next;            //q指向后半段的第一个数据结点
+            //            p->next = nullptr;
+            //            while (q)
+            //            {             //将链表后半段的结点插入到指定位置
+            //                r = q->next;        //r指向后半段的下一个结点
+            //                q->next = s->next;  //将q所指结点插入到s所指结点（head结点）之后
+            //                s->next = q;
+            //                s = q->next;        //s指向前半段的下一个插入点
+            //                q = r;
+            //            }
+            //        }
+
+            #endregion
+        }
+        #endregion
+        #region 猜数字大小
+        //public int GuessNumber(int n)
+        //{
+        //int low = 1;
+        //int high = n;
+        //while (low<=high)
+        //{
+        //    int mid = low + (high - low) / 2;
+        //    int res = guess(mid);
+        //    if (res == 0)
+        //    {
+        //        return mid;
+        //    }
+        //    else if (res < 0)
+        //    {
+        //        high = mid - 1;
+        //    }
+        //    else low = mid + 1;
+        //}
+        //return -1;
+        //}
+        #endregion
+        #region 两整数之和
+        public int GetSum(int a, int b)
+        {
+            /*异或得到不进位加法的和，按位与并左移一位得到进位的和，两者相加即为两数之和。出口为进位为0。
+可用迭代或递归。*/
+            int aa = a, bb = b, c;
+            do
+            {
+                c = aa & bb;//进位
+                aa ^= bb;//低位
+                bb = c << 1;
+            } while (c!=0);
+            return aa;
+        }
+        #endregion
     }
     #region 最小栈
     public class MinStack
