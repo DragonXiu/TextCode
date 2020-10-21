@@ -403,6 +403,7 @@ namespace TextCode
             #endregion
             WordPattern("abba", "dog cat cat dog");
             BackspaceCompare("aaa###a", "aaaa###a");
+            IsLongPressedName("kikcxmvzi","kiikcxxmmvvzz");
             Console.ReadLine();
         }
         #region 算法       
@@ -4306,11 +4307,11 @@ namespace TextCode
         public bool IsPerfectSquare(int num)
         {
             #region 牛顿迭代法
+            long x = num / 2;
             if (num<2)
             {
-                return true;
-                long x = num / 2;
-                while (x*x>num)
+             
+                while (x * x > num)
                 {
                     x = (x + num / x) / 2;
                 }
@@ -4427,6 +4428,79 @@ namespace TextCode
                 bb = c << 1;
             } while (c!=0);
             return aa;
+        }
+        #endregion
+        #region 赎金信
+        public bool CanConstruct(string ransomNote, string magazine)
+        {
+            int n1 = ransomNote.Length;
+            List<char> temp = new List<char>();
+            temp=magazine.ToList();
+            int a=0;
+            while (a<n1)
+            {
+                bool flag = false;
+                for (int i = 0; i < temp.Count; i++)
+                {
+                    if (ransomNote[a]==temp[i])
+                    {
+                        flag = true;
+                        temp.RemoveAt(i);
+                        break;
+                    }
+                }
+                if (!flag)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        #endregion
+        #region 长按键入
+        public static  bool IsLongPressedName(string name, string typed)
+        {
+            int a = 0;
+            int b = 0;
+            char temp=' ';
+            while (b<typed.Length)
+            {
+                if (a<name.Length&&name[a]==typed[b])
+                {
+                    a++;
+                    b++;            
+                }
+                else if (b>0&&typed[b]== typed[b-1])
+                {
+                    b++;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+     
+            return a==name.Length;
+        }
+        #endregion
+        #region 字符串中的第一个唯一字符
+        public int FirstUniqChar(string s)
+        {
+            int resul=0;
+            int[] nums = new int[26];
+            for (int i = 0; i < s.Length; i++)
+            {
+                nums[s[i] - 'a']++;
+            }
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (nums[s[i] - 'a']==1)
+                {
+                    resul= s[i] - 'a';
+                    break;
+                }  
+            }
+            return resul;
         }
         #endregion
     }
