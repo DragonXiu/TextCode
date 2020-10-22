@@ -404,6 +404,7 @@ namespace TextCode
             WordPattern("abba", "dog cat cat dog");
             BackspaceCompare("aaa###a", "aaaa###a");
             IsLongPressedName("kikcxmvzi","kiikcxxmmvvzz");
+            FindTheDifference("abcd","abcde");
             Console.ReadLine();
         }
         #region 算法       
@@ -4502,6 +4503,127 @@ namespace TextCode
             }
             return resul;
         }
+        #endregion
+        #region    划分字母区间
+        public IList<int> PartitionLabels(string S)
+        {
+            int[] last = new int[26];
+            int length = S.Length;
+            for (int i = 0; i < length; i++)
+            {
+                last[S[i] - 'a'] = i;
+            }
+            List<int> partition = new List<int>();
+            int start =0,end = 0;
+            for (int i = 0; i < length; i++)
+            {
+                end = Math.Max(end, last[S[i] - 'a']);
+                if (i==end)
+                {
+                    partition.Add(end - start + 1) ;
+                    start = end + 1;
+                }
+            }
+            return partition;
+        }
+        #endregion
+        #region 找不同
+        public static char FindTheDifference(string s, string t)
+        {
+            int[] nums1 = new int[26];
+            char result = ' ';
+            for (int i = 0; i < s.Length; i++)
+            {
+                nums1[s[i] - 'a']++;
+            }
+            for (int i = 0; i < t.Length; i++)
+            {
+                --nums1[t[i] - 'a'];
+                if (nums1[i] == -1)
+                {
+                    result = (char)('a' + i);
+                    break;
+                }
+            }
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                if (nums1[i]==-1)
+                {
+                    result= (char)('a' + i);
+                    break;
+                }
+            }
+            return result;
+        }
+        #endregion
+        #region 二进制手表
+ 
+            public IList<string> ReadBinaryWatch(int num)
+            {
+                var dictA = new Dictionary<int, List<int>>();
+                var res = new List<string>();
+                for (var i = 0; i < 12; i++)
+                {
+                    var t = BitCount(i);
+                    if (dictA.ContainsKey(t))
+                    {
+                        dictA[t].Add(i);
+                    }
+                    else
+                    {
+                        dictA[t] = new List<int> { i };
+                    }
+                }
+
+                var dictB = new Dictionary<int, List<int>>();
+                for (var i = 0; i < 60; i++)
+                {
+                    var t = BitCount(i);
+                    if (dictB.ContainsKey(t))
+                    {
+                        dictB[t].Add(i);
+                    }
+                    else
+                    {
+                        dictB[t] = new List<int> { i };
+                    }
+                }
+                for (var i = 0; i <= 4 && dictA.ContainsKey(i); i++)
+                {
+                    var j = num - i;
+                    if (j >= 0 && dictB.ContainsKey(j))
+                    {
+                        foreach (var a in dictA[i])
+                        {
+                            foreach (var b in dictB[j])
+                            {
+                                if (b < 10)
+                                {
+                                    res.Add($"{a}:0{b}");
+                                }
+                                else
+                                {
+                                    res.Add($"{a}:{b}");
+                                }
+                            }
+                        }
+
+                    }
+                }
+                return res;
+            }
+
+            int BitCount(int n)
+            {
+                var count = 0;
+                while (n > 0)
+                {
+                    n &= (n - 1);
+                    count++;
+                }
+                return count;
+            }
+
         #endregion
     }
     #region 最小栈
