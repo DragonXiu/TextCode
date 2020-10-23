@@ -405,6 +405,8 @@ namespace TextCode
             BackspaceCompare("aaa###a", "aaaa###a");
             IsLongPressedName("kikcxmvzi","kiikcxxmmvvzz");
             FindTheDifference("abcd","abcde");
+            LongestPalindrome("civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth");
+            ToHex(1);
             Console.ReadLine();
         }
         #region 算法       
@@ -4624,6 +4626,129 @@ namespace TextCode
                 return count;
             }
 
+        #endregion
+        #region 数字转换十六进制
+        public static string ToHex(int num)
+        {
+            //正数取余，负数补码
+
+            //StringBuilder result = new StringBuilder();
+            //int n = 0;
+            //while (num>16)
+            //{
+            //    int remainder = num /16;
+            //    result.Append(remainder.ToString());
+            //    num = num%16;
+            //}
+            //   DisposeNum(num, result);
+            //return result.ToString();
+            if (num==0)
+            {
+                return "0";
+            }
+            string res = "";
+            uint num1=(uint)num;
+            int a = num & 15;
+            string[] hex = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+            while (num1!=0)
+            {
+                res = hex[num1 % 16] + res;
+                num1 /= 16;
+            }
+            return res;
+        }
+        private static void DisposeNum(int remainder, StringBuilder result)
+        {
+            string[] scale = new string[] { "a", "b", "c", "d", "e", "f" };
+            if (remainder >= 10)
+            {
+                result.Append(scale[remainder % 10]);
+            }
+            else
+            {
+                result.Append(remainder.ToString());
+            }
+        }
+        #endregion
+        #region Fizz Buzz
+        public IList<string> FizzBuzz(int n)
+        {
+            List<string> result = new List<string>();
+            for (int i = 0; i < n; i++)
+            {
+                if (i<3)
+                {
+                    result.Add(i.ToString());
+                }
+                else if (i % 3 == 0&& i % 5 == 0)
+                {
+                    result.Add("FizzBuzz");
+                }
+               else if (i%3==0)
+                {
+                    result.Add("Fizz");
+                }
+                else if (i % 5 == 0)
+                {
+                    result.Add("Buzz");
+                }
+                else
+                {
+                    result.Add(i.ToString());
+                }
+            }
+            return result;
+
+        }
+        #endregion
+        #region 最长回文串
+        public static int LongestPalindrome(string s)
+        {
+            //每个字母的个数要是双数
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            int num = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (dic.ContainsKey(s[i]))
+                {
+                    int value=0;
+                    dic.TryGetValue(s[i],out value);
+                    dic.Remove(s[i]);
+                    dic.Add(s[i], ++value);
+                }
+                else
+                {
+                    dic.Add(s[i], 1);
+                }
+            }
+            int j = 0;
+            int a = 0;
+            foreach (var item in dic.Values)
+            {
+
+                if (item%2==0)
+                {
+                    num += item;
+                }
+                else if (item > j)
+                {
+                    int temp = j;
+                    j = item;
+                    num += (temp / 2 * 2);
+                }
+                else num += (item / 2 * 2);
+                if (item==1)
+                {
+                    a = 1;
+                }
+            }
+            if (j > 1)
+            {
+                num += j;
+            }
+            else num += a;
+            return num;
+        }
         #endregion
     }
     #region 最小栈
