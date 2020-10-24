@@ -29,6 +29,9 @@ namespace TextCode
         static object syncObj = new object();
         static void Main(string[] args)
         {
+            int x1 = 91545588;
+            Console.WriteLine("{0} ->0x{1}",x1,x1.ToString("x2"));
+            Console.WriteLine($"{"p",-16}{0.1785f,-10:p}");//p%
             #region MyRegion
 
 
@@ -407,6 +410,8 @@ namespace TextCode
             FindTheDifference("abcd","abcde");
             LongestPalindrome("civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth");
             ToHex(1);
+            ThirdMax( new int[] { 3, 2, 1 });
+            AddStrings("0","0");
             Console.ReadLine();
         }
         #region 算法       
@@ -4748,6 +4753,105 @@ namespace TextCode
             }
             else num += a;
             return num;
+        }
+        #endregion
+        #region 第三大的数
+        public static int ThirdMax(int[] nums)
+        {
+            /*给定一个非空数组，返回此数组中第三大的数。
+             * 如果不存在，则返回数组中最大的数。要求算法时间复杂度必须是O(n)。*/
+            Array.Sort(nums);
+            int length = nums.Length;           
+            if (length<3)
+            {
+                return nums[length - 1];
+            }
+            int n = 1;
+            int temp = nums[length-1];
+            for (int i = length-2; i >=0; i--)
+            {
+                if (temp >nums[i])
+                {
+                    n++;
+                    temp = nums[i];
+                }
+                if (n==3)
+                {
+                    return nums[i];
+                }
+            }
+            return nums[length - 1];
+        }
+        #endregion
+        #region 字符串相加
+        public static string AddStrings(string num1, string num2)
+        {
+            /*给定两个字符串形式的非负整数 num1 和num2 ，计算它们的和。
+             * num1 和num2 的长度都小于 5100
+             * num1 和num2 都只包含数字 0-9
+             * num1 和num2 都不包含任何前导零
+             * 你不能使用任何內建 BigInteger 库， 也不能直接将输入的字符串转换为整数形式*/
+            int scale = 0;
+            int n1 = num1.Length-1, n2 = num2.Length-1;
+            StringBuilder result = new StringBuilder();
+            while ( n1 >= 0|| n2 >= 0)
+            {
+                if (n1 >= 0 && n2 >= 0)
+                {
+                    int a = (int)num1[n1] + (int)num2[n2] + scale;
+                    scale = 0;
+                    result.Insert(0, a % 10);
+                    if (a / 10>0)
+                    {
+                        scale = 1;
+                    }
+                    n1--;
+                    n2--;
+                }
+                else if (n1 >= 0 )
+                {
+                    int a = (int)num1[n1] + scale;
+                    scale = 0;
+                    result.Insert(0, a % 10);
+                    if (a / 10 > 0)
+                    {
+                        scale = 1;
+                    }
+                    n1--;
+                }
+                else if (n2 >= 0)
+                {
+                    int a = (int)num2[n2] + scale;
+                    scale = 0;
+                    result.Insert(0, a % 10);
+                    if (a / 10 > 0)
+                    {
+                        scale = 1;
+                    }
+                    n2--;
+                }
+
+            }
+            return result.ToString();
+        }
+        #endregion
+        #region 视频拼接
+        public int VideoStitching(int[][] clips, int T)
+        {
+            int[] dp = new int[T+1];
+            Array.Fill(dp,int.MaxValue-1);
+            dp[0] = 0;
+            for (int i = 1; i <=T; i++)
+            {
+                foreach (int[] item in clips)
+                {
+                    if (item[0]<i&&i<=item[1])
+                    {
+                        dp[i] = Math.Min(dp[i],dp[item[0]]+1);
+                    }
+                }
+            }
+            return dp[T] == int.MaxValue - 1 ? -1 : dp[T];
         }
         #endregion
     }
