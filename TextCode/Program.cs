@@ -412,6 +412,7 @@ namespace TextCode
             ToHex(1);
             ThirdMax( new int[] { 3, 2, 1 });
             AddStrings("0","0");
+            CountSegments("Hello, my name is   John ");
             Console.ReadLine();
         }
         #region 算法       
@@ -4852,6 +4853,65 @@ namespace TextCode
                 }
             }
             return dp[T] == int.MaxValue - 1 ? -1 : dp[T];
+        }
+        #endregion
+        #region 有多少小于当前数字的数字
+        public int[] SmallerNumbersThanCurrent(int[] nums)
+        {
+            int[] result = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int n = 0;
+                for (int j =0; j < nums.Length; j++)
+                {
+                    if (nums[j]<nums[i])
+                    {
+                        n++;
+                    }
+                }
+                result[i] = n;
+            }
+            return result;
+        }
+        #endregion
+        #region 字符串中的单词数
+        /*统计字符串中的单词个数，这里的单词指的是连续的不是空格的字符。
+         * 请注意，你可以假定字符串里不包括任何不可打印的字符。*/
+        public static int CountSegments(string s)
+        {
+            string[] result = s.Split(" ");
+           // string[] result = Regex.Split(s, "\\s+", RegexOptions.IgnoreCase);
+            int n = 0;
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (result[i]!="")
+                {
+                    n++;
+                }
+            }
+            return n;
+        }
+        #endregion
+        #region 排列硬币
+        public int ArrangeCoins(int n)
+        {
+            /*你总共有 n 枚硬币，你需要将它们摆成一个阶梯形状，第 k 行就必须正好有 k 枚硬币。
+             * 给定一个数字 n，找出可形成完整阶梯行的总行数。*/
+            int num = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                if (n-i>=0)
+                {
+                    num++;
+                    n -= i;
+                }
+                else
+                {
+                    break;
+                }
+
+            }
+            return num;
         }
         #endregion
     }
