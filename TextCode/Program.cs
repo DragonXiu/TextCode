@@ -30,7 +30,7 @@ namespace TextCode
         static void Main(string[] args)
         {
             int x1 = 91545588;
-            Console.WriteLine("{0} ->0x{1}",x1,x1.ToString("x2"));
+            Console.WriteLine("{0} ->0x{1}", x1, x1.ToString("x2"));
             Console.WriteLine($"{"p",-16}{0.1785f,-10:p}");//p%
             #region MyRegion
 
@@ -406,13 +406,16 @@ namespace TextCode
             #endregion
             WordPattern("abba", "dog cat cat dog");
             BackspaceCompare("aaa###a", "aaaa###a");
-            IsLongPressedName("kikcxmvzi","kiikcxxmmvvzz");
-            FindTheDifference("abcd","abcde");
+            IsLongPressedName("kikcxmvzi", "kiikcxxmmvvzz");
+            FindTheDifference("abcd", "abcde");
             LongestPalindrome("civilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth");
             ToHex(1);
-            ThirdMax( new int[] { 3, 2, 1 });
-            AddStrings("0","0");
+            ThirdMax(new int[] { 3, 2, 1 });
+            AddStrings("0", "0");
             CountSegments("Hello, my name is   John ");
+            DataInit();
+            int[] aa = { 4, 3, 2, 7, 8, 2, 3, 1 };
+            FindDisappearedNumbers(aa);
             Console.ReadLine();
         }
         #region 算法       
@@ -4094,7 +4097,7 @@ namespace TextCode
         }
         private void check(int k)
         {
-            if (k==n2)
+            if (k == n2)
             {
                 count2++;
                 return;
@@ -4105,7 +4108,7 @@ namespace TextCode
                 res2[k] = i;
                 if (!Judge(k))
                 {
-                    check(k+1);//不冲突的话，回溯放置下一行
+                    check(k + 1);//不冲突的话，回溯放置下一行
                 }
                 //冲突的话试下一个位置
             }
@@ -4115,7 +4118,7 @@ namespace TextCode
         {
             for (int i = 0; i < k; i++)
             {
-                if (res2[k]==res2[i]||Math.Abs(k-i)==Math.Abs(res2[k]-res2[i]))
+                if (res2[k] == res2[i] || Math.Abs(k - i) == Math.Abs(res2[k] - res2[i]))
                 {
                     return true;
                 }
@@ -4164,11 +4167,11 @@ namespace TextCode
         public string ReverseVowels(string s)
         {
             List<char> yuan = new List<char>() { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
-            StringBuilder result =new StringBuilder();
+            StringBuilder result = new StringBuilder();
             result.Append(s);
             int a = 0;
             int b = s.Length - 1;
-            while (a<b)
+            while (a < b)
             {
                 if (!yuan.Contains(result[a]))
                 {
@@ -4178,7 +4181,7 @@ namespace TextCode
                 {
                     b--;
                 }
-                if (yuan.Contains(result[a])&& yuan.Contains(result[b]))
+                if (yuan.Contains(result[a]) && yuan.Contains(result[b]))
                 {
                     char temp = result[a];
                     result[a] = result[b];
@@ -4196,25 +4199,25 @@ namespace TextCode
             /*输入：S = "ab#c", T = "ad#c "
              * 输出：true
              * 解释：S 和 T 都会变成 “ac”。*/
-            int a =0;
+            int a = 0;
             StringBuilder temp = new StringBuilder();
-            for (int i = S.Length - 1; i >=0; i--)
+            for (int i = S.Length - 1; i >= 0; i--)
             {
                 if (S[i] == '#')
                 {
                     a++;
                 }
-                else if (S[i] != '#'&&a > 0)
+                else if (S[i] != '#' && a > 0)
                 {
                     a--;
                 }
                 else if (S[i] != '#' && a == 0)
                 {
-                    temp.Insert(0,S[i]);
+                    temp.Insert(0, S[i]);
                 }
             }
             a = 0;
-            for (int i = T.Length-1; i >= 0; i--)
+            for (int i = T.Length - 1; i >= 0; i--)
             {
                 if (T[i] == '#')
                 {
@@ -4226,11 +4229,11 @@ namespace TextCode
                 }
                 else if (T[i] != '#' && a == 0)
                 {
-                    if (temp.Length==0)
+                    if (temp.Length == 0)
                     {
                         return false;
                     }
-                    if (T[i]==temp[temp.Length-1])
+                    if (T[i] == temp[temp.Length - 1])
                     {
                         temp.Remove(temp.Length - 1, 1);
                     }
@@ -4289,9 +4292,9 @@ namespace TextCode
             List<int> result = new List<int>();
             int a = 0;
             int b = 0;
-            while (a<nums1.Length&&b<nums2.Length)
+            while (a < nums1.Length && b < nums2.Length)
             {
-                if (nums1[a]!=nums2[b])
+                if (nums1[a] != nums2[b])
                 {
                     if (nums1[a] > nums2[b])
                     {
@@ -4317,14 +4320,14 @@ namespace TextCode
         {
             #region 牛顿迭代法
             long x = num / 2;
-            if (num<2)
+            if (num < 2)
             {
-             
+
                 while (x * x > num)
                 {
                     x = (x + num / x) / 2;
                 }
-                
+
             }
             return (x * x == num);
             #endregion
@@ -4335,24 +4338,24 @@ namespace TextCode
         public void ReorderList(ListNode head)
         {
             #region 线性表存储该链表
-            if (head==null)
+            if (head == null)
             {
                 return;
             }
             List<ListNode> list = new List<ListNode>();
             ListNode node = head;
-            while (node!=null)
+            while (node != null)
             {
                 list.Add(node);
                 node = node.next;
             }
             int i = 0;
             int j = list.Count() - 1;
-            while (i<j)
+            while (i < j)
             {
                 list[i].next = list[j];
                 i++;
-                if (i==j)
+                if (i == j)
                 {
                     break;
                 }
@@ -4435,7 +4438,7 @@ namespace TextCode
                 c = aa & bb;//进位
                 aa ^= bb;//低位
                 bb = c << 1;
-            } while (c!=0);
+            } while (c != 0);
             return aa;
         }
         #endregion
@@ -4444,14 +4447,14 @@ namespace TextCode
         {
             int n1 = ransomNote.Length;
             List<char> temp = new List<char>();
-            temp=magazine.ToList();
-            int a=0;
-            while (a<n1)
+            temp = magazine.ToList();
+            int a = 0;
+            while (a < n1)
             {
                 bool flag = false;
                 for (int i = 0; i < temp.Count; i++)
                 {
-                    if (ransomNote[a]==temp[i])
+                    if (ransomNote[a] == temp[i])
                     {
                         flag = true;
                         temp.RemoveAt(i);
@@ -4467,19 +4470,19 @@ namespace TextCode
         }
         #endregion
         #region 长按键入
-        public static  bool IsLongPressedName(string name, string typed)
+        public static bool IsLongPressedName(string name, string typed)
         {
             int a = 0;
             int b = 0;
-            char temp=' ';
-            while (b<typed.Length)
+            char temp = ' ';
+            while (b < typed.Length)
             {
-                if (a<name.Length&&name[a]==typed[b])
+                if (a < name.Length && name[a] == typed[b])
                 {
                     a++;
-                    b++;            
+                    b++;
                 }
-                else if (b>0&&typed[b]== typed[b-1])
+                else if (b > 0 && typed[b] == typed[b - 1])
                 {
                     b++;
                 }
@@ -4488,14 +4491,14 @@ namespace TextCode
                     return false;
                 }
             }
-     
-            return a==name.Length;
+
+            return a == name.Length;
         }
         #endregion
         #region 字符串中的第一个唯一字符
         public int FirstUniqChar(string s)
         {
-            int resul=0;
+            int resul = 0;
             int[] nums = new int[26];
             for (int i = 0; i < s.Length; i++)
             {
@@ -4503,11 +4506,11 @@ namespace TextCode
             }
             for (int i = 0; i < s.Length; i++)
             {
-                if (nums[s[i] - 'a']==1)
+                if (nums[s[i] - 'a'] == 1)
                 {
-                    resul= s[i] - 'a';
+                    resul = s[i] - 'a';
                     break;
-                }  
+                }
             }
             return resul;
         }
@@ -4522,13 +4525,13 @@ namespace TextCode
                 last[S[i] - 'a'] = i;
             }
             List<int> partition = new List<int>();
-            int start =0,end = 0;
+            int start = 0, end = 0;
             for (int i = 0; i < length; i++)
             {
                 end = Math.Max(end, last[S[i] - 'a']);
-                if (i==end)
+                if (i == end)
                 {
-                    partition.Add(end - start + 1) ;
+                    partition.Add(end - start + 1);
                     start = end + 1;
                 }
             }
@@ -4555,9 +4558,9 @@ namespace TextCode
             }
             for (int i = 0; i < nums1.Length; i++)
             {
-                if (nums1[i]==-1)
+                if (nums1[i] == -1)
                 {
-                    result= (char)('a' + i);
+                    result = (char)('a' + i);
                     break;
                 }
             }
@@ -4565,72 +4568,72 @@ namespace TextCode
         }
         #endregion
         #region 二进制手表
- 
-            public IList<string> ReadBinaryWatch(int num)
-            {
-                var dictA = new Dictionary<int, List<int>>();
-                var res = new List<string>();
-                for (var i = 0; i < 12; i++)
-                {
-                    var t = BitCount(i);
-                    if (dictA.ContainsKey(t))
-                    {
-                        dictA[t].Add(i);
-                    }
-                    else
-                    {
-                        dictA[t] = new List<int> { i };
-                    }
-                }
 
-                var dictB = new Dictionary<int, List<int>>();
-                for (var i = 0; i < 60; i++)
+        public IList<string> ReadBinaryWatch(int num)
+        {
+            var dictA = new Dictionary<int, List<int>>();
+            var res = new List<string>();
+            for (var i = 0; i < 12; i++)
+            {
+                var t = BitCount(i);
+                if (dictA.ContainsKey(t))
                 {
-                    var t = BitCount(i);
-                    if (dictB.ContainsKey(t))
-                    {
-                        dictB[t].Add(i);
-                    }
-                    else
-                    {
-                        dictB[t] = new List<int> { i };
-                    }
+                    dictA[t].Add(i);
                 }
-                for (var i = 0; i <= 4 && dictA.ContainsKey(i); i++)
+                else
                 {
-                    var j = num - i;
-                    if (j >= 0 && dictB.ContainsKey(j))
+                    dictA[t] = new List<int> { i };
+                }
+            }
+
+            var dictB = new Dictionary<int, List<int>>();
+            for (var i = 0; i < 60; i++)
+            {
+                var t = BitCount(i);
+                if (dictB.ContainsKey(t))
+                {
+                    dictB[t].Add(i);
+                }
+                else
+                {
+                    dictB[t] = new List<int> { i };
+                }
+            }
+            for (var i = 0; i <= 4 && dictA.ContainsKey(i); i++)
+            {
+                var j = num - i;
+                if (j >= 0 && dictB.ContainsKey(j))
+                {
+                    foreach (var a in dictA[i])
                     {
-                        foreach (var a in dictA[i])
+                        foreach (var b in dictB[j])
                         {
-                            foreach (var b in dictB[j])
+                            if (b < 10)
                             {
-                                if (b < 10)
-                                {
-                                    res.Add($"{a}:0{b}");
-                                }
-                                else
-                                {
-                                    res.Add($"{a}:{b}");
-                                }
+                                res.Add($"{a}:0{b}");
+                            }
+                            else
+                            {
+                                res.Add($"{a}:{b}");
                             }
                         }
-
                     }
-                }
-                return res;
-            }
 
-            int BitCount(int n)
-            {
-                var count = 0;
-                while (n > 0)
-                {
-                    n &= (n - 1);
-                    count++;
                 }
-                return count;
             }
+            return res;
+        }
+
+        int BitCount(int n)
+        {
+            var count = 0;
+            while (n > 0)
+            {
+                n &= (n - 1);
+                count++;
+            }
+            return count;
+        }
 
         #endregion
         #region 数字转换十六进制
@@ -4648,15 +4651,15 @@ namespace TextCode
             //}
             //   DisposeNum(num, result);
             //return result.ToString();
-            if (num==0)
+            if (num == 0)
             {
                 return "0";
             }
             string res = "";
-            uint num1=(uint)num;
+            uint num1 = (uint)num;
             int a = num & 15;
             string[] hex = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
-            while (num1!=0)
+            while (num1 != 0)
             {
                 res = hex[num1 % 16] + res;
                 num1 /= 16;
@@ -4682,15 +4685,15 @@ namespace TextCode
             List<string> result = new List<string>();
             for (int i = 0; i < n; i++)
             {
-                if (i<3)
+                if (i < 3)
                 {
                     result.Add(i.ToString());
                 }
-                else if (i % 3 == 0&& i % 5 == 0)
+                else if (i % 3 == 0 && i % 5 == 0)
                 {
                     result.Add("FizzBuzz");
                 }
-               else if (i%3==0)
+                else if (i % 3 == 0)
                 {
                     result.Add("Fizz");
                 }
@@ -4717,8 +4720,8 @@ namespace TextCode
             {
                 if (dic.ContainsKey(s[i]))
                 {
-                    int value=0;
-                    dic.TryGetValue(s[i],out value);
+                    int value = 0;
+                    dic.TryGetValue(s[i], out value);
                     dic.Remove(s[i]);
                     dic.Add(s[i], ++value);
                 }
@@ -4732,7 +4735,7 @@ namespace TextCode
             foreach (var item in dic.Values)
             {
 
-                if (item%2==0)
+                if (item % 2 == 0)
                 {
                     num += item;
                 }
@@ -4743,7 +4746,7 @@ namespace TextCode
                     num += (temp / 2 * 2);
                 }
                 else num += (item / 2 * 2);
-                if (item==1)
+                if (item == 1)
                 {
                     a = 1;
                 }
@@ -4762,21 +4765,21 @@ namespace TextCode
             /*给定一个非空数组，返回此数组中第三大的数。
              * 如果不存在，则返回数组中最大的数。要求算法时间复杂度必须是O(n)。*/
             Array.Sort(nums);
-            int length = nums.Length;           
-            if (length<3)
+            int length = nums.Length;
+            if (length < 3)
             {
                 return nums[length - 1];
             }
             int n = 1;
-            int temp = nums[length-1];
-            for (int i = length-2; i >=0; i--)
+            int temp = nums[length - 1];
+            for (int i = length - 2; i >= 0; i--)
             {
-                if (temp >nums[i])
+                if (temp > nums[i])
                 {
                     n++;
                     temp = nums[i];
                 }
-                if (n==3)
+                if (n == 3)
                 {
                     return nums[i];
                 }
@@ -4793,23 +4796,23 @@ namespace TextCode
              * num1 和num2 都不包含任何前导零
              * 你不能使用任何內建 BigInteger 库， 也不能直接将输入的字符串转换为整数形式*/
             int scale = 0;
-            int n1 = num1.Length-1, n2 = num2.Length-1;
+            int n1 = num1.Length - 1, n2 = num2.Length - 1;
             StringBuilder result = new StringBuilder();
-            while ( n1 >= 0|| n2 >= 0)
+            while (n1 >= 0 || n2 >= 0)
             {
                 if (n1 >= 0 && n2 >= 0)
                 {
                     int a = (int)num1[n1] + (int)num2[n2] + scale;
                     scale = 0;
                     result.Insert(0, a % 10);
-                    if (a / 10>0)
+                    if (a / 10 > 0)
                     {
                         scale = 1;
                     }
                     n1--;
                     n2--;
                 }
-                else if (n1 >= 0 )
+                else if (n1 >= 0)
                 {
                     int a = (int)num1[n1] + scale;
                     scale = 0;
@@ -4839,16 +4842,16 @@ namespace TextCode
         #region 视频拼接
         public int VideoStitching(int[][] clips, int T)
         {
-            int[] dp = new int[T+1];
-            Array.Fill(dp,int.MaxValue-1);
+            int[] dp = new int[T + 1];
+            Array.Fill(dp, int.MaxValue - 1);
             dp[0] = 0;
-            for (int i = 1; i <=T; i++)
+            for (int i = 1; i <= T; i++)
             {
                 foreach (int[] item in clips)
                 {
-                    if (item[0]<i&&i<=item[1])
+                    if (item[0] < i && i <= item[1])
                     {
-                        dp[i] = Math.Min(dp[i],dp[item[0]]+1);
+                        dp[i] = Math.Min(dp[i], dp[item[0]] + 1);
                     }
                 }
             }
@@ -4862,9 +4865,9 @@ namespace TextCode
             for (int i = 0; i < nums.Length; i++)
             {
                 int n = 0;
-                for (int j =0; j < nums.Length; j++)
+                for (int j = 0; j < nums.Length; j++)
                 {
-                    if (nums[j]<nums[i])
+                    if (nums[j] < nums[i])
                     {
                         n++;
                     }
@@ -4880,11 +4883,11 @@ namespace TextCode
         public static int CountSegments(string s)
         {
             string[] result = s.Split(" ");
-           // string[] result = Regex.Split(s, "\\s+", RegexOptions.IgnoreCase);
+            // string[] result = Regex.Split(s, "\\s+", RegexOptions.IgnoreCase);
             int n = 0;
             for (int i = 0; i < result.Length; i++)
             {
-                if (result[i]!="")
+                if (result[i] != "")
                 {
                     n++;
                 }
@@ -4900,7 +4903,7 @@ namespace TextCode
             int num = 0;
             for (int i = 1; i <= n; i++)
             {
-                if (n-i>=0)
+                if (n - i >= 0)
                 {
                     num++;
                     n -= i;
@@ -4913,6 +4916,199 @@ namespace TextCode
             }
             return num;
         }
+        #endregion
+        #region 二叉树的前序遍历
+        public IList<int> PreorderTraversal(TreeNode root)
+        {
+            /*给定一个二叉树，返回它的 前序 遍历*/
+            List<int> result = new List<int>();
+            
+            
+            return result;
+        }
+        private void Def(List<int> result, TreeNode root)
+        {
+            result.Add(root.val);
+            if (root.left != null)
+            {
+                PreorderTraversal(root.left);
+            }
+            if (root.right != null)
+            {
+                PreorderTraversal(root.right);
+            }
+
+        }
+        #endregion
+        #region  找到所有数组中消失的数字
+        public static IList<int> FindDisappearedNumbers(int[] nums)
+        {
+            Array.Sort(nums);
+            List<int> result = new List<int>();
+            int n = nums.Length;
+            for (int i = n-1; i >=0; i--)
+            {
+                
+                    if (nums[i] > n)
+                    {
+                        for (int j = n; j < nums[i]; j++)
+                        {
+                            result.Add(n);
+                        }
+                        n = nums[i] + 1;
+                    }
+                    else if (nums[i] == n)
+                    {
+                        n++;
+                    }
+             }
+            for (int i = n; i <= nums.Length; i++)
+            {
+                result.Add(i);
+            }
+            //List<int> result = new List<int>();
+            //int n = 1;
+            //for (int i = 0; i < nums.Length; i++)
+            //{
+            //    if (nums[i]>n)
+            //    {                    
+            //        for (int j = n; j  < nums[i]; j ++)
+            //        {
+            //            result.Add(n);
+            //        }
+            //        n = nums[i ] + 1;
+            //    }
+            //    else if (nums[i]==n)
+            //    {
+            //        n++;
+            //    }
+
+            //}
+          return result;
+        }
+        #endregion
+        #region 哈希数组统计相同距离点数
+        public int NumberOfBoomerangs(int[][] points)
+        {
+            var ans = 0;
+            foreach (var p1 in points)
+            {
+                //p1距离为distanceMap的点个数
+                var distanceMap = new Dictionary<int, int>();
+                foreach (var p2 in points)
+                {
+                    var dx = p1[0] - p2[0];
+                    var dy = p1[1] - p2[1];
+                    if (distanceMap.ContainsKey(dx*dx+dy*dy))
+                    {
+                        distanceMap[dx * dx + dy * dy]++;
+                    }
+                    else
+                    {
+                        distanceMap.Add(dx*dx+dy*dy,1);
+                    }
+                }
+                foreach (var x in distanceMap)
+                {
+                    ans += x.Value * (x.Value - 1);
+                }
+            }
+            return ans;
+        }
+            #endregion
+            #endregion
+            #region LinQ
+            private static void DataInit()
+        {
+            IList<UserInfo> userlist = new List<UserInfo>() {
+        new UserInfo(){UId=1,UserName="zs",Age=23,RoleId=1},
+        new UserInfo(){UId=2,UserName="ls",Age=20,RoleId=2},
+        new UserInfo(){UId=3,UserName="ww",Age=26,RoleId=1},
+        new UserInfo(){UId=4,UserName="zl",Age=26,RoleId=2},
+        new UserInfo(){UId=5,UserName="tq",Age=42,RoleId=2}
+        };
+            IList<RoleInfo> roleList = new List<RoleInfo> {
+            new RoleInfo(){Rid=1,RoleName="管理员"},
+            new RoleInfo(){Rid=2,RoleName="普通用户"}
+            };
+            //query语法
+            var result = from u in userlist
+                         where u.Age > 20
+                         select new { u.UId, u.UserName, u.Age };
+            //lambda
+            var result2 = userlist.Where<UserInfo>(u => u.Age > 20).Select(u => new { u.UId, u.UserName, u.Age });
+            //按id排序，age
+            var result3 = from u in userlist
+                          orderby u.UId, u.Age descending
+                          select u;
+            var result31 = userlist.OrderByDescending(u => u.UId).ThenBy(u => u.Age);
+            //分组
+            var resGroups = from u in userlist
+                            group u by u.RoleId;
+            //lambda方式，GroupBy延迟执行，ToLookup是立即执行，使用方法和GroupBy一样
+            var resGroups1 = userlist.GroupBy(u => u.RoleId);
+            //遍历分组
+            foreach (var group in resGroups)
+            {
+                Console.WriteLine("roleId:{0}", group.Key);
+                foreach (UserInfo user in group)
+                {
+                    Console.WriteLine("userName:{0}", user.UserName);
+                }
+            }
+            //连接查询join
+            var resJoin = from user in userlist
+                          join role in roleList
+                          on user.RoleId equals role.Rid
+                          select new
+                          {
+                              uname = user.UserName,
+                              rname = role.RoleName
+                          };
+            foreach (var item in resJoin)
+            {
+                Console.WriteLine("uname:{0}+rname:{1}", item.uname, item.rname);
+            }
+            //left join,right join调整顺序即可
+            //var resJoin1 = from user in userlist
+            //               join role in roleList
+            //               on user.RoleId equals role.Rid into temp
+            //               from tt in temp.DefaultIfEmpty
+            //               select new
+            //               {
+            //                   uname = user.UserName,
+            //                   rname = role?.RoleName
+            //               };
+
+            //cross in
+            var resJoin2 = from user in userlist
+                           from role in roleList
+                           select new
+                           {
+                               uname = user?.UserName,
+                               rname = role?.RoleName
+                           };
+            //lambda方式
+            var resJoin3 = userlist.Join(roleList,
+                user => user.RoleId,
+                role => role.Rid,
+                (user, role) => new
+                {
+                    uname = user.UserName,
+                    rname = role.Rid
+                });
+            //遍历
+            foreach (var item in resJoin3)
+            {
+                Console.WriteLine("用户:{0}---角色:{1}",item.uname,item.rname);
+            }
+            //量词
+            //ALL 所有元素都符合的条件返回true
+            bool areAllAdmin = userlist.All(u=>u.RoleId==1);
+            //Any 有一个符合条件的返回true
+
+        }
+
         #endregion
     }
     #region 最小栈
@@ -4963,7 +5159,8 @@ namespace TextCode
         }
     }
     #endregion
-    #endregion
+
+
 
     #region 编写质量
     #region 正确实现浅拷贝和深拷贝
@@ -5214,6 +5411,19 @@ namespace TextCode
     }
     #endregion
     #endregion
+    public class UserInfo
+    {
+        public int UId { get; set; }
+        public string UserName { get; set; }
+        public int Age { get; set; }
+        public int RoleId { get; set; }
+    }
+    class RoleInfo
+    {
+        public int Rid { get; set; }
+        public string RoleName { get; set; }
+    }
+
     public class Node
     {
         public int val;
