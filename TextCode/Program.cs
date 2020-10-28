@@ -416,6 +416,11 @@ namespace TextCode
             DataInit();
             int[] aa = { 4, 3, 2, 7, 8, 2, 3, 1 };
             FindDisappearedNumbers(aa);
+            int[] aaa = { 1, 2, 2, 1, 1, 3 };
+            string[] words = { "caaat", "bt", "hat", "tree", "atach" };
+
+            CountCharacters(words,"atach");
+            UniqueOccurrences(aaa);
             Console.ReadLine();
         }
         #region 算法       
@@ -5015,10 +5020,129 @@ namespace TextCode
             }
             return ans;
         }
-            #endregion
-            #endregion
-            #region LinQ
-            private static void DataInit()
+        #endregion
+        #region 独一无二的出现次数
+        public static bool UniqueOccurrences(int[] arr)
+        {
+            /*给你一个整数数组 arr，请你帮忙统计数组中每个数的出现次数。
+             * 如果每个数的出现次数都是独一无二的，就返回 true；否则返回 false*/
+            Array.Sort(arr);
+            int[] nums = new int[arr.Length];
+            int n = 1;
+            int a = 0;
+            for (int i = 0; i < arr.Length-1; i++)
+            {
+                if (arr[i]!=arr[i+1])
+                {
+                    if (nums.Contains(n))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        nums[a] = n;
+                        a++;
+                        n = 1;
+                    }
+                }
+                else
+                {
+                    n++;
+                }       
+            }
+            if (nums.Contains(n))
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
+        #region 拼写单词
+        public static int CountCharacters(string[] words, string chars)
+        {
+            /*给你一份『词汇表』（字符串数组） words 和一张『字母表』（字符串） chars。
+             * 假如你可以用 chars 中的『字母』（字符）拼写出 words 中的某个『单词』（字符串），那么我们就认为你掌握了这个单词。
+             * 注意：每次拼写（指拼写词汇表中的一个单词）时，chars 中的每个字母都只能用一次。
+             * 返回词汇表 words 中你掌握的所有单词的 长度之和。
+             * 输入：words = ["cat", "bt", "hat", "tree"], chars = "atach"
+             * * 输出：6
+             * 解释： 
+             * 可以形成字符串 "cat" 和 "hat"，所以答案是 3 + 3 = 6。
+             * 示例 2：
+             * 输入：words = ["hello", "world", "leetcode"], chars = "welldonehoneyr"
+             * 输出：10
+             * 解释：
+             * 可以形成字符串 "hello" 和 "world"，所以答案是 5 + 5 = 10。
+            */
+            int n = 0;
+            int[] nums = new int[26];
+            for (int i = 0; i < chars.Length; i++)
+            {
+                nums[chars[i] - 'a']++;
+            }
+            int[] temp = new int[nums.Length];
+            for (int i = 0; i < words.Length; i++)
+            {
+                bool flag = false;               
+                nums.CopyTo( temp,0);
+                for (int j = 0; j < words[i].Length; j++)
+                {
+                    if (!chars.Contains(words[i][j]))
+                    {
+                        flag = true;
+                        break;
+                    }
+                    else
+                    {
+                        if (temp[words[i][j]-'a']<=0)
+                        {
+                            flag = true;
+                            break;
+                        }
+                        else
+                        {
+                            temp[words[i][j] - 'a']--;
+                        }
+                    }
+                }
+                if (!flag)
+                {
+                    n += words[i].Length;
+                }
+            }
+            return n;
+        }
+        #endregion
+        #region 最小移动次数使数组元素相等
+        public int MinMoves(int[] nums)
+        {
+            /*给定一个长度为 n 的非空整数数组，找到让数组所有元素相等的最小移动次数。每次移动将会使 n - 1 个元素增加 1。*/
+            /*假设目前数组总和为sum，我们需要移动次数为m，那么整体数组总和将会增加m * (n - 1)，这里的n为数组长度，
+             * 最后数组所有元素都相等为x，于是有：
+             * sum + m * (n - 1) = x * n (1)
+             * 我们再设数组最小的元素为min_val，m = x - min_val​，即 ​x = m + min_val​带入(1)得：
+             * m = sum - min_val * n​
+             */
+            int sum = 0;
+            int min = int.MaxValue;
+            int len = nums.Length;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                sum += nums[i];
+                if (nums[i]<min)
+                {
+                    min = nums[i];
+                }
+            }
+            return sum - min * len;
+        }
+        #endregion
+
+
+
+        #endregion
+        #region LinQ
+        private static void DataInit()
         {
             IList<UserInfo> userlist = new List<UserInfo>() {
         new UserInfo(){UId=1,UserName="zs",Age=23,RoleId=1},
