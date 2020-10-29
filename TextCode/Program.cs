@@ -5238,7 +5238,7 @@ namespace TextCode
             while (xor1!=0)
             {
                 distance1 += 1;
-                xor1 = xor1 & xor1(xor1 - 1);
+                xor1 = xor1 & (xor1 - 1);
             }
             return distance1;
             #endregion
