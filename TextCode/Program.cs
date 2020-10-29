@@ -421,6 +421,7 @@ namespace TextCode
 
             CountCharacters(words,"atach");
             UniqueOccurrences(aaa);
+            HammingDistance(1,2);
             Console.ReadLine();
         }
         #region 算法       
@@ -5135,6 +5136,112 @@ namespace TextCode
                 }
             }
             return sum - min * len;
+        }
+        #endregion
+        #region 求根到叶子节点数字之和
+        public int SumNumbers(TreeNode root)
+        {
+            /*给定一个二叉树，它的每个结点都存放一个 0 - 9 的数字，每条从根到叶子节点的路径都代表一个数字。
+             * 例如，从根到叶子节点路径 1->2->3 代表数字 123。
+             * 计算从根到叶子节点生成的所有数字之和。
+             * 说明: 叶子节点是指没有子节点的节点。*/
+            return dfs(root,0);
+        }
+        private int dfs(TreeNode root,int presum)
+        {
+            if (root==null)
+            {
+                return 0;
+            }
+            int sum = presum * 10 + root.val;
+            if (root.left==null&&root.right==null)
+            {
+                return sum;
+            }
+            else
+            {
+                return dfs(root.left, sum) + dfs(root.right,sum);
+            }
+        }
+        #endregion
+        #region 分发饼干
+        public int FindContentChildren(int[] g, int[] s)
+        {
+            int result = 0;
+            int temp = 0;
+            Array.Sort(g);
+            Array.Sort(s);
+            for (int i = 0; i < g.Length; i++)
+            {
+                for (int j = temp; j < s.Length; j++)
+                {
+                    if (g[i]<=s[j])
+                    {
+                        result++;
+                        temp = j + 1;
+                        continue;
+                    }
+                }
+            }
+            return result;
+        }
+        #endregion
+        #region 汉明距离
+        public static int HammingDistance(int x, int y)
+        {
+            string a = Convert.ToString(3, 2);
+            string b = Convert.ToString(1,2);
+            int n1 = a.Length-1;
+            int n2 = b.Length-1;
+            int result = 0;
+            while (n1>=0&&n2>=0)
+            {
+                if (a[n1]!=b[n2])
+                {
+                    result ++;
+                    
+                }
+                n1--;
+                n2--;
+            }
+            for (int i = 0; i <= n1; i++)
+            {
+                if (a[i]=='1')
+                {
+                    result++;
+                }
+            }
+            for (int i = 0; i <= n2; i++)
+            {
+                if (b[i] == '1')
+                {
+                    result++;
+                }
+            }
+            return result;
+            #region 移位
+            int xor = x ^ y;
+            int distance = 0;
+            while (xor!=0)
+            {
+                if (xor%2==1)
+                {
+                    distance += 1;
+                }
+                xor = xor >> 1;//右移1位
+            }
+            return distance;
+            #endregion
+            #region 布
+            int xor1 = x ^ y;
+            int distance1 = 0;
+            while (xor1!=0)
+            {
+                distance1 += 1;
+                xor1 = xor1 & xor1(xor1 - 1);
+            }
+            return distance1;
+            #endregion
         }
         #endregion
 
