@@ -419,9 +419,10 @@ namespace TextCode
             int[] aaa = { 1, 2, 2, 1, 1, 3 };
             string[] words = { "caaat", "bt", "hat", "tree", "atach" };
 
-            CountCharacters(words,"atach");
+            CountCharacters(words, "atach");
             UniqueOccurrences(aaa);
-            HammingDistance(1,2);
+            HammingDistance(1, 2);
+            LicenseKeyFormatting("5F3Z - 2e-9 - w",4);
             Console.ReadLine();
         }
         #region 算法       
@@ -4928,8 +4929,8 @@ namespace TextCode
         {
             /*给定一个二叉树，返回它的 前序 遍历*/
             List<int> result = new List<int>();
-            
-            
+
+
             return result;
         }
         private void Def(List<int> result, TreeNode root)
@@ -4952,22 +4953,22 @@ namespace TextCode
             Array.Sort(nums);
             List<int> result = new List<int>();
             int n = nums.Length;
-            for (int i = n-1; i >=0; i--)
+            for (int i = n - 1; i >= 0; i--)
             {
-                
-                    if (nums[i] > n)
+
+                if (nums[i] > n)
+                {
+                    for (int j = n; j < nums[i]; j++)
                     {
-                        for (int j = n; j < nums[i]; j++)
-                        {
-                            result.Add(n);
-                        }
-                        n = nums[i] + 1;
+                        result.Add(n);
                     }
-                    else if (nums[i] == n)
-                    {
-                        n++;
-                    }
-             }
+                    n = nums[i] + 1;
+                }
+                else if (nums[i] == n)
+                {
+                    n++;
+                }
+            }
             for (int i = n; i <= nums.Length; i++)
             {
                 result.Add(i);
@@ -4990,7 +4991,7 @@ namespace TextCode
             //    }
 
             //}
-          return result;
+            return result;
         }
         #endregion
         #region 哈希数组统计相同距离点数
@@ -5005,13 +5006,13 @@ namespace TextCode
                 {
                     var dx = p1[0] - p2[0];
                     var dy = p1[1] - p2[1];
-                    if (distanceMap.ContainsKey(dx*dx+dy*dy))
+                    if (distanceMap.ContainsKey(dx * dx + dy * dy))
                     {
                         distanceMap[dx * dx + dy * dy]++;
                     }
                     else
                     {
-                        distanceMap.Add(dx*dx+dy*dy,1);
+                        distanceMap.Add(dx * dx + dy * dy, 1);
                     }
                 }
                 foreach (var x in distanceMap)
@@ -5031,9 +5032,9 @@ namespace TextCode
             int[] nums = new int[arr.Length];
             int n = 1;
             int a = 0;
-            for (int i = 0; i < arr.Length-1; i++)
+            for (int i = 0; i < arr.Length - 1; i++)
             {
-                if (arr[i]!=arr[i+1])
+                if (arr[i] != arr[i + 1])
                 {
                     if (nums.Contains(n))
                     {
@@ -5049,7 +5050,7 @@ namespace TextCode
                 else
                 {
                     n++;
-                }       
+                }
             }
             if (nums.Contains(n))
             {
@@ -5084,8 +5085,8 @@ namespace TextCode
             int[] temp = new int[nums.Length];
             for (int i = 0; i < words.Length; i++)
             {
-                bool flag = false;               
-                nums.CopyTo( temp,0);
+                bool flag = false;
+                nums.CopyTo(temp, 0);
                 for (int j = 0; j < words[i].Length; j++)
                 {
                     if (!chars.Contains(words[i][j]))
@@ -5095,7 +5096,7 @@ namespace TextCode
                     }
                     else
                     {
-                        if (temp[words[i][j]-'a']<=0)
+                        if (temp[words[i][j] - 'a'] <= 0)
                         {
                             flag = true;
                             break;
@@ -5130,7 +5131,7 @@ namespace TextCode
             for (int i = 0; i < nums.Length; i++)
             {
                 sum += nums[i];
-                if (nums[i]<min)
+                if (nums[i] < min)
                 {
                     min = nums[i];
                 }
@@ -5145,22 +5146,22 @@ namespace TextCode
              * 例如，从根到叶子节点路径 1->2->3 代表数字 123。
              * 计算从根到叶子节点生成的所有数字之和。
              * 说明: 叶子节点是指没有子节点的节点。*/
-            return dfs(root,0);
+            return dfs(root, 0);
         }
-        private int dfs(TreeNode root,int presum)
+        private int dfs(TreeNode root, int presum)
         {
-            if (root==null)
+            if (root == null)
             {
                 return 0;
             }
             int sum = presum * 10 + root.val;
-            if (root.left==null&&root.right==null)
+            if (root.left == null && root.right == null)
             {
                 return sum;
             }
             else
             {
-                return dfs(root.left, sum) + dfs(root.right,sum);
+                return dfs(root.left, sum) + dfs(root.right, sum);
             }
         }
         #endregion
@@ -5175,7 +5176,7 @@ namespace TextCode
             {
                 for (int j = temp; j < s.Length; j++)
                 {
-                    if (g[i]<=s[j])
+                    if (g[i] <= s[j])
                     {
                         result++;
                         temp = j + 1;
@@ -5189,24 +5190,25 @@ namespace TextCode
         #region 汉明距离
         public static int HammingDistance(int x, int y)
         {
-            string a = Convert.ToString(3, 2);
-            string b = Convert.ToString(1,2);
-            int n1 = a.Length-1;
-            int n2 = b.Length-1;
+            int a1 = 100100 & 0;
+            string a = Convert.ToString(100, 2);
+            string b = Convert.ToString(1, 2);
+            int n1 = a.Length - 1;
+            int n2 = b.Length - 1;
             int result = 0;
-            while (n1>=0&&n2>=0)
+            while (n1 >= 0 && n2 >= 0)
             {
-                if (a[n1]!=b[n2])
+                if (a[n1] != b[n2])
                 {
-                    result ++;
-                    
+                    result++;
+
                 }
                 n1--;
                 n2--;
             }
             for (int i = 0; i <= n1; i++)
             {
-                if (a[i]=='1')
+                if (a[i] == '1')
                 {
                     result++;
                 }
@@ -5222,9 +5224,9 @@ namespace TextCode
             #region 移位
             int xor = x ^ y;
             int distance = 0;
-            while (xor!=0)
+            while (xor != 0)
             {
-                if (xor%2==1)
+                if (xor % 2 == 1)
                 {
                     distance += 1;
                 }
@@ -5235,7 +5237,7 @@ namespace TextCode
             #region 布
             int xor1 = x ^ y;
             int distance1 = 0;
-            while (xor1!=0)
+            while (xor1 != 0)
             {
                 distance1 += 1;
                 xor1 = xor1 & (xor1 - 1);
@@ -5244,8 +5246,95 @@ namespace TextCode
             #endregion
         }
         #endregion
+        #region 岛屿的周长
+        public int IslandPerimeter(int[][] grid)
+        {
+            int n = 0;
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid[i].Length; j++)
+                {
+                    if (grid[i][j] == 1)
+                    {
+                        if (i == 0 || grid[i - 1][j] == 0)
+                        {
+                            n++;
+                        }
+                        if (i == grid.Length - 1 || grid[i + 1][j] == 0)
+                        {
+                            n++;
+                        }
+                        if (j == 0 || grid[i][j - i] == 0)
+                        {
+                            n++;
+                        }
+                        if (j == grid[0].Length - 1 || grid[i][j + 1] == 0)
+                        {
+                            n++;
+                        }
+                    }
+                }
+            }
+            return n;
+            #region 递归
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid[0].Length; j++)
+                {
+                    if (grid[i][j]==1)
+                    {
+                        return dfs(grid,i,j);
+                    }
+                }
+            }
+            return 0;
+            #endregion
+        }
+        private int dfs(int[][]grid,int r,int c)
+        {
+            if (!(0<=r&&r<grid.Length&&0<=c&&c<grid[0].Length))
+            {
+                return 1;
+            }
+            if (grid[r][c]==0)
+            {
+                return 0;
+            }
+            grid[r][c] = 2;
+            return dfs(grid, r - 1, c) +dfs(grid,r+1,c)+dfs(grid,r,c-1)+dfs(grid,r,c+1);
+        }
+        #endregion
+        #region 数字的补数
+        public int FindComplement(int num)
+        {
+            /*5的二进制是：0101，7的二进制是： 0111，它们的抑或为：0010，去掉前导零位即为取反。
+             * 再来一个例子，假设a为1110 0101，b为1111 1111，a^b = 0001 1010是a的取反。也就是说二
+             * 进制位数与num相同，且全为1的数tmp与num的抑或即为所求。*/
+            long temp = 1;
+            while (num>=temp)
+            {
+                temp <<= 1;
+            }
+            return (int)(temp - 1 - num);
+        }
+        #endregion
+        #region        密钥格式化
+        public static string LicenseKeyFormatting(string S, int K)
+        {
+            string[]arr = S.ToUpper().Split("-");
 
-
+            string result = "";
+            for (int i = 0; i < arr.Length; i++)
+            {
+                result += i;
+            }
+            for (int i = result.Length-K; i > 0; i-=K)
+            {
+                result= result.Insert(i,"-");
+            }
+            return result;
+        }
+        #endregion
 
         #endregion
         #region LinQ
