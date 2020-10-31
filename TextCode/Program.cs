@@ -423,6 +423,7 @@ namespace TextCode
             UniqueOccurrences(aaa);
             HammingDistance(1, 2);
             LicenseKeyFormatting("5F3Z - 2e-9 - w",4);
+            ConstructRectangle(7);
             Console.ReadLine();
         }
         #region 算法       
@@ -5335,6 +5336,58 @@ namespace TextCode
             return result;
         }
         #endregion
+        #region 最大连续1的个数
+        public int FindMaxConsecutiveOnes(int[] nums)
+        {
+            int n = 0;
+            int num = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i]==1)
+                {
+                    num++;
+                }
+                if (nums[i]==0)
+                {
+                    if (num>n)
+                    {
+                        n = num;
+                    }
+                    num = 0;
+                }
+            }
+            return n;
+        }
+        #endregion
+        #region 构造矩形
+        public static int[] ConstructRectangle(int area)
+        {
+            int[] result = new int[2];
+           int a= (int)Math.Sqrt(area);
+            int b = a;
+            while (a*b!=area)
+            {
+                if (a*b<area)
+                {
+                    b++;
+                }
+                else
+                {
+                    a--;
+                }
+            }
+            result[0] = a;
+            result[1] = b;
+            while (area%a!=0)
+            {
+                --a;
+            }
+            result[0] = area / a;
+            result[1] = a;
+            return result;
+        }
+
+        #endregion
 
         #endregion
         #region LinQ
@@ -5737,6 +5790,68 @@ namespace TextCode
         public string UserName { get; set; }
         public int Age { get; set; }
         public int RoleId { get; set; }
+    }
+    public class RandomizedCollection
+    {
+        //字典内使用HashSet是为了实现O(1)删除索引，而且索引不会重复
+        Dictionary<int, HashSet<int>> iDic { get; set; } = new Dictionary<int, HashSet<int>>();
+        List<int> values { get; set; } = new List<int>();
+        /** Initialize your data structure here. */
+        public RandomizedCollection()
+        {
+            //列表随机插入是O(n)因为，要后移位置之后的元素，但追加在列表尾部的O(1)
+            //列表按索引查找的是O(1),按值查找是O(n)
+        }
+
+        /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+        public bool Insert(int val)
+        {
+            //使用一个字典维护某个数字的所有索引列表
+            if (!iDic.TryGetValue(val, out var indexSet))
+            {
+                indexSet = new HashSet<int>();
+                iDic.Add(val,indexSet);
+            }
+            values.Add(val);
+            indexSet.Add(values.Count-1);
+            return true;
+        }
+
+        /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+        public bool Remove(int val)
+        {
+            //字典不存在某个数字的索引，也就不存在某个数字
+            if (!iDic.TryGetValue(val,out var valList)|| valList.Count==0)
+            {
+                return false;
+            }
+            var lastValue = values.Last();
+            if (lastValue==val)
+            {
+                //直接在列表最后移除
+                valList.Remove(values.Count-1);
+                values.RemoveAt(values.Count-1);
+                return true;
+            }
+            //将values最后一个元素的值替换要删除的元素的最后一个索引的位置，然后values删
+            //除最后一个元素，即为O(1)删除
+            //内替换的值得索引列表应该移除索引值(values的长度-1)，并追加一个被删除元素的所在的索引值
+            //（因为被替换的值被替换到这个索引了）
+            var valLastIndex = valList.Last();
+            var changeIndex = iDic[lastValue];
+            valList.Remove(valLastIndex);
+            changeIndex.Remove(values.Count-1);
+            changeIndex.Add(valLastIndex);
+            values[valLastIndex] = lastValue;
+            values.RemoveAt(values.Count-1);
+            return true;
+        }
+
+        /** Get a random element from the collection. */
+        public int GetRandom()
+        {
+            return values[new Random().Next(0, values.Count)];
+        }
     }
     class RoleInfo
     {
