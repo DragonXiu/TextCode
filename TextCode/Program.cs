@@ -423,6 +423,8 @@ namespace TextCode
             UniqueOccurrences(aaa);
             HammingDistance(1, 2);
             LicenseKeyFormatting("5F3Z - 2e-9 - w",4);
+            string[] a16 = { "Hello", "Alaska", "Dad", "Peace" };
+            FindWords(a16);
             ConstructRectangle(7);
             Console.ReadLine();
         }
@@ -5387,6 +5389,87 @@ namespace TextCode
             return result;
         }
 
+        #endregion
+        #region 下一个更大元素 I
+        public int[] NextGreaterElement(int[] nums1, int[] nums2)
+        {
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            for (int i = 0; i < nums2.Length-1; i++)
+            {
+                for (int j = i; j <nums2.Length; j++)
+                {
+                    if (nums2[i + 1] > nums2[i])
+                    {
+                        dic.Add(nums2[i], nums2[i + 1]);
+                    }
+                    else if(i== nums2.Length-1)
+                    {
+                        dic.Add(nums2[i], -1);
+                    }
+                }
+
+              
+            }
+            dic.Add(nums2[nums2.Length - 1], -1);
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                dic.TryGetValue(nums1[i],out int values);
+                nums1[i] = values;
+            }
+            return nums1;
+        }
+        #endregion
+        #region 七进制
+        public string ConvertToBase7(int num)
+        {
+            //逢7进一
+            StringBuilder str = new StringBuilder();
+            while (Math.Abs(num)>7)
+            {
+                str.Insert(0, num % 7);
+                num = num / 7;
+            }
+            str.Insert(0, num);
+            return str.ToString();
+        }
+        #endregion
+        #region 键盘行
+        public static string[] FindWords(string[] words)
+        {
+            //给定一个单词列表，只返回可以使用在键盘同一行的字母打印出来的单词。键盘如下图所示。
+            string[] str = { "qwertyuiop", "asdfghjkl", "zxcvbnm" };
+            List<string> result = new List<string>();
+            for (int i = 0; i < words.Length; i++)
+            {
+                bool flag = false;
+                int n = 0;
+                char a = words[i].ToLower()[0];
+                if (str[0].Contains(a))
+                {
+                    n = 0;
+                }
+                else if(str[1].Contains(a))
+                {
+                    n = 1;
+                }
+                else if (str[2].Contains(a))
+                {
+                    n = 2;
+                }
+                for (int j = 0; j < words[i].Length; j++)
+                {
+                    if (!str[n].Contains(words[i][j]))
+                    {
+                        flag = true;
+                    }
+                }
+                if (!flag)
+                {
+                    result.Add(words[i]);
+                }
+            }
+            return result.ToArray();
+        }
         #endregion
 
         #endregion
