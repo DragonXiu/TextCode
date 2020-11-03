@@ -425,6 +425,10 @@ namespace TextCode
             LicenseKeyFormatting("5F3Z - 2e-9 - w",4);
             string[] a16 = { "Hello", "Alaska", "Dad", "Peace" };
             FindWords(a16);
+            int[] Valid = { 1,2,3,4,5};
+            ValidMountainArray(Valid);
+            int[] FindR = { 5, 4, 3, 2, 9 };
+            FindRelativeRanks(FindR);
             ConstructRectangle(7);
             Console.ReadLine();
         }
@@ -5469,6 +5473,129 @@ namespace TextCode
                 }
             }
             return result.ToArray();
+        }
+        #endregion
+        #region 有效山脉数
+        public static bool ValidMountainArray(int[] A)
+        {
+            //双指针、前后同时判断
+            int n = A.Length;
+            if (n<=2)
+            {
+                return false;
+            }
+            int f = 0;
+            int b = n-1;
+            for (int i = 0; i <= n-2; i++)
+            {
+                if (A[i]>A[i+1])
+                {
+                    if (i==0)
+                    {
+                        return false;
+                    }
+                    if (i + 1 == n - 1)
+                    {
+                        break;
+                    }
+                    for (int j = i+1; j < n - 2; j++)
+                    {
+                        if (A[j] < A[j + 1])
+                        {
+                            return false;
+                        }
+                    }
+                }
+                if (i+1==n-1)
+                {
+                    return false;
+                }
+            }
+            return true;
+            //for (int i = 0; i < A.Length-1; i++)
+            //{
+            //    if (A[i+1]== A[i])
+            //    {
+            //        return false;
+            //    }
+            //    if (A[i]> A[i+1]&&(i==0||i==n-2))
+            //    {
+            //        return false;
+            //    }
+            //    if (i)
+            //    {
+
+            //    }
+            //    if (A[i] > A[i + 1])
+            //    {
+            //        for (int j = n-1; j > i; j++)
+            //        {
+            //            if (A[j] > A[j-1] && (i !=j-1))
+            //            {
+            //                return false;
+            //            }
+            //        }
+            //    }
+            //}
+            return true;
+        }
+        #endregion
+        #region 相对名次
+        public static string[] FindRelativeRanks(int[] nums)
+        {
+            //分数越靠前，分数不同
+            string[] result = new string[nums.Length];
+            int[] temp = (int[])nums.Clone();
+            Dictionary<int, string> dic = new Dictionary<int, string>();
+            Array.Sort(temp);
+            Array.Reverse(temp);
+            for (int i = 0; i < temp.Length; i++)
+            {
+                if (i == 0)
+                {
+                    dic.Add(temp[i], "Gold Medal");
+                }
+                else if (i == 1)
+                {
+                    dic.Add(temp[i], "Silver Medal");
+                }
+                else if (i == 2)
+                {
+                    dic.Add(temp[i], "Bronze Medal");
+                }
+                else
+                {
+                    dic.Add(temp[i], (i + 1).ToString());
+                }
+            }
+            for (int i = 0; i < nums.Length; i++)
+            {
+                dic.TryGetValue(nums[i], out string value);
+                result[i] = value;
+            }
+            return result;
+        }
+        #endregion
+        #region  完美数
+        public bool CheckPerfectNumber(int num)
+        {
+            /*对于一个 正整数，如果它和除了它自身以外的所有 正因子 之和相等，我们称它为 「完美数」。
+             * 给定一个 整数 n， 如果是完美数，返回 true，否则返回 false。*/
+            int sum = 1;
+
+            for (int i = 2; i *i< num; i++)
+            {
+                if (num%i==0)
+                {
+                    sum +=  i;
+                    if (i * i != num)
+                    {
+                        sum += num / i;
+                    }
+                }
+            }
+            return sum - num == num; 
+            
         }
         #endregion
 
