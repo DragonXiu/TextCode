@@ -422,14 +422,15 @@ namespace TextCode
             CountCharacters(words, "atach");
             UniqueOccurrences(aaa);
             HammingDistance(1, 2);
-            LicenseKeyFormatting("5F3Z - 2e-9 - w",4);
+            LicenseKeyFormatting("5F3Z - 2e-9 - w", 4);
             string[] a16 = { "Hello", "Alaska", "Dad", "Peace" };
             FindWords(a16);
-            int[] Valid = { 1,2,3,4,5};
+            int[] Valid = { 1, 2, 3, 4, 5 };
             ValidMountainArray(Valid);
             int[] FindR = { 5, 4, 3, 2, 9 };
             FindRelativeRanks(FindR);
             ConstructRectangle(7);
+            DetectCapitalUse("USa");
             Console.ReadLine();
         }
         #region 算法       
@@ -5288,27 +5289,27 @@ namespace TextCode
             {
                 for (int j = 0; j < grid[0].Length; j++)
                 {
-                    if (grid[i][j]==1)
+                    if (grid[i][j] == 1)
                     {
-                        return dfs(grid,i,j);
+                        return dfs(grid, i, j);
                     }
                 }
             }
             return 0;
             #endregion
         }
-        private int dfs(int[][]grid,int r,int c)
+        private int dfs(int[][] grid, int r, int c)
         {
-            if (!(0<=r&&r<grid.Length&&0<=c&&c<grid[0].Length))
+            if (!(0 <= r && r < grid.Length && 0 <= c && c < grid[0].Length))
             {
                 return 1;
             }
-            if (grid[r][c]==0)
+            if (grid[r][c] == 0)
             {
                 return 0;
             }
             grid[r][c] = 2;
-            return dfs(grid, r - 1, c) +dfs(grid,r+1,c)+dfs(grid,r,c-1)+dfs(grid,r,c+1);
+            return dfs(grid, r - 1, c) + dfs(grid, r + 1, c) + dfs(grid, r, c - 1) + dfs(grid, r, c + 1);
         }
         #endregion
         #region 数字的补数
@@ -5318,7 +5319,7 @@ namespace TextCode
              * 再来一个例子，假设a为1110 0101，b为1111 1111，a^b = 0001 1010是a的取反。也就是说二
              * 进制位数与num相同，且全为1的数tmp与num的抑或即为所求。*/
             long temp = 1;
-            while (num>=temp)
+            while (num >= temp)
             {
                 temp <<= 1;
             }
@@ -5328,16 +5329,16 @@ namespace TextCode
         #region        密钥格式化
         public static string LicenseKeyFormatting(string S, int K)
         {
-            string[]arr = S.ToUpper().Split("-");
+            string[] arr = S.ToUpper().Split("-");
 
             string result = "";
             for (int i = 0; i < arr.Length; i++)
             {
                 result += i;
             }
-            for (int i = result.Length-K; i > 0; i-=K)
+            for (int i = result.Length - K; i > 0; i -= K)
             {
-                result= result.Insert(i,"-");
+                result = result.Insert(i, "-");
             }
             return result;
         }
@@ -5349,13 +5350,13 @@ namespace TextCode
             int num = 0;
             for (int i = 0; i < nums.Length; i++)
             {
-                if (nums[i]==1)
+                if (nums[i] == 1)
                 {
                     num++;
                 }
-                if (nums[i]==0)
+                if (nums[i] == 0)
                 {
-                    if (num>n)
+                    if (num > n)
                     {
                         n = num;
                     }
@@ -5369,11 +5370,11 @@ namespace TextCode
         public static int[] ConstructRectangle(int area)
         {
             int[] result = new int[2];
-           int a= (int)Math.Sqrt(area);
+            int a = (int)Math.Sqrt(area);
             int b = a;
-            while (a*b!=area)
+            while (a * b != area)
             {
-                if (a*b<area)
+                if (a * b < area)
                 {
                     b++;
                 }
@@ -5384,7 +5385,7 @@ namespace TextCode
             }
             result[0] = a;
             result[1] = b;
-            while (area%a!=0)
+            while (area % a != 0)
             {
                 --a;
             }
@@ -5398,26 +5399,26 @@ namespace TextCode
         public int[] NextGreaterElement(int[] nums1, int[] nums2)
         {
             Dictionary<int, int> dic = new Dictionary<int, int>();
-            for (int i = 0; i < nums2.Length-1; i++)
+            for (int i = 0; i < nums2.Length - 1; i++)
             {
-                for (int j = i; j <nums2.Length; j++)
+                for (int j = i; j < nums2.Length; j++)
                 {
                     if (nums2[i + 1] > nums2[i])
                     {
                         dic.Add(nums2[i], nums2[i + 1]);
                     }
-                    else if(i== nums2.Length-1)
+                    else if (i == nums2.Length - 1)
                     {
                         dic.Add(nums2[i], -1);
                     }
                 }
 
-              
+
             }
             dic.Add(nums2[nums2.Length - 1], -1);
             for (int i = 0; i < nums1.Length; i++)
             {
-                dic.TryGetValue(nums1[i],out int values);
+                dic.TryGetValue(nums1[i], out int values);
                 nums1[i] = values;
             }
             return nums1;
@@ -5428,7 +5429,7 @@ namespace TextCode
         {
             //逢7进一
             StringBuilder str = new StringBuilder();
-            while (Math.Abs(num)>7)
+            while (Math.Abs(num) > 7)
             {
                 str.Insert(0, num % 7);
                 num = num / 7;
@@ -5452,7 +5453,7 @@ namespace TextCode
                 {
                     n = 0;
                 }
-                else if(str[1].Contains(a))
+                else if (str[1].Contains(a))
                 {
                     n = 1;
                 }
@@ -5480,17 +5481,17 @@ namespace TextCode
         {
             //双指针、前后同时判断
             int n = A.Length;
-            if (n<=2)
+            if (n <= 2)
             {
                 return false;
             }
             int f = 0;
-            int b = n-1;
-            for (int i = 0; i <= n-2; i++)
+            int b = n - 1;
+            for (int i = 0; i <= n - 2; i++)
             {
-                if (A[i]>A[i+1])
+                if (A[i] > A[i + 1])
                 {
-                    if (i==0)
+                    if (i == 0)
                     {
                         return false;
                     }
@@ -5498,7 +5499,7 @@ namespace TextCode
                     {
                         break;
                     }
-                    for (int j = i+1; j < n - 2; j++)
+                    for (int j = i + 1; j < n - 2; j++)
                     {
                         if (A[j] < A[j + 1])
                         {
@@ -5506,7 +5507,7 @@ namespace TextCode
                         }
                     }
                 }
-                if (i+1==n-1)
+                if (i + 1 == n - 1)
                 {
                     return false;
                 }
@@ -5583,19 +5584,81 @@ namespace TextCode
              * 给定一个 整数 n， 如果是完美数，返回 true，否则返回 false。*/
             int sum = 1;
 
-            for (int i = 2; i *i< num; i++)
+            for (int i = 2; i * i < num; i++)
             {
-                if (num%i==0)
+                if (num % i == 0)
                 {
-                    sum +=  i;
+                    sum += i;
                     if (i * i != num)
                     {
                         sum += num / i;
                     }
                 }
             }
-            return sum - num == num; 
-            
+            return sum - num == num;
+
+        }
+        #endregion
+        #region 插入区间
+        public int[][] Insert(int[][] intervals, int[] newInterval)
+        {
+            List<int[]> ans = new List<int[]>(intervals.Length + 1);
+            //int[][] ans= new int[intervals.Length+1][] ;
+            bool flag = false;
+            //遍历元区间，比较左右边界，进行判断新区间是否放置进答案
+            for (int i = 0; i < intervals.Length; i++)
+            {
+                //新区建左边界大于目前区间右边界
+                if (newInterval[0] > intervals[i][1])
+                {
+                    //直接插入结果集合
+                    ans.Add(intervals[i]);
+                    continue;
+                }
+                //新区间的右边界小于目前区间 左边界
+                if (newInterval[1] < intervals[i][0])
+                {
+                    //直接插入新区建
+                    ans.Add(newInterval);
+                    //flag 设置为true
+                    flag = !flag;
+                    //把后面的区间都插入结果集合
+                    for (; i < intervals.Length; i++)
+                        ans.Add(intervals[i]);
+                    break;
+                }
+                //新区间处于目前区间范围 进行区间合并
+                //最小值为目前区间和新区间最小值  最大值为他俩中的最大的
+                newInterval[0] = Math.Min(newInterval[0], intervals[i][0]);
+                newInterval[1] = Math.Max(newInterval[1], intervals[i][1]);
+            }
+            //如果没找到合适的机会插入新区建，这里要插入
+            if (!flag)
+                ans.Add(newInterval);
+
+            return ans.ToArray();
+
+        }
+        #endregion
+        #region 斐波那契数
+        public int Fib(int N)
+        {
+            int sum = 0;
+            int n = 1;
+            for (int i = 2; i <= N; i++)
+            {
+                int temp = sum; ;
+                sum = +n;
+                n = sum;
+            }
+            return sum;
+        }
+        #endregion
+        #region 检测大写字母
+        public static bool DetectCapitalUse(string word)
+        {
+            string a = word[0].ToString().ToUpper() + word.Substring(1, word.Length - 1).ToLower();
+            return word.ToLower()==word||word.ToUpper()==word || a == word;
         }
         #endregion
 
@@ -5683,11 +5746,11 @@ namespace TextCode
             //遍历
             foreach (var item in resJoin3)
             {
-                Console.WriteLine("用户:{0}---角色:{1}",item.uname,item.rname);
+                Console.WriteLine("用户:{0}---角色:{1}", item.uname, item.rname);
             }
             //量词
             //ALL 所有元素都符合的条件返回true
-            bool areAllAdmin = userlist.All(u=>u.RoleId==1);
+            bool areAllAdmin = userlist.All(u => u.RoleId == 1);
             //Any 有一个符合条件的返回true
 
         }
@@ -6020,10 +6083,10 @@ namespace TextCode
             if (!iDic.TryGetValue(val, out var indexSet))
             {
                 indexSet = new HashSet<int>();
-                iDic.Add(val,indexSet);
+                iDic.Add(val, indexSet);
             }
             values.Add(val);
-            indexSet.Add(values.Count-1);
+            indexSet.Add(values.Count - 1);
             return true;
         }
 
@@ -6031,16 +6094,16 @@ namespace TextCode
         public bool Remove(int val)
         {
             //字典不存在某个数字的索引，也就不存在某个数字
-            if (!iDic.TryGetValue(val,out var valList)|| valList.Count==0)
+            if (!iDic.TryGetValue(val, out var valList) || valList.Count == 0)
             {
                 return false;
             }
             var lastValue = values.Last();
-            if (lastValue==val)
+            if (lastValue == val)
             {
                 //直接在列表最后移除
-                valList.Remove(values.Count-1);
-                values.RemoveAt(values.Count-1);
+                valList.Remove(values.Count - 1);
+                values.RemoveAt(values.Count - 1);
                 return true;
             }
             //将values最后一个元素的值替换要删除的元素的最后一个索引的位置，然后values删
@@ -6050,10 +6113,10 @@ namespace TextCode
             var valLastIndex = valList.Last();
             var changeIndex = iDic[lastValue];
             valList.Remove(valLastIndex);
-            changeIndex.Remove(values.Count-1);
+            changeIndex.Remove(values.Count - 1);
             changeIndex.Add(valLastIndex);
             values[valLastIndex] = lastValue;
-            values.RemoveAt(values.Count-1);
+            values.RemoveAt(values.Count - 1);
             return true;
         }
 
