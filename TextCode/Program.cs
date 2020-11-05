@@ -431,6 +431,8 @@ namespace TextCode
             FindRelativeRanks(FindR);
             ConstructRectangle(7);
             DetectCapitalUse("USa");
+            List<string> Leng = new List<string> { "hot", "dot", "dog", "lot", "log", "cog" };
+            LadderLength("hit", "cog", Leng);
             Console.ReadLine();
         }
         #region 算法       
@@ -5659,6 +5661,132 @@ namespace TextCode
         {
             string a = word[0].ToString().ToUpper() + word.Substring(1, word.Length - 1).ToLower();
             return word.ToLower()==word||word.ToUpper()==word || a == word;
+        }
+        #endregion
+        #region 单词接龙
+        public static int LadderLength(string beginWord, string endWord, IList<string> wordList)
+        {
+            if (!wordList.Contains(endWord))
+            {
+                return 0;
+            }
+            int len = beginWord.Length;
+            var dic = new Dictionary<string, List<string>>(wordList.Count);
+            foreach (var item in wordList)
+            {
+                for (int i = 0; i < len; i++)
+                {
+                    string ch = $"{item.Substring(0, i)}*{item.Substring(i + 1)}";
+                    if (dic.ContainsKey(ch))
+                    {
+                        dic[ch].Add(item);
+                    }
+                    else
+                    {
+                        dic.Add(ch,new List<string> { item});
+                    }
+                }
+            }
+            Queue<KeyValuePair<string, int>> queue = new Queue<KeyValuePair<string, int>>(wordList.Count);
+            queue.Enqueue(new KeyValuePair<string, int>(beginWord,1));
+            while (queue.Count!=0)
+            {
+                var point = queue.Dequeue();
+                string word = point.Key;
+                int count = point.Value;
+                for (int i = 0; i < len; i++)
+                {
+                    string ch = $"{word.Substring(0,i)}*{word.Substring(i+1,len-i-1)}";
+                    if (dic.ContainsKey(ch))
+                    {
+                        foreach (var item in dic[ch])
+                        {
+                            if (item==endWord)
+                            {
+                                return ++count;
+                            }
+                            queue.Enqueue(new KeyValuePair<string, int>(item,count+1));
+                        }
+                        dic.Remove(ch);
+                    }
+                }
+            }
+            return 0;
+            //if (flag(beginWord, endWord))
+            //{
+            //    return 1;
+            //}
+            //return dfs(beginWord,0, wordList);
+        }
+        //private static int dfs(string  str,int num, IList<string> wordList)
+        //{
+        //    int n = 0;
+        //    while (n< wordList.Count())
+        //    {
+        //        if (flag(str, wordList[n]))
+        //        {              
+        //            str = wordList[n];
+        //            wordList.Remove(wordList[n]);
+        //             num=  dfs(str,num+1,wordList );
+        //        }
+        //        else
+        //        {
+        //            n++;
+        //        }
+        //    }
+        //    if (n== wordList.Count())
+        //    {
+        //        return 0;
+        //    }
+        //    return num;
+        //}
+        //private static bool flag(string str,string end)
+        //{
+        //    int num =0;
+        //    int n = 0;
+        //    while (num<str.Length)
+        //    {
+        //        if (str[num]==end[num])
+        //        {
+        //            n++;
+        //        }
+        //    }
+        //    if (str.Length-1==n)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        #endregion
+        #region 最长特殊序列 Ⅰ
+        public int FindLUSlength(string a, string b)
+        {
+            if (a==b)
+            {
+                return -1;
+            }
+            return a.Length > b.Length ? a.Length : b.Length;
+        }
+        #endregion
+        #region 反转字符串 II
+        public string ReverseStr(string s, int k)
+        {
+            char[] a = s.ToArray();
+            for (int start = 0; start < a.Length; start+=2*k)
+            {
+                int i = start, j = Math.Min(start+k-1,a.Length-1);
+                while (i<j)
+                {
+                    char tmp = a[i];
+                    a[i++] = a[j];
+                    a[j--] = tmp;
+                }
+            }
+            return new string(a);
         }
         #endregion
 
