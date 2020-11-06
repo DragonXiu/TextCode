@@ -433,6 +433,9 @@ namespace TextCode
             DetectCapitalUse("USa");
             List<string> Leng = new List<string> { "hot", "dot", "dog", "lot", "log", "cog" };
             LadderLength("hit", "cog", Leng);
+
+            SortByBits(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8});
+            CheckRecord("PPALLLPL");
             Console.ReadLine();
         }
         #region 算法       
@@ -5787,6 +5790,93 @@ namespace TextCode
                 }
             }
             return new string(a);
+        }
+        #endregion
+        #region 根据数字二进制1的数目排序
+        
+        public static int[] SortByBits(int[] arr)
+        {
+            // [0,1,2,3,4,5,6,7,8],根据二进制的1的数目排序
+            
+            List<int> list = new List<int>();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = bitCount(arr[i]) * 100_000 + arr[i];
+            }
+            Array.Sort(arr);
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] %= 100_000;
+            }
+            return arr;
+        }
+   
+        //得到1的个数
+        private static int bitCount(int x)
+        {
+            int res = 0;
+            while (x!=0)
+            {
+                res += (x % 2);
+                x /= 2;
+            }
+            return res;
+        }
+        #endregion
+        #region 二叉树的直径
+        int max = 0;
+        public int DiameterOfBinaryTree(TreeNode root)
+        {
+            dfs1(root);
+            return max;
+        }
+        private int dfs1(TreeNode root)
+        {
+            if (root==null)
+            {
+                return 0;
+            }
+            int left = dfs1(root.left);
+            int right = dfs1(root.right);
+            max = Math.Max(left+right,max);
+            return Math.Max(right, left) + 1;
+        }
+        #endregion
+        #region 学生出勤管理
+        public static bool CheckRecord(string s)
+        {
+            int a = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+
+                if (s[i] == 'A')
+                {
+                    a += 1;
+
+                    if (a > 1)
+                    {
+                        return false;
+                    }
+
+                }
+                //if (s[i]=='L')
+                //{
+                //    switch (l)
+                //    {
+                //        case 0:l= 1;
+                //            break;
+                //        case 1:l = 2;
+                //            break;
+                //        case 2:
+                //            return false;
+                //    }
+                //}
+                //if (a>1&&l>2)
+                //{
+                //    return false;
+                //}
+            }
+            return true&&(!s.Contains("LLL"));
         }
         #endregion
 
