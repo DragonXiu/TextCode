@@ -434,7 +434,11 @@ namespace TextCode
             List<string> Leng = new List<string> { "hot", "dot", "dog", "lot", "log", "cog" };
             LadderLength("hit", "cog", Leng);
 
-            SortByBits(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8});
+            KClosest(new int[][] { new int[]{1,3},
+new int[] {-2,2}}, 1);
+
+            ReverseWords("Let's take LeetCode contest");
+            SortByBits(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
             CheckRecord("PPALLLPL");
             Console.ReadLine();
         }
@@ -5663,7 +5667,7 @@ namespace TextCode
         public static bool DetectCapitalUse(string word)
         {
             string a = word[0].ToString().ToUpper() + word.Substring(1, word.Length - 1).ToLower();
-            return word.ToLower()==word||word.ToUpper()==word || a == word;
+            return word.ToLower() == word || word.ToUpper() == word || a == word;
         }
         #endregion
         #region 单词接龙
@@ -5686,29 +5690,29 @@ namespace TextCode
                     }
                     else
                     {
-                        dic.Add(ch,new List<string> { item});
+                        dic.Add(ch, new List<string> { item });
                     }
                 }
             }
             Queue<KeyValuePair<string, int>> queue = new Queue<KeyValuePair<string, int>>(wordList.Count);
-            queue.Enqueue(new KeyValuePair<string, int>(beginWord,1));
-            while (queue.Count!=0)
+            queue.Enqueue(new KeyValuePair<string, int>(beginWord, 1));
+            while (queue.Count != 0)
             {
                 var point = queue.Dequeue();
                 string word = point.Key;
                 int count = point.Value;
                 for (int i = 0; i < len; i++)
                 {
-                    string ch = $"{word.Substring(0,i)}*{word.Substring(i+1,len-i-1)}";
+                    string ch = $"{word.Substring(0, i)}*{word.Substring(i + 1, len - i - 1)}";
                     if (dic.ContainsKey(ch))
                     {
                         foreach (var item in dic[ch])
                         {
-                            if (item==endWord)
+                            if (item == endWord)
                             {
                                 return ++count;
                             }
-                            queue.Enqueue(new KeyValuePair<string, int>(item,count+1));
+                            queue.Enqueue(new KeyValuePair<string, int>(item, count + 1));
                         }
                         dic.Remove(ch);
                     }
@@ -5768,7 +5772,7 @@ namespace TextCode
         #region 最长特殊序列 Ⅰ
         public int FindLUSlength(string a, string b)
         {
-            if (a==b)
+            if (a == b)
             {
                 return -1;
             }
@@ -5779,10 +5783,10 @@ namespace TextCode
         public string ReverseStr(string s, int k)
         {
             char[] a = s.ToArray();
-            for (int start = 0; start < a.Length; start+=2*k)
+            for (int start = 0; start < a.Length; start += 2 * k)
             {
-                int i = start, j = Math.Min(start+k-1,a.Length-1);
-                while (i<j)
+                int i = start, j = Math.Min(start + k - 1, a.Length - 1);
+                while (i < j)
                 {
                     char tmp = a[i];
                     a[i++] = a[j];
@@ -5793,11 +5797,11 @@ namespace TextCode
         }
         #endregion
         #region 根据数字二进制1的数目排序
-        
+
         public static int[] SortByBits(int[] arr)
         {
             // [0,1,2,3,4,5,6,7,8],根据二进制的1的数目排序
-            
+
             List<int> list = new List<int>();
             for (int i = 0; i < arr.Length; i++)
             {
@@ -5810,12 +5814,12 @@ namespace TextCode
             }
             return arr;
         }
-   
+
         //得到1的个数
         private static int bitCount(int x)
         {
             int res = 0;
-            while (x!=0)
+            while (x != 0)
             {
                 res += (x % 2);
                 x /= 2;
@@ -5832,13 +5836,13 @@ namespace TextCode
         }
         private int dfs1(TreeNode root)
         {
-            if (root==null)
+            if (root == null)
             {
                 return 0;
             }
             int left = dfs1(root.left);
             int right = dfs1(root.right);
-            max = Math.Max(left+right,max);
+            max = Math.Max(left + right, max);
             return Math.Max(right, left) + 1;
         }
         #endregion
@@ -5876,7 +5880,147 @@ namespace TextCode
                 //    return false;
                 //}
             }
-            return true&&(!s.Contains("LLL"));
+            return true && (!s.Contains("LLL"));
+        }
+        #endregion
+        #region 最接近远点的K个点
+        public static int[][] KClosest(int[][] points, int K)
+        {
+            Array.Sort<int[]>(points, (x, y) => ((x[0] * x[0]) + (x[1] * x[1])).CompareTo((y[0] * y[0]) + (y[1] * y[1])));
+
+
+            int[][] result = new int[K][];
+            if (points == null || K >= 0 || points.Length < K)
+            {
+                return new int[0][];
+            }
+            int len = points.Length;//长度
+            int left = 0;//左边界
+            int right = len - 1;//右边界
+            int cur = -1;
+            //points进行快排
+            while (cur != K - 1)
+            {
+                cur = Pa(points, left, right);
+                if (cur < K - 1)
+                {
+                    left = cur + 1;
+                }
+                if (cur > K - 1)
+                {
+                    right = cur - 1;
+                }
+            }
+            Array.Copy(points, result, K);
+            return result;
+            //Dictionary<int, double> dic = new Dictionary<int, double>();
+            //double[] p = new double[points.Length];
+            //int i = 0;
+            //foreach (var item in points)
+            //{
+            //    p[i] = Math.Sqrt(item[0] * item[0] + item[1] * item[1]);
+            //    dic.Add(i, p[i]);               
+            //    i++;
+            //}
+            //Array.Sort(p);
+            //for (int j = 0; j < K;j++)
+            //{
+            //    foreach (var item in dic)
+            //    {
+            //        if (item.Value==p[j])
+            //        {
+            //            result[j] = points[item.Key];
+            //            dic.Remove(item.Key);
+            //            break;
+            //        }
+            //    }
+            //}
+            //return result;
+        }
+        /// <summary>
+        /// 一轮快排
+        /// </summary>
+        /// <param name="points">原数组</param>
+        /// <param name="left">左边界</param>
+        /// <param name="right">右边界</param>
+        /// <returns></returns>
+        private static int Pa(int[][] points, int left, int right)
+        {
+            int[] temp = points[left];
+            int leftValue = points[left][0] * points[left][0] + points[left][1] * points[left][1];
+            while (left < right)
+            {
+                while (left < right && (points[right][0] * points[right][0] + points[right][1] * points[right][1]) >= leftValue)
+                {
+                    right--;
+                }
+                if (left < right)
+                {
+                    ExPoints(points, left, right);
+                }
+                while (left < right && (points[left][0] * points[left][0] + points[left][1] * points[left][1]) >= leftValue)
+                {
+                    left--;
+                }
+                if (left < right)
+                {
+                    ExPoints(points, left, right);
+                }
+            }
+            ExPoints(points, left, right);
+            return left;
+        }
+
+        /// <summary>
+        /// 交换指定下标的两个元素
+        /// </summary>
+        /// <param name="sPoints">原数组</param>
+        /// <param name="index1">下标1</param>
+        /// <param name="index2">下标2</param>
+        private static void ExPoints(int[][] sPoints, int index1, int index2)
+        {
+            int[] temp = sPoints[index1];
+            sPoints[index1] = sPoints[index2];
+            sPoints[index2] = temp;
+        }
+        #endregion
+        #region N叉树的最大深度
+        public int MaxDepth(Node root)
+        {
+            int depth = 0;
+            if (root == null)
+                return 0;
+            foreach (Node n in root.children)
+            {
+                depth = Math.Max(MaxDepth(n), depth);
+            }
+            return depth + 1;
+
+        }
+
+        #endregion
+        #region 反转字符串中的单词 III
+        public static string ReverseWords(string s)
+        {
+            /*给定一个字符串，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。*/
+            string[] str = s.Split(" ").ToArray();
+            for (int i = 0; i < str.Length; i++)
+            {
+                StringBuilder res1 = new StringBuilder();
+                for (int j = str[i].Length - 1; j >= 0; j--)
+                {
+                    res1.Append(str[i][j]);
+                };
+                str[i] = res1.ToString();
+            }
+            StringBuilder res = new StringBuilder();
+            res.Append(str[0]);
+            for (int i = 1; i < str.Length; i++)
+            {
+                res.Append(" ");
+                res.Append(str[i]);
+            }
+            return res.ToString();
         }
         #endregion
 
@@ -6353,6 +6497,7 @@ namespace TextCode
     public class Node
     {
         public int val;
+        public List<Node> children;
         public Node left;
         public Node right;
         public Node next;
@@ -6362,6 +6507,11 @@ namespace TextCode
         public Node(int _val)
         {
             val = _val;
+        }
+        public Node(int _val, List<Node> _children)
+        {
+            val = _val;
+            children = _children;
         }
 
         public Node(int _val, Node _left, Node _right, Node _next)
