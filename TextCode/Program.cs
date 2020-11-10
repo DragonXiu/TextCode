@@ -439,6 +439,7 @@ new int[] {-2,2}}, 1);
 
             ReverseWords("Let's take LeetCode contest");
             SortByBits(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
+
             CheckRecord("PPALLLPL");
             Console.ReadLine();
         }
@@ -6021,6 +6022,86 @@ new int[] {-2,2}}, 1);
                 res.Append(str[i]);
             }
             return res.ToString();
+        }
+        #endregion
+        #region 下一个排列
+        public void NextPermutation(int[] nums)
+        {
+            // 从右到做，找到数组中比后面小的数组索引
+            int i = nums.Length - 2;
+            while (i >= 0 && nums[i] >= nums[i + 1])
+            {
+                i--;
+            }
+
+            // 如果没找到i=-1，说明数组此时是顺序降序状态，那么下一个数字就是顺序升序数组
+            if (i >= 0)
+            {
+                // 从右到做，找到数组中不大于i的数组索引
+                int j = nums.Length - 1;
+                while (j >= 0 && nums[i] >= nums[j])
+                {
+                    j--;
+                }
+
+                // 交换i和j的位置
+                Swap(nums, i, j);
+            }
+
+            // 交换i之后，以j为中心点的，两端的索引位置
+            Reverse(nums, i + 1);
+        }
+
+        public void Swap(int[] nums, int i, int j)
+        {
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+
+        public void Reverse(int[] nums, int start)
+        {
+            int left = start, right = nums.Length - 1;
+            while (left < right)
+            {
+                Swap(nums, left, right);
+                left++;
+                right--;
+            }
+        }
+        #endregion
+        #region 数组拆分|
+        public int ArrayPairSum(int[] nums)
+        {
+            Array.Sort(nums);
+            int result = 0;
+            for (int i = 0; i < nums.Length; i+=2)
+            {
+                result += nums[i];
+            }
+            return result;
+        }
+
+
+        #endregion
+        #region 二叉树的坡度
+        int sumTree = 0;
+        public int FindTilt(TreeNode root)
+        {
+            Dfs(root);
+            return sumTree;
+        }
+        public int Dfs(TreeNode root)
+        {
+            if (root==null)
+            {
+                //递归出
+                return 0;
+            }
+            int leftSum = Dfs(root.left);//左子树节点之和
+            int rightSum = Dfs(root.right);//右子树节点之和
+            sumTree += Math.Abs(leftSum-rightSum);//计算当前节点的坡度
+            return root.val + leftSum + rightSum;
         }
         #endregion
 
