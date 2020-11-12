@@ -14,6 +14,7 @@ using System.Collections;
 //using System.Linq;
 using System.Threading;
 using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace TextCode
 {
@@ -438,8 +439,9 @@ namespace TextCode
 new int[] {-2,2}}, 1);
 
             ReverseWords("Let's take LeetCode contest");
+            MatrixReshape(new int[][] { new int[] { 1, 2, 6, 6, 6 }, new int[] { 5, 6, 8, 6, 6 } },2,4);
             SortByBits(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
-
+           // FindRotateSteps("nyngl","yyynnnnnnlllggg");
             CheckRecord("PPALLLPL");
             Console.ReadLine();
         }
@@ -6075,7 +6077,7 @@ new int[] {-2,2}}, 1);
         {
             Array.Sort(nums);
             int result = 0;
-            for (int i = 0; i < nums.Length; i+=2)
+            for (int i = 0; i < nums.Length; i += 2)
             {
                 result += nums[i];
             }
@@ -6093,18 +6095,152 @@ new int[] {-2,2}}, 1);
         }
         public int Dfs(TreeNode root)
         {
-            if (root==null)
+            if (root == null)
             {
                 //递归出
                 return 0;
             }
             int leftSum = Dfs(root.left);//左子树节点之和
             int rightSum = Dfs(root.right);//右子树节点之和
-            sumTree += Math.Abs(leftSum-rightSum);//计算当前节点的坡度
+            sumTree += Math.Abs(leftSum - rightSum);//计算当前节点的坡度
             return root.val + leftSum + rightSum;
         }
         #endregion
+        #region 自由之路
+        Dictionary<char, IList<int>> charInRing = new Dictionary<char, IList<int>>();
+        public int FindRotateSteps(string ring, string key)
+        {
+            int?[,] dp = new int?[ring.Length, key.Length];
+            for (int i = 0; i < ring.Length; i++)
+            {
+                if (!charInRing.ContainsKey(ring[i]))
+                    charInRing[ring[i]] = new List<int>();
+                charInRing[ring[i]].Add(i);
+            }
 
+            // 旋转表盘的步数+按下的步数
+            return Helper(ref ring, ref key, 0, 0, dp) + key.Length;
+        }
+
+        private int Helper(ref string ring, ref string key, int ringidx, int keyidx, int?[,] dp)
+        {
+            if (keyidx == key.Length)
+                return 0;
+            if (dp[ringidx, keyidx].HasValue)
+                return dp[ringidx, keyidx].Value;
+
+            int res = int.MaxValue;
+            // 获得目标字符在表盘中的位置（可能有多个）
+            foreach (var k in charInRing[key[keyidx]])
+            {
+                var moves = Math.Min(ring.Length + ringidx - k, Math.Min(Math.Abs(ringidx - k), ring.Length - ringidx + k));
+                res = Math.Min(res, moves + Helper(ref ring, ref key, k, keyidx + 1, dp));
+            }
+            dp[ringidx, keyidx] = res;
+            return res;
+        }
+
+
+        private static string Str(string str, int i)
+        {
+            StringBuilder res = new StringBuilder();
+            res.Append(str.Substring(i, str.Length - i));
+            res.Append(str.Substring(0, i));
+            return res.ToString();
+        }
+        #endregion
+        #region 分糖果
+        public int DistributeCandies(int[] candies)
+        {
+            int num = candies.Length;
+            int a = num / 2;
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            for (int i = 0; i < num; i++)
+            {
+                if (dic.ContainsKey(candies[i]))
+                {
+                    dic[candies[i]]++;
+                }
+                else
+                {
+                    dic.Add(candies[i],1);
+                }
+            }
+            int res = dic.Count();
+            if (res<a)
+            {
+                return res;
+            }
+            else 
+            {
+                return a;
+            }
+
+        }
+        #endregion
+        #region 按奇偶排序数组 II
+        public int[] SortArrayByParityII(int[] A)
+        {
+            /*是否能够整除2*/
+            int[] a = new int[A.Length/2];
+            int[] b = new int[A.Length / 2];
+            int o = 0, n = 0;
+            for (int i = 0; i < A.Length; i++)
+            {
+                if (A[i]%2==0)
+                {
+                    a[o] = A[i];
+                    o++;
+                }
+                else
+                {
+                    b[n] = A[i];
+                    n++;
+                }
+            }
+            o--;n--;
+            for (int i = 0; i < A.Length; i+=2)
+            {
+                A[i] = a[o--];
+            }
+            for (int i = 1; i < A.Length; i += 2)
+            {
+                A[i] = a[n--];
+            }
+            return A;
+        }
+        #endregion
+        #region 重塑矩阵
+        public static int[][] MatrixReshape(int[][] nums, int r, int c)
+        {
+            int a = nums.Length * nums[0].Length;
+            if (r*c!=a)
+            {
+                return nums;
+            }
+            int[][] res = new int[r][];
+            for (int i = 0; i < r; i++)
+            {
+                res[i] = new int[c];
+            }
+            for (int i = 0; i < nums.Length; i++)
+            {             
+                for (int j = 0; j < nums[0].Length; j++)
+                {
+                    var n = i * nums[0].Length + j;
+                    res[n/c][n%c] = nums[i][j];//str[0];
+                    
+                }
+            }
+            return res;
+        }
+        #endregion
+        #region 另一个树的子树
+        public bool IsSubtree(TreeNode s, TreeNode t)
+        {
+
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
