@@ -439,9 +439,9 @@ namespace TextCode
 new int[] {-2,2}}, 1);
 
             ReverseWords("Let's take LeetCode contest");
-            MatrixReshape(new int[][] { new int[] { 1, 2, 6, 6, 6 }, new int[] { 5, 6, 8, 6, 6 } },2,4);
+            MatrixReshape(new int[][] { new int[] { 1, 2, 6, 6, 6 }, new int[] { 5, 6, 8, 6, 6 } }, 2, 4);
             SortByBits(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
-           // FindRotateSteps("nyngl","yyynnnnnnlllggg");
+            // FindRotateSteps("nyngl","yyynnnnnnlllggg");
             CheckRecord("PPALLLPL");
             Console.ReadLine();
         }
@@ -6163,15 +6163,15 @@ new int[] {-2,2}}, 1);
                 }
                 else
                 {
-                    dic.Add(candies[i],1);
+                    dic.Add(candies[i], 1);
                 }
             }
             int res = dic.Count();
-            if (res<a)
+            if (res < a)
             {
                 return res;
             }
-            else 
+            else
             {
                 return a;
             }
@@ -6182,12 +6182,12 @@ new int[] {-2,2}}, 1);
         public int[] SortArrayByParityII(int[] A)
         {
             /*是否能够整除2*/
-            int[] a = new int[A.Length/2];
+            int[] a = new int[A.Length / 2];
             int[] b = new int[A.Length / 2];
             int o = 0, n = 0;
             for (int i = 0; i < A.Length; i++)
             {
-                if (A[i]%2==0)
+                if (A[i] % 2 == 0)
                 {
                     a[o] = A[i];
                     o++;
@@ -6198,8 +6198,8 @@ new int[] {-2,2}}, 1);
                     n++;
                 }
             }
-            o--;n--;
-            for (int i = 0; i < A.Length; i+=2)
+            o--; n--;
+            for (int i = 0; i < A.Length; i += 2)
             {
                 A[i] = a[o--];
             }
@@ -6214,7 +6214,7 @@ new int[] {-2,2}}, 1);
         public static int[][] MatrixReshape(int[][] nums, int r, int c)
         {
             int a = nums.Length * nums[0].Length;
-            if (r*c!=a)
+            if (r * c != a)
             {
                 return nums;
             }
@@ -6224,12 +6224,12 @@ new int[] {-2,2}}, 1);
                 res[i] = new int[c];
             }
             for (int i = 0; i < nums.Length; i++)
-            {             
+            {
                 for (int j = 0; j < nums[0].Length; j++)
                 {
                     var n = i * nums[0].Length + j;
-                    res[n/c][n%c] = nums[i][j];//str[0];
-                    
+                    res[n / c][n % c] = nums[i][j];//str[0];
+
                 }
             }
             return res;
@@ -6238,7 +6238,177 @@ new int[] {-2,2}}, 1);
         #region 另一个树的子树
         public bool IsSubtree(TreeNode s, TreeNode t)
         {
+            if (s == null && t == null)
+            {
+                return true;
+            }
+            else if (s == null || t == null)
+            {
+                return false;
+            }
+            else if (s.val == t.val)
+            {
+                return (IsTree(s, t)) || IsTree(s.left, t) || IsTree(s.right, t);
+            }
+            else
+            {
+                return IsTree(s.left, t) || IsTree(s.right, t);
+            }
 
+        }
+        private bool IsTree(TreeNode s, TreeNode t)
+        {
+            if (s == null && t == null)
+            {
+                return true;
+            }
+            else if (s == null || t == null)
+            {
+                return false;
+            }
+            else if (s.val != t.val)
+            {
+                return false;
+            }
+            return IsTree(s.left, t.left) && IsTree(s.right, t.right);
+        }
+        #endregion
+        #region N叉树的前序遍历
+        public IList<int> Preorder(Node root)
+        {
+            #region 递归
+
+
+            IList<int> res = new List<int>();
+            if (root == null)
+            {
+                return res;
+            }
+            pro(root, res);
+            return res;
+            #endregion
+            #region 迭代
+            Stack<Node> stack = new Stack<Node>();
+            IList<int> re = new List<int>();
+            if (root == null)
+            {
+                return re;
+            }
+            stack.Push(root);
+            while (stack.Count != 0)
+            {
+                Node node = stack.Pop();
+                re.Add(node.val);
+                for (int i = node.children.Count - 1; i >= 0; --i)
+                {
+                    stack.Push(node.children[i]);
+                }
+            }
+            return re;
+            #endregion
+        }
+        private void pro(Node root, IList<int> res)
+        {
+            if (root == null)
+            {
+                return;
+            }
+            res.Add(root.val);
+            int size = root.children.Count();
+            for (int i = 0; i < size; i++)
+            {
+                Node node = root.children[i];
+                if (node != null)
+                {
+                    pro(node, res);
+                }
+            }
+        }
+        #endregion
+        #region N叉树的后序遍历
+
+        public IList<int> Postorder(Node root)
+        {
+            var Traversal = new List<int>();
+            if (root == null) return Traversal;
+            var S = new Stack<Node>();
+            S.Push(root);
+
+            // 把孩子们正序压入栈中，并用头插法插入节点值
+            while (S.Count != 0)
+            {
+                Node cur = S.Pop();
+                Traversal.Insert(0, cur.val);
+                for (int i = 0; i < cur.children.Count; i++)
+                {
+                    S.Push(cur.children[i]);
+                }
+            }
+            return Traversal;
+        }
+        #endregion
+        #region 最长和谐子序列 
+        public int FindLHS(int[] nums)
+        {
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+     
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (dic.ContainsKey(nums[i]))
+                {
+                    dic[nums[i]]++;
+                }
+                else
+                {
+                    dic.Add(nums[i],1);
+                }
+            }
+            int res= 0,sum= 0;
+            foreach (var item in dic.Keys)
+            {
+                if (dic.ContainsKey(item+1))
+                {
+                    sum = dic[item] + dic[item + 1];
+                }
+                res = Math.Max(res,sum);
+            }
+            return res;
+            //Array.Sort(nums);
+            //int a = 0;
+            //int b = nums.Length - 1;
+            //int len = 0;
+            //for (int i = 0; i < nums.Length; i++)
+            //{
+            //    for (int j = b; j >=0; j--)
+            //    {
+            //        if (nums[j]-nums[i]==1)
+            //        {
+            //          len=  Math.Max((j-i),len);
+            //        }
+            //    }
+            //}
+            //return len;
+        }
+
+        #endregion
+        #region 奇偶链表
+        public ListNode OddEvenList(ListNode head)
+        {
+            if (head==null)
+            {
+                return head;
+            }
+            ListNode evenHead =head.next;
+            ListNode odd = head, even = evenHead;
+            while (even!=null&&even.next!=null)
+            {
+                odd.next = even.next;
+                odd = odd.next;
+                even.next = odd.next;
+                even = even.next;
+            }
+            odd.next = evenHead;
+            return head;
         }
         #endregion
         #endregion
