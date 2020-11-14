@@ -6411,6 +6411,91 @@ new int[] {-2,2}}, 1);
             return head;
         }
         #endregion
+        #region 数组的相对排序
+        public int[] RelativeSortArray(int[] arr1, int[] arr2)
+        {
+            if (arr2.Length==0)
+            {
+                Array.Sort(arr1);
+                return arr1;
+            }
+            int[] res = new int[arr1.Length];
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            List<int> temp = new List<int>();
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                if (!arr2.Contains(arr1[i]))
+                {
+                    temp.Add(arr1[i]);
+                }
+                else if(dic.ContainsKey(arr1[i]))
+                {
+                    dic[arr1[i]]++;
+                }
+                else
+                {
+                    dic.Add(arr1[i],1);
+                }
+            }
+            int j = 0;
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                for (int k = 0; k < dic[arr2[i]]; k++)
+                {
+                    res[j] = arr2[i];
+                    j++;
+                }
+            }
+            temp.Sort();
+            int l = 0;
+            for (; j < res.Length; j++)
+            {
+                res[j] = temp[l];
+                l++;
+            }
+            return res;
+        }
+        #endregion
+        #region 范围求和||
+        public int MaxCount(int m, int n, int[][] ops)
+        {
+
+            foreach (var item in ops)
+            {
+                m = Math.Min(m,item[0]);
+                n = Math.Min(n,item[1]);
+            }
+            return m * n;
+            //int [][]arr = new int[m][];
+
+            //foreach (var item in ops)
+            //{       
+            //    for (int i = 0; i < item[0]; i++)
+            //    {
+            //        for (int j = 0; j < item[1]; j++)
+            //        {
+            //            arr[i] = new int[n]; 
+            //            if (arr[i][j] == arr[0][0])
+            //            {
+            //                arr[i][j] += 1;
+            //            }
+            //        }
+            //    }
+            //}
+            //int count = 0;
+            //for (int i = 0; i < m; i++)
+            //{
+            //    for (int j = 0; j < n; j++)
+            //    {
+            //        if (arr[i][j]==arr[0][0])
+            //        {
+            //            count++;
+            //        }
+            //    }
+            //}
+            //return count;
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
