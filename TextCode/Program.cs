@@ -6496,6 +6496,29 @@ new int[] {-2,2}}, 1);
             //return count;
         }
         #endregion
+        #region 根据身高重建队列
+        public int[][] ReconstructQueue(int[][] people)
+        {
+            var comparer = Comparer<int[]>.Create((int[] a, int[] b) =>
+            {
+                if (a[0] != b[0])
+                {
+                    return b[0].CompareTo(a[0]);
+                }
+                else
+                {
+                    return a[1].CompareTo(b[1]);
+                }
+            });
+            Array.Sort(people,comparer);
+            var result = new List<int[]>();
+            foreach (var item in people)
+            {
+                result.Insert(item[1],item);
+            }
+            return result.ToArray();
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
