@@ -6519,6 +6519,39 @@ new int[] {-2,2}}, 1);
             return result.ToArray();
         }
         #endregion
+        #region 距离顺序排列矩阵单元格
+        public int[][] AllCellsDistOrder(int R, int C, int r0, int c0)
+        {
+            int maxDistinct = Math.Max(r0,R-1-r0)+Math.Max(c0,C-1-c0);
+            List<List<int[]>> buket = new List<List<int[]>>();
+            for (int i = 0; i < maxDistinct; i++)
+            {
+                buket.Add(new List<int[]>());
+            }
+            for (int i = 0; i < R; i++)
+            {
+                for (int j = 0; j < C; j++)
+                {
+                    int d = dist(i,j,r0,c0);
+                    buket[d].Add(new int[] { i,j});
+                }
+            }
+            int[][] ret = new int[R * C][];
+            int index = 0;
+            for (int i = 0; i < maxDistinct; i++)
+            {
+                foreach (var item in buket[i])
+                {
+                    ret[index++] = item;
+                }
+            }
+            return ret;
+        }
+        private int dist(int r1,int c1,int r2,int c2)
+        {
+            return Math.Abs(r1-r2)+Math.Abs(c1-c2);
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
