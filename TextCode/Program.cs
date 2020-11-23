@@ -441,6 +441,7 @@ new int[] {-2,2}}, 1);
             ReverseWords("Let's take LeetCode contest");
             MatrixReshape(new int[][] { new int[] { 1, 2, 6, 6, 6 }, new int[] { 5, 6, 8, 6, 6 } }, 2, 4);
             SortByBits(new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
+            FindMinArrowShots(new int[][] { new int[] { 2, 6 }, new int[] { 2, 8 }, new int[] { 10, 16 }, new int[] { 7, 12 } });
             // FindRotateSteps("nyngl","yyynnnnnnlllggg");
             CheckRecord("PPALLLPL");
             Console.ReadLine();
@@ -6614,7 +6615,7 @@ new int[] {-2,2}}, 1);
         }
         #endregion
         #region 用最少的箭引爆最多的气球
-        public int FindMinArrowShots(int[][] points)
+        public static int FindMinArrowShots(int[][] points)
         {
             if (points==null||points.Length==0)
             {
