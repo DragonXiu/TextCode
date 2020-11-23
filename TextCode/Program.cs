@@ -6613,6 +6613,41 @@ new int[] {-2,2}}, 1);
             return dummyHead.next;
         }
         #endregion
+        #region 用最少的箭引爆最多的气球
+        public int FindMinArrowShots(int[][] points)
+        {
+            if (points==null||points.Length==0)
+            {
+                return 0;
+            }
+            Array.Sort(points,(a,b)=> {
+                if (a[1]==b[1])
+                {
+                    return 0;
+                }else if (a[1] < b[1])
+                {
+                    return -1;
+                }
+                else
+                {
+                    return 1;
+                }
+            });
+            int count = 0;
+            int i = 0;
+            while (i<points.Length)
+            {
+                int right = points[i][1];
+                i++;
+                while (i<points.Length&&points[i][0]<=right)
+                {
+                    i++;
+                }
+                count++;
+            }
+            return count;
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
