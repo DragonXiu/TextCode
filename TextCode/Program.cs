@@ -6649,6 +6649,31 @@ new int[] {-2,2}}, 1);
             return count;
         }
         #endregion
+        #region  完全二叉树的节点个数
+        int znum = 0;
+        public int CountNodes(TreeNode root)
+        {
+            deep(root);
+            return znum;
+        }
+        private int deep(TreeNode root)
+        {
+            if (root==null)
+            {
+                return 0;
+            }
+            znum++;
+            if (root.left!=null)
+            {
+                deep(root.left);
+            }
+            if (root.right!=null)
+            {
+                deep(root.right);
+            }
+            return znum;
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
