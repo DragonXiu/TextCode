@@ -6674,6 +6674,40 @@ new int[] {-2,2}}, 1);
             return znum;
         }
         #endregion
+        #region 上升下降字符串
+
+        public string SortString(string s)
+        {
+            int[] num = new int[26];
+            for (int i = 0; i < s.Length; i++)
+            {
+                num[s[i]- 'a']++;
+            }
+
+            StringBuilder ret = new StringBuilder();
+
+            while (ret.Length < s.Length)
+            {
+                for (int i = 0; i < 26; i++)
+                {
+                    if (num[i] > 0)
+                    {
+                        ret.Append((char)(i + 'a'));
+                        num[i]--;
+                    }
+                }
+                for (int i = 25; i >= 0; i--)
+                {
+                    if (num[i] > 0)
+                    {
+                        ret.Append((char)(i + 'a'));
+                        num[i]--;
+                    }
+                }
+            }
+            return ret.ToString();
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
