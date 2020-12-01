@@ -446,6 +446,7 @@ new int[] {-2,2}}, 1);
             ReversePairs(new int[] { 2147483647, 2147483647, 2147483647, 2147483647, 2147483647, 2147483647 });
             CheckRecord("PPALLLPL");
             ReorganizeString("vvvlo");
+            SearchRange(new int[] { 2,2 },2);
             Console.ReadLine();
         }
         #region 算法       
@@ -6863,6 +6864,51 @@ new int[] {-2,2}}, 1);
             //    res.Append(res1);
             //}
             //return res.ToString();
+        }
+        #endregion
+        #region 在排序数组中查找元素的第一个和最后一个位置
+        public static int[] SearchRange(int[] nums, int target)
+        {
+            int[] res = new int[] { -1,-1};
+            int left = 0;
+            int right = nums.Length;
+            while (left<=right)
+            {
+                int mid = left + (right - left) / 2;
+                if (mid>nums.Length-1)
+                {
+                    return res;
+                }
+                if (nums[mid]==target)
+                {
+                    for (int i = mid; i < nums.Length; i++)
+                    {
+                        if (nums[i]==target)
+                        {
+                            res[1] = i;
+                        }
+                    }
+                    for (int i = mid; i >= 0; i--)
+                    {
+                        if (nums[i] == target)
+                        {
+                            res[0] = i;
+                        }
+                    }
+                    return res;
+                }
+                else if (nums[mid]<target)
+                {
+                    left = mid + 1;
+                }
+                else if (nums[mid]>target)
+                {
+                    right = mid - 1;
+                }
+            }
+
+            return res;
+
         }
         #endregion
         #endregion
