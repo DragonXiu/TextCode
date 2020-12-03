@@ -447,6 +447,7 @@ new int[] {-2,2}}, 1);
             CheckRecord("PPALLLPL");
             ReorganizeString("vvvlo");
             SearchRange(new int[] { 2,2 },2);
+            CanPlaceFlowers(new int[] { 1, 0, 0, 0, 1 },1);
             Console.ReadLine();
         }
         #region 算法       
@@ -2837,6 +2838,7 @@ new int[] {-2,2}}, 1);
             array[0] = leftArray[2] + rightArray[2] + 1;
             array[1] = Math.Min(array[0], Math.Min(leftArray[0] + rightArray[1], rightArray[0] + leftArray[1]));
             array[2] = Math.Min(array[0], leftArray[1] + rightArray[1]);
+            
             return array;
         }
         #endregion
@@ -6999,6 +7001,70 @@ new int[] {-2,2}}, 1);
 
 
         #endregion
+        #region 两个列表的最小索引总和
+        public string[] FindRestaurant(string[] list1, string[] list2)
+        {
+            int n = int.MaxValue;
+            List<string> index = new List<string>();
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+
+            for (int i = 0; i < list1.Length; i++)
+            {
+                dic.Add(list1[i],i);
+            }
+            for (int i = 0; i < list2.Length; i++)
+            {
+                if (dic.ContainsKey(list2[i]))
+                {
+                    if (i + dic[list2[i]]<n)
+                    {
+                        index.Clear();
+                        index.Add(list2[i]);
+                    }
+                    else if(i + dic[list2[i]] == n)
+                    {
+                        index.Add(list2[i]);
+                    }
+                    
+                }
+            }
+            return index.ToArray();
+        }
+        #endregion
+        #region 种花问题
+        public static bool CanPlaceFlowers(int[] flowerbed, int n)
+        {
+            int count = 0, num = 0;
+            //[1,0,0,0,1] n=1
+            var temp = new int[flowerbed.Length + 2];
+            temp[0] = 0;
+            temp[temp.Length - 1] = 0;
+            //temp[0,1,0,0,0,1,0]
+            for (int i = 0; i < flowerbed.Length; i++)
+            {
+                temp[i + 1] = flowerbed[i];
+            }
+            for (int i = 0; i < temp.Length; i++)
+            {
+                if (temp[i] == 0)
+                {
+                    count++;
+                    if (count == 3)
+                    {
+                        num++;
+                        count = 0;
+                        i = i - 1;
+                    }
+                }
+                else count = 0;
+            }
+            return num >= n;
+
+        }
+
+        #endregion
+
+
         #endregion
         #region LinQ
         private static void DataInit()
