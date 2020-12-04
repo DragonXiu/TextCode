@@ -448,6 +448,7 @@ new int[] {-2,2}}, 1);
             ReorganizeString("vvvlo");
             SearchRange(new int[] { 2,2 },2);
             CanPlaceFlowers(new int[] { 1, 0, 0, 0, 1 },1);
+            IsPossible(new int[] { 3, 4, 4, 5, 6, 7, 8, 9, 10, 11 });
             Console.ReadLine();
         }
         #region 算法       
@@ -7062,6 +7063,86 @@ new int[] {-2,2}}, 1);
 
         }
 
+        #endregion
+        #region 分隔数组为连续子序列
+        public static bool IsPossible(int[] nums)
+        {
+            //新建两个字典
+            Dictionary<int, int> dic1 = new Dictionary<int, int>(); //存储原数组中数字i出现的次数
+            Dictionary<int, int> dic2 = new Dictionary<int, int>();//存储以数字i结尾的且符合题意的连续子序列个数
+            //以nums =[1, 2, 3, 3, 4, 4, 5]
+            //初始化：nc[1] = 1、nc[2] = 1、nc[3] = 2、nc[4] = 2、nc[5] = 1，tail[i]都为0
+            foreach (var item in nums)
+            {
+                if (dic1.ContainsKey(item))
+                {
+                    dic1[item]++;
+                }
+                else
+                {
+                    dic1.Add(item,1);
+                }
+            }
+            foreach (var item in nums)
+            {
+                //检查数字 1, nc[1] > 0,并且 nc[2]> 0,nc[3] > 0，因此找到了一个长度为3的连续子序列 nc[1]、nc[2]、nc[3] 各自减一，并 tail[3] 加 1
+                int count = dic1[item];
+                if (count>0)
+                {
+                    //判断item上一个结尾
+                    int prevCount = dic2.GetValueOrDefault(item-1, 0);
+                    //如果大于0就就把item接到dic2上,dic2[item-1]-1;dic2[item]+1
+                    if (prevCount>0)
+                    {
+                        dic1[item]=count-1;
+                        if (dic2.ContainsKey(item - 1))
+                        {
+                            dic2[item - 1]= prevCount - 1;
+                        }
+                        else
+                        {
+                            dic2.Add(item - 1, prevCount - 1);
+                        }
+                        if (dic2.ContainsKey(item))
+                        {
+                            dic2[item] = dic2.GetValueOrDefault(item, 0) + 1;
+                        }
+                        else
+                        {
+                            dic2.Add(item, dic2.GetValueOrDefault(item, 0) + 1);
+                        }
+                        
+                    }
+                    else
+                    {
+                        //但是 dic2[2]=0，因此不能接在前面，只能往后看(如果后面组不成，那就返回 false了)
+                        int count1 = dic1.GetValueOrDefault(item + 1, 0);
+                        int count2 = dic1.GetValueOrDefault(item+2,0);
+                        if (count1>0&&count2>0)
+                        {
+                            //实际发现 dic1[4]>0,dic1[5]>0，因此找到了一个长度为3的连续子序列 dic1[3]、dic1[4]、dic1[5] 各自减一，并 dic2[5] 加 1
+                            dic1[item]=count-1;
+                            dic1[item+1]=count1-1;
+                            dic1[item+2]=count2-1;
+                            if (dic2.ContainsKey(item + 2))
+                            {
+                                dic2[item + 2] = dic2[item + 2] + 1;
+                            }
+                            else
+                            {
+                                dic2.Add(item + 2,  1);
+                            }
+                          
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
         #endregion
 
 
