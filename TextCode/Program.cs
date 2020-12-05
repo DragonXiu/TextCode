@@ -7111,8 +7111,7 @@ new int[] {-2,2}}, 1);
                         {
                             dic2.Add(item, dic2.GetValueOrDefault(item, 0) + 1);
                         }
-                        
-                    }
+                     }
                     else
                     {
                         //但是 dic2[2]=0，因此不能接在前面，只能往后看(如果后面组不成，那就返回 false了)
@@ -7142,6 +7141,27 @@ new int[] {-2,2}}, 1);
                 }
             }
             return true;
+        }
+        #endregion
+        #region 任务调度器
+        public int LeastInterval(char[] tasks, int n)
+        {
+            int[] arr = new int[26];
+            for (int i = 0; i< tasks.Length; i++)
+            {
+                arr[tasks[i] -'A']++;
+            }
+            Array.Sort(arr);
+            int num = 1;
+            for (int j = arr.Length-2; j >=0 ; j--)
+            {
+                if (arr[j]<arr[j+1])
+                {
+                    break;
+                }
+                num++;
+            }
+            return Math.Max( (arr[^1] - 1) * (n+1) + num,tasks.Length);
         }
         #endregion
 
