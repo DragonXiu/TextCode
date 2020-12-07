@@ -449,6 +449,7 @@ new int[] {-2,2}}, 1);
             SearchRange(new int[] { 2,2 },2);
             CanPlaceFlowers(new int[] { 1, 0, 0, 0, 1 },1);
             IsPossible(new int[] { 3, 4, 4, 5, 6, 7, 8, 9, 10, 11 });
+            MatrixScore(new int[][] { new int[] { 0, 0, 1, 1 },new int[] { 1, 0, 1, 0 },new int[] { 1, 1, 0, 0 } });
             Console.ReadLine();
         }
         #region 算法       
@@ -7162,6 +7163,36 @@ new int[] {-2,2}}, 1);
                 num++;
             }
             return Math.Max( (arr[^1] - 1) * (n+1) + num,tasks.Length);
+        }
+        #endregion
+        #region 翻转矩阵后的得分
+        public static int MatrixScore(int[][] A)
+        {
+            int m = A.Length, n = A[0].Length;//m行，n列
+            //对最左边列，最优情况取值都为1
+            int res = m * (1 << (n - 1));
+            for (int i = 1; i < n; i++)
+            {
+                //对其他列，统计该列0、1数量，最大值记录为num（即转换后的1的最大数量）
+                //总贡献为 k*2^n-i-1
+                //在这个过程中要考虑上一步对最左边列的转换，判断当第一个元素a[i][0]为0时，
+                //  说明这列发生了转换，因此对0值应该取1，1应该取0
+                int num = 0;
+                for (int j = 0; j < m; j++)
+                {
+                    if (A[j][0]==1)
+                    {
+                        num += A[j][i];
+                    }
+                    else
+                    {
+                        num += (1-A[j][i]);//如果这一行反转，则该元素的实际值1-A[j][i]
+                    }
+                }
+                int k = Math.Max(num,m-num);
+                res += k * (1 << (n - i - 1));
+            }
+            return res;
         }
         #endregion
 
