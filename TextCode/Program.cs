@@ -7195,7 +7195,51 @@ new int[] {-2,2}}, 1);
             return res;
         }
         #endregion
-
+        #region 柠檬水找零
+        public bool LemonadeChange(int[] bills)
+        {
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            dic.Add(5, 0);
+            dic.Add(10, 0);
+            for (int i = 0; i < bills.Length; i++)
+            {
+                if (bills[i]==5)
+                {                 
+                        dic[5]++;             
+                }
+                else if(bills[i] ==10)
+                {
+                    if (dic[5]>0)
+                    {
+                        dic[5]--;
+                        dic[10]++;                       
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if (bills[i] == 20)
+                {
+                    if (dic[10] > 0&& dic[5] > 0)
+                    {
+                        dic[5]--;
+                        dic[10]--;
+                    }
+                    else if(dic[5] > 3)
+                    {
+                        dic[5]= dic[5]-3;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                
+            }
+            return true;
+        }
+        #endregion
 
         #endregion
         #region LinQ
