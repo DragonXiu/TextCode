@@ -405,7 +405,7 @@ namespace TextCode
             // RepeatedSubstringPattern(s);
             //Console.WriteLine(RepeatedSubstringPattern(s));            
             #endregion
-            WordPattern("abba", "dog cat cat dog");
+            WordPattern1("abba", "dog cat cat dog");
             BackspaceCompare("aaa###a", "aaaa###a");
             IsLongPressedName("kikcxmvzi", "kiikcxxmmvvzz");
             FindTheDifference("abcd", "abcde");
@@ -7272,6 +7272,45 @@ new int[] {-2,2}}, 1);
         {
 
         }
+        #endregion
+        #region 单词规律
+        public static bool WordPattern1(string pattern, string s)
+        {
+            Dictionary<char, int> dic1 = new Dictionary<char, int>();
+            int n = 1;
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                if (!dic1.ContainsKey(pattern[i]))
+                {
+                    dic1.Add(pattern[i],n);
+                    n++;
+                }
+            }
+            StringBuilder b1 = new StringBuilder();
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                b1.Append(dic1[pattern[i]]);
+            }
+            Dictionary<string, int> dic2 = new Dictionary<string, int>();
+            string[] arr = s.Split(" ").ToArray();
+            n = 1;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (!dic2.ContainsKey(arr[i]))
+                {
+                    dic2.Add(arr[i], n);
+                    n++;
+                }
+            }
+            StringBuilder b2 = new StringBuilder();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                b2.Append(dic2[arr[i]]);
+            }
+            return b1.ToString() == b2.ToString();
+
+        }
+
         #endregion
 
         #endregion
