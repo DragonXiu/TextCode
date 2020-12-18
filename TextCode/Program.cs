@@ -7312,6 +7312,46 @@ new int[] {-2,2}}, 1);
         }
 
         #endregion
+        #region 买卖股票的最佳时机含手续费
+        //public int MaxProfit(int[] prices, int fee)
+        //{
+
+        //}
+        #endregion
+        #region 根据二叉树创建字符串
+        StringBuilder str = new StringBuilder();
+        public string Tree2str(TreeNode t)
+        {
+           
+            if (t!=null)
+            {
+                str.Append(t.val);
+                def(t);
+            }
+            return str.ToString();
+        }
+        public void def(TreeNode root)
+        {
+            if (root==null)
+            {
+                return;
+            }
+            str.Append(root.val);
+            if (root.left!=null|| root.right != null)
+            {
+                str.Append('(');
+                def(root.left);
+                str.Append(')');
+            }
+            if (root.right != null)
+            {
+                str.Append('(');
+                def(root.right);
+                str.Append(')');
+            }            
+        }
+
+        #endregion
 
         #endregion
         #region LinQ
