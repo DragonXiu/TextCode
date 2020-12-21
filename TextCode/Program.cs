@@ -451,6 +451,8 @@ new int[] {-2,2}}, 1);
             IsPossible(new int[] { 3, 4, 4, 5, 6, 7, 8, 9, 10, 11 });
             MatrixScore(new int[][] { new int[] { 0, 0, 1, 1 }, new int[] { 1, 0, 1, 0 }, new int[] { 1, 1, 0, 0 } });
             GroupAnagrams(new string[] { "", "b", "" });
+            FindMaxAverage(new int[] { -1 }, 1);
+            FindErrorNums(new int[] { 1, 2, 2, 4 });
             Console.ReadLine();
         }
         #region 算法       
@@ -7282,7 +7284,7 @@ new int[] {-2,2}}, 1);
             {
                 if (!dic1.ContainsKey(pattern[i]))
                 {
-                    dic1.Add(pattern[i],n);
+                    dic1.Add(pattern[i], n);
                     n++;
                 }
             }
@@ -7322,8 +7324,8 @@ new int[] {-2,2}}, 1);
         StringBuilder str = new StringBuilder();
         public string Tree2str(TreeNode t)
         {
-           
-            if (t!=null)
+
+            if (t != null)
             {
                 str.Append(t.val);
                 def(t);
@@ -7332,12 +7334,12 @@ new int[] {-2,2}}, 1);
         }
         public void def(TreeNode root)
         {
-            if (root==null)
+            if (root == null)
             {
                 return;
             }
             str.Append(root.val);
-            if (root.left!=null|| root.right != null)
+            if (root.left != null || root.right != null)
             {
                 str.Append('(');
                 def(root.left);
@@ -7348,509 +7350,636 @@ new int[] {-2,2}}, 1);
                 str.Append('(');
                 def(root.right);
                 str.Append(')');
-            }            
+            }
         }
 
         #endregion
+        #region 旋转图片
+        public void Rotate(int[][] matrix)
+        {
+            #region 数组辅助
+
+            //int n = matrix.Length;
+            //int[][] matrix_new = new int[n][];
+            //for (int i = 0; i < n; ++i)
+            //{
+            //    matrix_new[i] = new int[n];
+            //    for (int j = 0; j < n; ++j)
+            //    {
+            //        matrix_new[j][n - i - 1] = matrix[i][j];
+            //    }
+            //}
+            //for (int i = 0; i < n;++ i)
+            //{
+            //    for (int j = 0; j < n; ++j)
+            //    {
+            //        matrix[i][j] = matrix_new[i][j];
+            //    }
+            //}
+
+            #endregion
+            #region 原地旋转
+            //int n = matrix.Length;
+            //for (int i = 0; i < n/2; ++i)
+            //{
+            //    for (int j = 0; j < (n+1)/2; ++j)
+            //    {
+            //        int temp = matrix[i][j];
+            //        matrix[i][j] = matrix[n - j - 1][i];
+            //        matrix[n - j - 1][i] = matrix[n-i-1][n-j-1];
+            //        matrix[n - i - 1][n - j - 1] = matrix[j][n - i - 1];
+            //        matrix[j][n - i - 1]=temp;
+            //    }
+            //}
+
+            #endregion
+            #region 翻转代替旋转
+            int n = matrix.Length;
+            //先水平翻转
+            for (int i = 0; i < n / 2; ++i)
+            {
+                for (int j = 0; j < n; ++j)
+                {
+                    int temp = matrix[i][j];
+                    matrix[i][j] = matrix[n - i - 1][j];
+                    matrix[n - i - 1][j] = temp;
+                }
+            }
+            //对角线翻转达成旋转90度效果
+            for (int i = 0; i < n; ++i)
+            {
+                for (int j = 0; j < i; ++j)
+                {
+                    int temp = matrix[i][j];
+                    matrix[i][j] = matrix[j][i];
+                    matrix[j][i] = temp;
+                }
+            }
+
+            #endregion
+
+        }
 
         #endregion
-        #region LinQ
-        private static void DataInit()
+        #region 使用最小花费爬楼梯
+        public int MinCostClimbingStairs(int[] cost)
         {
-            IList<UserInfo> userlist = new List<UserInfo>() {
+            int n = cost.Length;
+            int prev = 0, curr = 0;
+            for (int i = 2; i <= n; i++)
+            {
+                int next = Math.Min(curr + cost[i - 1], prev + cost[i - 2]);
+                prev = curr;
+                curr = next;
+            }
+            return curr;
+        }
+        #endregion
+        #region 子数组最大平均数1
+        public static double FindMaxAverage(int[] nums, int k)
+        {
+            int len = nums.Length;
+            double sum = 0;
+            double res = double.MinValue;
+            for (int i = 0; i < k; i++)
+            {
+                sum += nums[i];
+            }
+            res = sum;
+            for (int i = k; i < len; i++)
+            {
+                sum += nums[i] - nums[i - k];
+                res = Math.Max(res, sum);
+            }
+            return res / k;
+        }
+        #endregion
+        #region 错误的集合
+        public static int[] FindErrorNums(int[] nums)
+        {
+            Dictionary<int,int> res = new Dictionary<int,int>();
+            Array.Sort(nums);
+            int small = -1, big = -1;
+            foreach (var item in nums)
+            {
+                res.Add(item,res.GetValueOrDefault(item,0)+1);
+            }
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (res.ContainsKey(i))
+                {
+                    if (res[i]==2)
+                    {
+                        small = i;
+                    }
+                    else
+                    {
+                        big = i;
+                    }
+                }
+            }
+            return new int[] { small,big};
+        }
+    #endregion
+
+    #endregion
+    #region LinQ
+    private static void DataInit()
+    {
+        IList<UserInfo> userlist = new List<UserInfo>() {
         new UserInfo(){UId=1,UserName="zs",Age=23,RoleId=1},
         new UserInfo(){UId=2,UserName="ls",Age=20,RoleId=2},
         new UserInfo(){UId=3,UserName="ww",Age=26,RoleId=1},
         new UserInfo(){UId=4,UserName="zl",Age=26,RoleId=2},
         new UserInfo(){UId=5,UserName="tq",Age=42,RoleId=2}
         };
-            IList<RoleInfo> roleList = new List<RoleInfo> {
+        IList<RoleInfo> roleList = new List<RoleInfo> {
             new RoleInfo(){Rid=1,RoleName="管理员"},
             new RoleInfo(){Rid=2,RoleName="普通用户"}
             };
-            //query语法
-            var result = from u in userlist
-                         where u.Age > 20
-                         select new { u.UId, u.UserName, u.Age };
-            //lambda
-            var result2 = userlist.Where<UserInfo>(u => u.Age > 20).Select(u => new { u.UId, u.UserName, u.Age });
-            //按id排序，age
-            var result3 = from u in userlist
-                          orderby u.UId, u.Age descending
-                          select u;
-            var result31 = userlist.OrderByDescending(u => u.UId).ThenBy(u => u.Age);
-            //分组
-            var resGroups = from u in userlist
-                            group u by u.RoleId;
-            //lambda方式，GroupBy延迟执行，ToLookup是立即执行，使用方法和GroupBy一样
-            var resGroups1 = userlist.GroupBy(u => u.RoleId);
-            //遍历分组
-            foreach (var group in resGroups)
+        //query语法
+        var result = from u in userlist
+                     where u.Age > 20
+                     select new { u.UId, u.UserName, u.Age };
+        //lambda
+        var result2 = userlist.Where<UserInfo>(u => u.Age > 20).Select(u => new { u.UId, u.UserName, u.Age });
+        //按id排序，age
+        var result3 = from u in userlist
+                      orderby u.UId, u.Age descending
+                      select u;
+        var result31 = userlist.OrderByDescending(u => u.UId).ThenBy(u => u.Age);
+        //分组
+        var resGroups = from u in userlist
+                        group u by u.RoleId;
+        //lambda方式，GroupBy延迟执行，ToLookup是立即执行，使用方法和GroupBy一样
+        var resGroups1 = userlist.GroupBy(u => u.RoleId);
+        //遍历分组
+        foreach (var group in resGroups)
+        {
+            Console.WriteLine("roleId:{0}", group.Key);
+            foreach (UserInfo user in group)
             {
-                Console.WriteLine("roleId:{0}", group.Key);
-                foreach (UserInfo user in group)
-                {
-                    Console.WriteLine("userName:{0}", user.UserName);
-                }
-            }
-            //连接查询join
-            var resJoin = from user in userlist
-                          join role in roleList
-                          on user.RoleId equals role.Rid
-                          select new
-                          {
-                              uname = user.UserName,
-                              rname = role.RoleName
-                          };
-            foreach (var item in resJoin)
-            {
-                Console.WriteLine("uname:{0}+rname:{1}", item.uname, item.rname);
-            }
-            //left join,right join调整顺序即可
-            //var resJoin1 = from user in userlist
-            //               join role in roleList
-            //               on user.RoleId equals role.Rid into temp
-            //               from tt in temp.DefaultIfEmpty
-            //               select new
-            //               {
-            //                   uname = user.UserName,
-            //                   rname = role?.RoleName
-            //               };
-
-            //cross in
-            var resJoin2 = from user in userlist
-                           from role in roleList
-                           select new
-                           {
-                               uname = user?.UserName,
-                               rname = role?.RoleName
-                           };
-            //lambda方式
-            var resJoin3 = userlist.Join(roleList,
-                user => user.RoleId,
-                role => role.Rid,
-                (user, role) => new
-                {
-                    uname = user.UserName,
-                    rname = role.Rid
-                });
-            //遍历
-            foreach (var item in resJoin3)
-            {
-                Console.WriteLine("用户:{0}---角色:{1}", item.uname, item.rname);
-            }
-            //量词
-            //ALL 所有元素都符合的条件返回true
-            bool areAllAdmin = userlist.All(u => u.RoleId == 1);
-            //Any 有一个符合条件的返回true
-
-        }
-
-        #endregion
-    }
-    #region 最小栈
-    public class MinStack
-    {
-        Stack<int> x_stack;
-        Stack<int> min_stack;
-        /** initialize your data structure here. */
-        public MinStack()
-        {
-            min_stack.Push(int.MaxValue);
-        }
-
-        public void Push(int x)
-        {
-            x_stack.Push(x);
-            min_stack.Push(Math.Min(min_stack.Peek(), x));
-        }
-
-        public void Pop()
-        {
-            x_stack.Pop();
-            min_stack.Pop();
-        }
-
-        public int Top()
-        {
-            return x_stack.Peek();
-        }
-
-        public int GetMin()
-        {
-            return min_stack.Peek();
-        }
-
-    }
-    #endregion
-    #region MyRegion
-
-
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int val)
-        {
-            this.val = val;
-        }
-    }
-    #endregion
-
-
-
-    #region 编写质量
-    #region 正确实现浅拷贝和深拷贝
-    [Serializable]
-    class Employee : ICloneable
-    {
-        public string IDCode { get; set; }
-        public int Age { get; set; }
-        public Department Department { get; set; }
-        #region ICloneable 成员
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-
-        //深拷贝
-        public Employee DeepClone()
-        {
-            using (Stream objectStream = new MemoryStream())
-            {
-                IFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(objectStream, this);
-                objectStream.Seek(0, SeekOrigin.Begin);
-                return formatter.Deserialize(objectStream) as Employee;
+                Console.WriteLine("userName:{0}", user.UserName);
             }
         }
-        public Employee ShallowClone()
+        //连接查询join
+        var resJoin = from user in userlist
+                      join role in roleList
+                      on user.RoleId equals role.Rid
+                      select new
+                      {
+                          uname = user.UserName,
+                          rname = role.RoleName
+                      };
+        foreach (var item in resJoin)
         {
-            return Clone() as Employee;
+            Console.WriteLine("uname:{0}+rname:{1}", item.uname, item.rname);
         }
+        //left join,right join调整顺序即可
+        //var resJoin1 = from user in userlist
+        //               join role in roleList
+        //               on user.RoleId equals role.Rid into temp
+        //               from tt in temp.DefaultIfEmpty
+        //               select new
+        //               {
+        //                   uname = user.UserName,
+        //                   rname = role?.RoleName
+        //               };
 
-    }
-    class Department
-    {
-        public string Name { get; set; }
-        public override string ToString()
+        //cross in
+        var resJoin2 = from user in userlist
+                       from role in roleList
+                       select new
+                       {
+                           uname = user?.UserName,
+                           rname = role?.RoleName
+                       };
+        //lambda方式
+        var resJoin3 = userlist.Join(roleList,
+            user => user.RoleId,
+            role => role.Rid,
+            (user, role) => new
+            {
+                uname = user.UserName,
+                rname = role.Rid
+            });
+        //遍历
+        foreach (var item in resJoin3)
         {
-            return this.Name;
+            Console.WriteLine("用户:{0}---角色:{1}", item.uname, item.rname);
         }
-        #endregion
-    }
-    #endregion
-    #region 使用dynamic /daɪˈnæmɪk/
-    /*var是语法糖,支持智能感知，编译时实际类
-     * 型来替换该变量，dynamic是到运行时解析*/
-    public class DynamicSample
-    {
-        public string Name { get; set; }
-        public int Add(int a, int b)
-        {
-            return a + b;
-        }
-    }
-    #endregion
-    #region 元素数量可变的情况下不要使用数组
-    class ArrayLZ
-    {
-        public void a()
-        {
-            int[] iArr = new int[] { 1, 2, 3, 4, 5, 6, 7 };
-            ArrayList arrayList = ArrayList.Adapter(iArr);//数组转换ArrayList
-            arrayList.Add(7);
-            List<int> list = iArr.ToList<int>();//将数组转换List<T>
-            list.Add(8);
-            iArr = (int[])iArr.Resize(10);
+        //量词
+        //ALL 所有元素都符合的条件返回true
+        bool areAllAdmin = userlist.All(u => u.RoleId == 1);
+        //Any 有一个符合条件的返回true
 
-
-        }
-    }
-    //ReSize
-    public static class ClassForExtensions
-    {
-        public static Array Resize(this Array array, int newSize)
-        {
-            Type t = array.GetType().GetElementType();
-            Array newArray = Array.CreateInstance(t, newSize);
-            Array.Copy(array, 0, newArray, 0, Math.Min(array.Length, newSize));
-            return newArray;
-        }
-        //测试速度
-        public static void ResizeArray()
-        {
-            int[] iArr = { 0, 1, 2, 3, 4, 5, 6 };
-            Stopwatch watch1 = new Stopwatch();
-            watch1.Start();
-            iArr = (int[])iArr.Resize(10);
-            watch1.Stop();
-            Console.WriteLine("ResizeArray：" + watch1.Elapsed);
-        }
-        public static void ResizeList()
-        {
-            List<int> iArr = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6 });
-            Stopwatch watch2 = new Stopwatch();
-            watch2.Start();
-            iArr.Add(0);
-            iArr.Add(0);
-            iArr.Add(0);
-            watch2.Stop();
-            Console.WriteLine("ResizeList:" + watch2.Elapsed);
-
-        }
     }
 
     #endregion
-    #region 多数情况下使用foreach,for索引器，foreach迭代器
-    //迭代器模式
-    public class Iterator
+}
+#region 最小栈
+public class MinStack
+{
+    Stack<int> x_stack;
+    Stack<int> min_stack;
+    /** initialize your data structure here. */
+    public MinStack()
     {
-        public void IteratorA()
-        {
-            //使用接口IMyEnumerable代替MyList
-            IMyEnumerable list = new MyList();
-            //得到迭代器，再循环中针对迭代器编码，而不是集合MyList
-            IMyEnumerator enumerator = list.GetMyEnumerator();
-            for (int i = 0; i < list.Count; i++)
-            {
-                object current = enumerator.Current;
-                enumerator.MoveNext();
-            }
-            while (enumerator.MoveNext())
-            {
-                object current = enumerator.Current;
-            }
-        }
-        /// <summary>
-        /// 要求所有迭代器全部实现该接口
-        /// </summary>
-        interface IMyEnumerator
-        {
-            bool MoveNext();
-            object Current { get; }
-        }
-
-        /// <summary>
-        /// 要求所有的集合实现该接口
-        /// 这样客户端就可以针对该接口编码
-        /// 而无需关注集体实现
-        /// </summary>
-        interface IMyEnumerable
-        {
-            IMyEnumerator GetMyEnumerator();
-            int Count { get; }
-        }
-        class MyList : IMyEnumerable
-        {
-            object[] item = new object[10];
-            IMyEnumerator myEnumerator;
-            public object this[int i]
-            {
-                get { return item[i]; }
-                set { this.item[i] = value; }
-            }
-            public int Count
-            {
-                get { return item.Length; }
-            }
-            public IMyEnumerator GetMyEnumerator()
-            {
-                if (myEnumerator == null)
-                {
-                    myEnumerator = new MyEnumerator(this);
-                }
-                return myEnumerator;
-            }
-        }
-        class MyEnumerator : IMyEnumerator
-        {
-            int index = 0;
-            MyList myList;
-            public MyEnumerator(MyList myList)
-            {
-                this.myList = myList;
-            }
-            public bool MoveNext()
-            {
-                if (index + 1 > myList.Count)
-                {
-                    index = 1;
-                    return false;
-                }
-                else
-                {
-                    index++;
-                    return true;
-                }
-            }
-            public object Current
-            {
-                get { return myList[index - 1]; }
-            }
-        }
+        min_stack.Push(int.MaxValue);
     }
 
-    #endregion
-    #region 使用泛型集合代替非泛型集合
-    public class Generic
+    public void Push(int x)
     {
-        static int collectionCount = 0;
-        static Stopwatch watch = null;
-        static int testCount = 10000000;
-        static void TestBegin()
+        x_stack.Push(x);
+        min_stack.Push(Math.Min(min_stack.Peek(), x));
+    }
+
+    public void Pop()
+    {
+        x_stack.Pop();
+        min_stack.Pop();
+    }
+
+    public int Top()
+    {
+        return x_stack.Peek();
+    }
+
+    public int GetMin()
+    {
+        return min_stack.Peek();
+    }
+
+}
+#endregion
+#region MyRegion
+
+
+public class ListNode
+{
+    public int val;
+    public ListNode next;
+    public ListNode(int val)
+    {
+        this.val = val;
+    }
+}
+#endregion
+
+
+
+#region 编写质量
+#region 正确实现浅拷贝和深拷贝
+[Serializable]
+class Employee : ICloneable
+{
+    public string IDCode { get; set; }
+    public int Age { get; set; }
+    public Department Department { get; set; }
+    #region ICloneable 成员
+    public object Clone()
+    {
+        return this.MemberwiseClone();
+    }
+
+    //深拷贝
+    public Employee DeepClone()
+    {
+        using (Stream objectStream = new MemoryStream())
         {
-            GC.Collect();//强制对所用代码进行即时垃圾回收
-            GC.WaitForPendingFinalizers();//挂起线程，执行终结器队列中的终结器(即析构方法)
-            GC.Collect();//再次对所用代码垃圾回收，主要包括终结器队列中出来的对象
-            collectionCount = GC.CollectionCount(0);//返回在0代中执行垃圾回收次数
-            watch = new Stopwatch();
-            watch.Start();
-        }
-        static void TestEnd()
-        {
-            watch.Stop();
-            Console.WriteLine("耗时:" + watch.ElapsedMilliseconds.ToString());
-            Console.WriteLine("垃圾回收次数:" + (GC.CollectionCount(0) - collectionCount));
-        }
-        static void TestArrayList()
-        {
-            ArrayList al = new ArrayList();
-            int temp = 0;
-            for (int i = 0; i < testCount; i++)
-            {
-                al.Add(i);
-                temp = (int)al[i];
-            }
-            al = null;
-        }
-        static void TestGenericList()
-        {
-            List<int> listT = new List<int>();
-            int temp = 0;
-            for (int i = 0; i < testCount; i++)
-            {
-                listT.Add(i);
-                temp = listT[i];
-            }
-            listT = null;
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(objectStream, this);
+            objectStream.Seek(0, SeekOrigin.Begin);
+            return formatter.Deserialize(objectStream) as Employee;
         }
     }
-    #endregion
-    #region 避免List<T>作为自定义集合类的基类
+    public Employee ShallowClone()
+    {
+        return Clone() as Employee;
+    }
 
-    #endregion
-    #region 确保线性安全
-    class Person
+}
+class Department
+{
+    public string Name { get; set; }
+    public override string ToString()
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
+        return this.Name;
     }
     #endregion
-    #endregion
-    public class UserInfo
+}
+#endregion
+#region 使用dynamic /daɪˈnæmɪk/
+/*var是语法糖,支持智能感知，编译时实际类
+ * 型来替换该变量，dynamic是到运行时解析*/
+public class DynamicSample
+{
+    public string Name { get; set; }
+    public int Add(int a, int b)
     {
-        public int UId { get; set; }
-        public string UserName { get; set; }
-        public int Age { get; set; }
-        public int RoleId { get; set; }
+        return a + b;
     }
-    public class RandomizedCollection
+}
+#endregion
+#region 元素数量可变的情况下不要使用数组
+class ArrayLZ
+{
+    public void a()
     {
-        //字典内使用HashSet是为了实现O(1)删除索引，而且索引不会重复
-        Dictionary<int, HashSet<int>> iDic { get; set; } = new Dictionary<int, HashSet<int>>();
-        List<int> values { get; set; } = new List<int>();
-        /** Initialize your data structure here. */
-        public RandomizedCollection()
+        int[] iArr = new int[] { 1, 2, 3, 4, 5, 6, 7 };
+        ArrayList arrayList = ArrayList.Adapter(iArr);//数组转换ArrayList
+        arrayList.Add(7);
+        List<int> list = iArr.ToList<int>();//将数组转换List<T>
+        list.Add(8);
+        iArr = (int[])iArr.Resize(10);
+
+
+    }
+}
+//ReSize
+public static class ClassForExtensions
+{
+    public static Array Resize(this Array array, int newSize)
+    {
+        Type t = array.GetType().GetElementType();
+        Array newArray = Array.CreateInstance(t, newSize);
+        Array.Copy(array, 0, newArray, 0, Math.Min(array.Length, newSize));
+        return newArray;
+    }
+    //测试速度
+    public static void ResizeArray()
+    {
+        int[] iArr = { 0, 1, 2, 3, 4, 5, 6 };
+        Stopwatch watch1 = new Stopwatch();
+        watch1.Start();
+        iArr = (int[])iArr.Resize(10);
+        watch1.Stop();
+        Console.WriteLine("ResizeArray：" + watch1.Elapsed);
+    }
+    public static void ResizeList()
+    {
+        List<int> iArr = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6 });
+        Stopwatch watch2 = new Stopwatch();
+        watch2.Start();
+        iArr.Add(0);
+        iArr.Add(0);
+        iArr.Add(0);
+        watch2.Stop();
+        Console.WriteLine("ResizeList:" + watch2.Elapsed);
+
+    }
+}
+
+#endregion
+#region 多数情况下使用foreach,for索引器，foreach迭代器
+//迭代器模式
+public class Iterator
+{
+    public void IteratorA()
+    {
+        //使用接口IMyEnumerable代替MyList
+        IMyEnumerable list = new MyList();
+        //得到迭代器，再循环中针对迭代器编码，而不是集合MyList
+        IMyEnumerator enumerator = list.GetMyEnumerator();
+        for (int i = 0; i < list.Count; i++)
         {
-            //列表随机插入是O(n)因为，要后移位置之后的元素，但追加在列表尾部的O(1)
-            //列表按索引查找的是O(1),按值查找是O(n)
+            object current = enumerator.Current;
+            enumerator.MoveNext();
         }
-
-        /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
-        public bool Insert(int val)
+        while (enumerator.MoveNext())
         {
-            //使用一个字典维护某个数字的所有索引列表
-            if (!iDic.TryGetValue(val, out var indexSet))
+            object current = enumerator.Current;
+        }
+    }
+    /// <summary>
+    /// 要求所有迭代器全部实现该接口
+    /// </summary>
+    interface IMyEnumerator
+    {
+        bool MoveNext();
+        object Current { get; }
+    }
+
+    /// <summary>
+    /// 要求所有的集合实现该接口
+    /// 这样客户端就可以针对该接口编码
+    /// 而无需关注集体实现
+    /// </summary>
+    interface IMyEnumerable
+    {
+        IMyEnumerator GetMyEnumerator();
+        int Count { get; }
+    }
+    class MyList : IMyEnumerable
+    {
+        object[] item = new object[10];
+        IMyEnumerator myEnumerator;
+        public object this[int i]
+        {
+            get { return item[i]; }
+            set { this.item[i] = value; }
+        }
+        public int Count
+        {
+            get { return item.Length; }
+        }
+        public IMyEnumerator GetMyEnumerator()
+        {
+            if (myEnumerator == null)
             {
-                indexSet = new HashSet<int>();
-                iDic.Add(val, indexSet);
+                myEnumerator = new MyEnumerator(this);
             }
-            values.Add(val);
-            indexSet.Add(values.Count - 1);
-            return true;
+            return myEnumerator;
         }
-
-        /** Removes a value from the collection. Returns true if the collection contained the specified element. */
-        public bool Remove(int val)
+    }
+    class MyEnumerator : IMyEnumerator
+    {
+        int index = 0;
+        MyList myList;
+        public MyEnumerator(MyList myList)
         {
-            //字典不存在某个数字的索引，也就不存在某个数字
-            if (!iDic.TryGetValue(val, out var valList) || valList.Count == 0)
+            this.myList = myList;
+        }
+        public bool MoveNext()
+        {
+            if (index + 1 > myList.Count)
             {
+                index = 1;
                 return false;
             }
-            var lastValue = values.Last();
-            if (lastValue == val)
+            else
             {
-                //直接在列表最后移除
-                valList.Remove(values.Count - 1);
-                values.RemoveAt(values.Count - 1);
+                index++;
                 return true;
             }
-            //将values最后一个元素的值替换要删除的元素的最后一个索引的位置，然后values删
-            //除最后一个元素，即为O(1)删除
-            //内替换的值得索引列表应该移除索引值(values的长度-1)，并追加一个被删除元素的所在的索引值
-            //（因为被替换的值被替换到这个索引了）
-            var valLastIndex = valList.Last();
-            var changeIndex = iDic[lastValue];
-            valList.Remove(valLastIndex);
-            changeIndex.Remove(values.Count - 1);
-            changeIndex.Add(valLastIndex);
-            values[valLastIndex] = lastValue;
+        }
+        public object Current
+        {
+            get { return myList[index - 1]; }
+        }
+    }
+}
+
+#endregion
+#region 使用泛型集合代替非泛型集合
+public class Generic
+{
+    static int collectionCount = 0;
+    static Stopwatch watch = null;
+    static int testCount = 10000000;
+    static void TestBegin()
+    {
+        GC.Collect();//强制对所用代码进行即时垃圾回收
+        GC.WaitForPendingFinalizers();//挂起线程，执行终结器队列中的终结器(即析构方法)
+        GC.Collect();//再次对所用代码垃圾回收，主要包括终结器队列中出来的对象
+        collectionCount = GC.CollectionCount(0);//返回在0代中执行垃圾回收次数
+        watch = new Stopwatch();
+        watch.Start();
+    }
+    static void TestEnd()
+    {
+        watch.Stop();
+        Console.WriteLine("耗时:" + watch.ElapsedMilliseconds.ToString());
+        Console.WriteLine("垃圾回收次数:" + (GC.CollectionCount(0) - collectionCount));
+    }
+    static void TestArrayList()
+    {
+        ArrayList al = new ArrayList();
+        int temp = 0;
+        for (int i = 0; i < testCount; i++)
+        {
+            al.Add(i);
+            temp = (int)al[i];
+        }
+        al = null;
+    }
+    static void TestGenericList()
+    {
+        List<int> listT = new List<int>();
+        int temp = 0;
+        for (int i = 0; i < testCount; i++)
+        {
+            listT.Add(i);
+            temp = listT[i];
+        }
+        listT = null;
+    }
+}
+#endregion
+#region 避免List<T>作为自定义集合类的基类
+
+#endregion
+#region 确保线性安全
+class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+#endregion
+#endregion
+public class UserInfo
+{
+    public int UId { get; set; }
+    public string UserName { get; set; }
+    public int Age { get; set; }
+    public int RoleId { get; set; }
+}
+public class RandomizedCollection
+{
+    //字典内使用HashSet是为了实现O(1)删除索引，而且索引不会重复
+    Dictionary<int, HashSet<int>> iDic { get; set; } = new Dictionary<int, HashSet<int>>();
+    List<int> values { get; set; } = new List<int>();
+    /** Initialize your data structure here. */
+    public RandomizedCollection()
+    {
+        //列表随机插入是O(n)因为，要后移位置之后的元素，但追加在列表尾部的O(1)
+        //列表按索引查找的是O(1),按值查找是O(n)
+    }
+
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    public bool Insert(int val)
+    {
+        //使用一个字典维护某个数字的所有索引列表
+        if (!iDic.TryGetValue(val, out var indexSet))
+        {
+            indexSet = new HashSet<int>();
+            iDic.Add(val, indexSet);
+        }
+        values.Add(val);
+        indexSet.Add(values.Count - 1);
+        return true;
+    }
+
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    public bool Remove(int val)
+    {
+        //字典不存在某个数字的索引，也就不存在某个数字
+        if (!iDic.TryGetValue(val, out var valList) || valList.Count == 0)
+        {
+            return false;
+        }
+        var lastValue = values.Last();
+        if (lastValue == val)
+        {
+            //直接在列表最后移除
+            valList.Remove(values.Count - 1);
             values.RemoveAt(values.Count - 1);
             return true;
         }
-
-        /** Get a random element from the collection. */
-        public int GetRandom()
-        {
-            return values[new Random().Next(0, values.Count)];
-        }
+        //将values最后一个元素的值替换要删除的元素的最后一个索引的位置，然后values删
+        //除最后一个元素，即为O(1)删除
+        //内替换的值得索引列表应该移除索引值(values的长度-1)，并追加一个被删除元素的所在的索引值
+        //（因为被替换的值被替换到这个索引了）
+        var valLastIndex = valList.Last();
+        var changeIndex = iDic[lastValue];
+        valList.Remove(valLastIndex);
+        changeIndex.Remove(values.Count - 1);
+        changeIndex.Add(valLastIndex);
+        values[valLastIndex] = lastValue;
+        values.RemoveAt(values.Count - 1);
+        return true;
     }
-    class RoleInfo
+
+    /** Get a random element from the collection. */
+    public int GetRandom()
     {
-        public int Rid { get; set; }
-        public string RoleName { get; set; }
+        return values[new Random().Next(0, values.Count)];
     }
+}
+class RoleInfo
+{
+    public int Rid { get; set; }
+    public string RoleName { get; set; }
+}
 
-    public class Node
+public class Node
+{
+    public int val;
+    public List<Node> children;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() { }
+
+    public Node(int _val)
     {
-        public int val;
-        public List<Node> children;
-        public Node left;
-        public Node right;
-        public Node next;
-
-        public Node() { }
-
-        public Node(int _val)
-        {
-            val = _val;
-        }
-        public Node(int _val, List<Node> _children)
-        {
-            val = _val;
-            children = _children;
-        }
-
-        public Node(int _val, Node _left, Node _right, Node _next)
-        {
-            val = _val;
-            left = _left;
-            right = _right;
-            next = _next;
-        }
+        val = _val;
     }
+    public Node(int _val, List<Node> _children)
+    {
+        val = _val;
+        children = _children;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next)
+    {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+}
 }
 
 
