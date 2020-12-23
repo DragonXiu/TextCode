@@ -453,6 +453,8 @@ new int[] {-2,2}}, 1);
             GroupAnagrams(new string[] { "", "b", "" });
             FindMaxAverage(new int[] { -1 }, 1);
             FindErrorNums(new int[] { 1, 2, 2, 4 });
+            ImageSmoother(new int[][] { new int[] { 1, 1, 1 }, new int[] { 1, 0, 1 }, new int[] { 1, 1, 1 } });
+            CheckPossibility(new int[] { 3,4,2,3});
             Console.ReadLine();
         }
         #region 算法       
@@ -7462,7 +7464,15 @@ new int[] {-2,2}}, 1);
             int small = -1, big = -1;
             foreach (var item in nums)
             {
-                res.Add(item,res.GetValueOrDefault(item,0)+1);
+                if (res.ContainsKey(item))
+                {
+                    res[item]++;
+                }
+                else
+                {
+                    res.Add(item, 1);
+                }
+               
             }
             for (int i = 1; i < nums.Length; i++)
             {
@@ -7480,11 +7490,172 @@ new int[] {-2,2}}, 1);
             }
             return new int[] { small,big};
         }
-    #endregion
+        #endregion
+        #region 二叉树的锯齿形层序遍历
+        public IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+        {
+            IList<IList<int>> res = new List<IList<int>>();
+            if (root==null)
+            {
+                return res;
+            }
+            Queue<TreeNode> nodes = new Queue<TreeNode>();
+            nodes.Enqueue(root);
+            bool isOrderLeft = true;
+            while (nodes.Count>0)
+            {
+                var count = nodes.Count;
+                var level = new int[count];
+                while (count>0)
+                {
+                    var node = nodes.Dequeue();
+                    level[isOrderLeft ? (level.Length - count) : (count - 1)] = node.val;
+                    count--;
+                    if (node.left!=null)
+                    {
+                        nodes.Enqueue(node.left);
+                    }
+                    if (node.right!=null)
+                    {
+                        nodes.Enqueue(node.right);
+                    }
+                }
+                res.Add(level.ToList());
+                isOrderLeft = !isOrderLeft;
+            }
+            return res;
+        }
+        #endregion
+        #region  两数之和 IV - 输入 BST
+        public bool FindTarget(TreeNode root, int k)
+        {
+            List<int> list = new List<int>();
+            return find(root,k,list);
+        }
+        public bool find(TreeNode root,int k,List<int>list)
+        {
+            if (root==null)
+            {
+                return false;
+            }
+            if (list.Contains(k-root.val))
+            {
+                return true;
+            }
+            list.Add(root.val);
+            return find(root.left,k,list) || find(root.right,k,list);
+        }
+        #endregion
+        #region 图片平滑器
+        public static int[][] ImageSmoother(int[][] M)
+        {
+            int R = M.Length, C = M[0].Length;
+            int[][] ans = new int[R][];
+            for (int r = 0; r < R; ++r)
+            {
+                ans[r] =new  int[C];
+                for (int c = 0; c < C; ++c)
+                {
+                    int count = 0;
+                    for (int nr = r-1; nr <= r+1; ++nr)
+                    {
+                        for (int nc = c-1; nc <=c+1; ++nc)
+                        {
+                            if (0<=nr&&nr<R&&0<=nc&&nc<C)
+                            {
+                                ans[r][c] += M[nr][nc];
+                                count++;
+                            }
+                        }
+                       
+                    } ans[r][c] /= count;
+                }
+            }
+            return ans;
+        }
+        #endregion
+        #region 非递减数列
+        public static bool CheckPossibility(int[] nums)
+        {
+            //[3,4,2,3]
+            if (nums.Length<=2)
+            {
+                return true;
+            }
+            int num = 0;
+            //非递减，改变非递减
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i] >= nums[i - 1] )
+                {
+                    continue;
+                } 
+                num++;
+                if (i-2>=0&&nums[i-2]>nums[i] )
+                {
+                    nums[i]=nums[i-1];
+                }
+                else
+                {
+                    nums[i - 1] = nums[i];
+                }
+            }
+            return num<=1;
+        }
+        #endregion
+        #region 修捡二叉搜索数
+        public TreeNode TrimBST(TreeNode root, int low, int high)
+        {
+            if (root==null)
+            {
+                return root;
+            }
+            if (root.val>high)
+            {
+                return TrimBST(root.left,low,high);
+            }
+            if (root.val<low)
+            {
+                return TrimBST(root.right,low, high);
+            }
+            root.left = TrimBST(root.left,low,high);
+            root.right = TrimBST(root.right,low,high);
+            return root;
+        }
 
-    #endregion
-    #region LinQ
-    private static void DataInit()
+        #endregion
+        #region 二叉树中第二小的节点
+        int res = -1;
+        public int FindSecondMinimumValue(TreeNode root)
+        {
+            if (root==null)
+            {
+                return res;
+            }
+            //如果存在子树并且值不相等，那么较大的值就有可能是第二小的
+            if (root.left!=null&&root.left.val!=root.right.val)
+            {
+                //获取左右子树中的较大的值
+                int bigger = root.left.val > root.right.val ? root.left.val : root.right.val;
+                //如果返回值没有被更改过，则bigger有坑就是第二小，如果返回值被更改过
+                //则比较当前的res和bigger那个更小
+                res = res == -1 ? bigger : Math.Min(res,bigger);
+                //将左右子树中值更小的数进行递归，查找是否有更小的值(即为了上一步判断)
+                FindSecondMinimumValue(root.left.val>root.right.val?root.right:root.left);
+            }
+            //如果左右子树相等或为空，分别递归
+            else
+            {
+                FindSecondMinimumValue(root.left);
+                FindSecondMinimumValue(root.right);
+            }
+            return res;
+        }
+        #endregion
+
+        #endregion
+        #region LinQ
+        private static void DataInit()
     {
         IList<UserInfo> userlist = new List<UserInfo>() {
         new UserInfo(){UId=1,UserName="zs",Age=23,RoleId=1},
