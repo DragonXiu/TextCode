@@ -454,7 +454,11 @@ new int[] {-2,2}}, 1);
             FindMaxAverage(new int[] { -1 }, 1);
             FindErrorNums(new int[] { 1, 2, 2, 4 });
             ImageSmoother(new int[][] { new int[] { 1, 1, 1 }, new int[] { 1, 0, 1 }, new int[] { 1, 1, 1 } });
-            CheckPossibility(new int[] { 3,4,2,3});
+            CheckPossibility(new int[] { 3, 4, 2, 3 });
+            Candy(new int[] { 1, 3, 2, 1, 1, 2, 1 });
+            FindLengthOfLCIS(new int[] { 1, 3, 5, 4, 3, 4, 5, 6, 7 });
+            ValidPalindrome("aabac");
+
             Console.ReadLine();
         }
         #region 算法       
@@ -7459,7 +7463,7 @@ new int[] {-2,2}}, 1);
         #region 错误的集合
         public static int[] FindErrorNums(int[] nums)
         {
-            Dictionary<int,int> res = new Dictionary<int,int>();
+            Dictionary<int, int> res = new Dictionary<int, int>();
             Array.Sort(nums);
             int small = -1, big = -1;
             foreach (var item in nums)
@@ -7472,13 +7476,13 @@ new int[] {-2,2}}, 1);
                 {
                     res.Add(item, 1);
                 }
-               
+
             }
             for (int i = 1; i < nums.Length; i++)
             {
                 if (res.ContainsKey(i))
                 {
-                    if (res[i]==2)
+                    if (res[i] == 2)
                     {
                         small = i;
                     }
@@ -7488,34 +7492,34 @@ new int[] {-2,2}}, 1);
                     }
                 }
             }
-            return new int[] { small,big};
+            return new int[] { small, big };
         }
         #endregion
         #region 二叉树的锯齿形层序遍历
         public IList<IList<int>> ZigzagLevelOrder(TreeNode root)
         {
             IList<IList<int>> res = new List<IList<int>>();
-            if (root==null)
+            if (root == null)
             {
                 return res;
             }
             Queue<TreeNode> nodes = new Queue<TreeNode>();
             nodes.Enqueue(root);
             bool isOrderLeft = true;
-            while (nodes.Count>0)
+            while (nodes.Count > 0)
             {
                 var count = nodes.Count;
                 var level = new int[count];
-                while (count>0)
+                while (count > 0)
                 {
                     var node = nodes.Dequeue();
                     level[isOrderLeft ? (level.Length - count) : (count - 1)] = node.val;
                     count--;
-                    if (node.left!=null)
+                    if (node.left != null)
                     {
                         nodes.Enqueue(node.left);
                     }
-                    if (node.right!=null)
+                    if (node.right != null)
                     {
                         nodes.Enqueue(node.right);
                     }
@@ -7530,20 +7534,20 @@ new int[] {-2,2}}, 1);
         public bool FindTarget(TreeNode root, int k)
         {
             List<int> list = new List<int>();
-            return find(root,k,list);
+            return find(root, k, list);
         }
-        public bool find(TreeNode root,int k,List<int>list)
+        public bool find(TreeNode root, int k, List<int> list)
         {
-            if (root==null)
+            if (root == null)
             {
                 return false;
             }
-            if (list.Contains(k-root.val))
+            if (list.Contains(k - root.val))
             {
                 return true;
             }
             list.Add(root.val);
-            return find(root.left,k,list) || find(root.right,k,list);
+            return find(root.left, k, list) || find(root.right, k, list);
         }
         #endregion
         #region 图片平滑器
@@ -7553,22 +7557,23 @@ new int[] {-2,2}}, 1);
             int[][] ans = new int[R][];
             for (int r = 0; r < R; ++r)
             {
-                ans[r] =new  int[C];
+                ans[r] = new int[C];
                 for (int c = 0; c < C; ++c)
                 {
                     int count = 0;
-                    for (int nr = r-1; nr <= r+1; ++nr)
+                    for (int nr = r - 1; nr <= r + 1; ++nr)
                     {
-                        for (int nc = c-1; nc <=c+1; ++nc)
+                        for (int nc = c - 1; nc <= c + 1; ++nc)
                         {
-                            if (0<=nr&&nr<R&&0<=nc&&nc<C)
+                            if (0 <= nr && nr < R && 0 <= nc && nc < C)
                             {
                                 ans[r][c] += M[nr][nc];
                                 count++;
                             }
                         }
-                       
-                    } ans[r][c] /= count;
+
+                    }
+                    ans[r][c] /= count;
                 }
             }
             return ans;
@@ -7578,7 +7583,7 @@ new int[] {-2,2}}, 1);
         public static bool CheckPossibility(int[] nums)
         {
             //[3,4,2,3]
-            if (nums.Length<=2)
+            if (nums.Length <= 2)
             {
                 return true;
             }
@@ -7586,40 +7591,40 @@ new int[] {-2,2}}, 1);
             //非递减，改变非递减
             for (int i = 1; i < nums.Length; i++)
             {
-                if (nums[i] >= nums[i - 1] )
+                if (nums[i] >= nums[i - 1])
                 {
                     continue;
-                } 
+                }
                 num++;
-                if (i-2>=0&&nums[i-2]>nums[i] )
+                if (i - 2 >= 0 && nums[i - 2] > nums[i])
                 {
-                    nums[i]=nums[i-1];
+                    nums[i] = nums[i - 1];
                 }
                 else
                 {
                     nums[i - 1] = nums[i];
                 }
             }
-            return num<=1;
+            return num <= 1;
         }
         #endregion
         #region 修捡二叉搜索数
         public TreeNode TrimBST(TreeNode root, int low, int high)
         {
-            if (root==null)
+            if (root == null)
             {
                 return root;
             }
-            if (root.val>high)
+            if (root.val > high)
             {
-                return TrimBST(root.left,low,high);
+                return TrimBST(root.left, low, high);
             }
-            if (root.val<low)
+            if (root.val < low)
             {
-                return TrimBST(root.right,low, high);
+                return TrimBST(root.right, low, high);
             }
-            root.left = TrimBST(root.left,low,high);
-            root.right = TrimBST(root.right,low,high);
+            root.left = TrimBST(root.left, low, high);
+            root.right = TrimBST(root.right, low, high);
             return root;
         }
 
@@ -7628,20 +7633,20 @@ new int[] {-2,2}}, 1);
         int res = -1;
         public int FindSecondMinimumValue(TreeNode root)
         {
-            if (root==null)
+            if (root == null)
             {
                 return res;
             }
             //如果存在子树并且值不相等，那么较大的值就有可能是第二小的
-            if (root.left!=null&&root.left.val!=root.right.val)
+            if (root.left != null && root.left.val != root.right.val)
             {
                 //获取左右子树中的较大的值
                 int bigger = root.left.val > root.right.val ? root.left.val : root.right.val;
                 //如果返回值没有被更改过，则bigger有坑就是第二小，如果返回值被更改过
                 //则比较当前的res和bigger那个更小
-                res = res == -1 ? bigger : Math.Min(res,bigger);
+                res = res == -1 ? bigger : Math.Min(res, bigger);
                 //将左右子树中值更小的数进行递归，查找是否有更小的值(即为了上一步判断)
-                FindSecondMinimumValue(root.left.val>root.right.val?root.right:root.left);
+                FindSecondMinimumValue(root.left.val > root.right.val ? root.right : root.left);
             }
             //如果左右子树相等或为空，分别递归
             else
@@ -7652,505 +7657,656 @@ new int[] {-2,2}}, 1);
             return res;
         }
         #endregion
+        #region 分发糖果
+        public static int Candy(int[] ratings)
+        {
+            //从左到右，从右到左
+            //[1 3 2 1 1 2 1]
+            int n = ratings.Length;
+            int[] left = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                if (i > 0 && ratings[i] > ratings[i - 1])
+                {
+                    left[i] = left[i - 1] + 1;
+                }
+                else
+                {
+                    left[i] = 1;
+                }
+            }//left[1,2,1,1,1,2,1]
+            int right = 0, ret = 0;
+            for (int i = n - 1; i >= 0; i--)
+            {
+                if (i < n - 1 && ratings[i] > ratings[i + 1])
+                {
+                    right++;
+                }
+                else
+                {
+                    right = 1;
+                }
+                //从右到左
+                //right  1,2,1,1,2,3,1
+                ret += Math.Max(left[i], right);
+            }
+            return ret;
+
+        }
+        #endregion
+        #region 最长连续递增序列
+        public static int FindLengthOfLCIS(int[] nums)
+        {
+            int res = 0, count = 0;
+            for (int i = 0; i < nums.Length; ++i)
+            {
+                if (i > 0 && nums[i - 1] >= nums[i])
+                {
+                    count = i;
+                }
+                res = Math.Max(res, i - count + 1);
+            }
+            return res;
+            //int num = 0,temp=1,len = nums.Length;
+            //if (len==1)
+            //{
+            //    return 1;
+            //}
+            //bool flag1 = false;
+            //for (int i = 1; i < len; i++)
+            //{
+            //    if (nums[i]>nums[i-1])
+            //    {
+            //        flag1 = true;
+            //        temp += 1;
+            //    }
+            //    else
+            //    {
+            //        flag1 = false;
+            //        num = Math.Max(num,temp);
+            //        temp = 1;
+            //    }
+            //}
+            //return Math.Max(num, temp);
+
+        }
+
+        #endregion
+        #region 验证回文字符串 Ⅱ
+        public static bool ValidPalindrome(string s)
+        {
+            //双指针one，two
+            //"abca"
+            s = "aguokepatgbnvfqmgmlcupuufxoohdfpgjdmysgvhmvffcnqxjjxqncffvmhvgsymdjgpfdhooxfuupuculmgmqfvnbgtapekouga";
+            int low = 0, high = s.Length - 1;
+            while (low < high)
+            {
+                char c1 = s[low], c2 = s[high];
+                if (c1 == c2)
+                {
+                    low++;
+                    high--;
+                }
+                else
+                {
+                    bool flag1 = true, flag2 = true;
+                    for (int i = low, j = high - 1; i < j; i++, j--)
+                    {
+                        char c3 = s[i], c4 = s[j];
+                        if (c3 != c4)
+                        {
+                            flag1 = false;
+                            break;
+                        }
+                    }
+                    for (int i = low + 1, j = high; i < j; i++, j--)
+                    {
+                        char c3 = s[i], c4 = s[j];
+                        if (c3 != c4)
+                        {
+                            flag2 = false;
+                            break;
+                        }
+                    }
+                    return flag1 || flag2;
+                }
+            }
+            return true;
+            //int one = 0, two = s.Length - 1;
+            //while (one < two)
+            //{
+            //    Console.WriteLine(s[one].ToString());
+            //    Console.WriteLine(s[two].ToString());
+            //    if (s[one] == s[two])
+            //    {
+            //        one++;
+            //        two--;
+            //    }
+            //    else
+            //    {
+            //        bool flag1 = true, flag2 = true;
+            //        for (int i = one,j=two-1; i < j; i++,j--)
+            //        {
+            //            if (s[one]!=s[two])
+            //            {
+            //                flag1 = false;
+            //                break;
+            //            }
+            //        }
+            //        for (int i = one+1, j = two ; i < j; i++, j--)
+            //        {
+            //            if (s[one] != s[two])
+            //            {
+            //                flag2 = false;
+            //                break;
+            //            }
+            //        }
+            //        return flag1 || flag2;
+            //    }
+
+            //}
+            //return true;
+        }
+        #endregion
 
         #endregion
         #region LinQ
         private static void DataInit()
-    {
-        IList<UserInfo> userlist = new List<UserInfo>() {
+        {
+            IList<UserInfo> userlist = new List<UserInfo>() {
         new UserInfo(){UId=1,UserName="zs",Age=23,RoleId=1},
         new UserInfo(){UId=2,UserName="ls",Age=20,RoleId=2},
         new UserInfo(){UId=3,UserName="ww",Age=26,RoleId=1},
         new UserInfo(){UId=4,UserName="zl",Age=26,RoleId=2},
         new UserInfo(){UId=5,UserName="tq",Age=42,RoleId=2}
         };
-        IList<RoleInfo> roleList = new List<RoleInfo> {
+            IList<RoleInfo> roleList = new List<RoleInfo> {
             new RoleInfo(){Rid=1,RoleName="管理员"},
             new RoleInfo(){Rid=2,RoleName="普通用户"}
             };
-        //query语法
-        var result = from u in userlist
-                     where u.Age > 20
-                     select new { u.UId, u.UserName, u.Age };
-        //lambda
-        var result2 = userlist.Where<UserInfo>(u => u.Age > 20).Select(u => new { u.UId, u.UserName, u.Age });
-        //按id排序，age
-        var result3 = from u in userlist
-                      orderby u.UId, u.Age descending
-                      select u;
-        var result31 = userlist.OrderByDescending(u => u.UId).ThenBy(u => u.Age);
-        //分组
-        var resGroups = from u in userlist
-                        group u by u.RoleId;
-        //lambda方式，GroupBy延迟执行，ToLookup是立即执行，使用方法和GroupBy一样
-        var resGroups1 = userlist.GroupBy(u => u.RoleId);
-        //遍历分组
-        foreach (var group in resGroups)
-        {
-            Console.WriteLine("roleId:{0}", group.Key);
-            foreach (UserInfo user in group)
+            //query语法
+            var result = from u in userlist
+                         where u.Age > 20
+                         select new { u.UId, u.UserName, u.Age };
+            //lambda
+            var result2 = userlist.Where<UserInfo>(u => u.Age > 20).Select(u => new { u.UId, u.UserName, u.Age });
+            //按id排序，age
+            var result3 = from u in userlist
+                          orderby u.UId, u.Age descending
+                          select u;
+            var result31 = userlist.OrderByDescending(u => u.UId).ThenBy(u => u.Age);
+            //分组
+            var resGroups = from u in userlist
+                            group u by u.RoleId;
+            //lambda方式，GroupBy延迟执行，ToLookup是立即执行，使用方法和GroupBy一样
+            var resGroups1 = userlist.GroupBy(u => u.RoleId);
+            //遍历分组
+            foreach (var group in resGroups)
             {
-                Console.WriteLine("userName:{0}", user.UserName);
+                Console.WriteLine("roleId:{0}", group.Key);
+                foreach (UserInfo user in group)
+                {
+                    Console.WriteLine("userName:{0}", user.UserName);
+                }
+            }
+            //连接查询join
+            var resJoin = from user in userlist
+                          join role in roleList
+                          on user.RoleId equals role.Rid
+                          select new
+                          {
+                              uname = user.UserName,
+                              rname = role.RoleName
+                          };
+            foreach (var item in resJoin)
+            {
+                Console.WriteLine("uname:{0}+rname:{1}", item.uname, item.rname);
+            }
+            //left join,right join调整顺序即可
+            //var resJoin1 = from user in userlist
+            //               join role in roleList
+            //               on user.RoleId equals role.Rid into temp
+            //               from tt in temp.DefaultIfEmpty
+            //               select new
+            //               {
+            //                   uname = user.UserName,
+            //                   rname = role?.RoleName
+            //               };
+
+            //cross in
+            var resJoin2 = from user in userlist
+                           from role in roleList
+                           select new
+                           {
+                               uname = user?.UserName,
+                               rname = role?.RoleName
+                           };
+            //lambda方式
+            var resJoin3 = userlist.Join(roleList,
+                user => user.RoleId,
+                role => role.Rid,
+                (user, role) => new
+                {
+                    uname = user.UserName,
+                    rname = role.Rid
+                });
+            //遍历
+            foreach (var item in resJoin3)
+            {
+                Console.WriteLine("用户:{0}---角色:{1}", item.uname, item.rname);
+            }
+            //量词
+            //ALL 所有元素都符合的条件返回true
+            bool areAllAdmin = userlist.All(u => u.RoleId == 1);
+            //Any 有一个符合条件的返回true
+
+        }
+
+        #endregion
+    }
+    #region 最小栈
+    public class MinStack
+    {
+        Stack<int> x_stack;
+        Stack<int> min_stack;
+        /** initialize your data structure here. */
+        public MinStack()
+        {
+            min_stack.Push(int.MaxValue);
+        }
+
+        public void Push(int x)
+        {
+            x_stack.Push(x);
+            min_stack.Push(Math.Min(min_stack.Peek(), x));
+        }
+
+        public void Pop()
+        {
+            x_stack.Pop();
+            min_stack.Pop();
+        }
+
+        public int Top()
+        {
+            return x_stack.Peek();
+        }
+
+        public int GetMin()
+        {
+            return min_stack.Peek();
+        }
+
+    }
+    #endregion
+    #region MyRegion
+
+
+    public class ListNode
+    {
+        public int val;
+        public ListNode next;
+        public ListNode(int val)
+        {
+            this.val = val;
+        }
+    }
+    #endregion
+
+
+
+    #region 编写质量
+    #region 正确实现浅拷贝和深拷贝
+    [Serializable]
+    class Employee : ICloneable
+    {
+        public string IDCode { get; set; }
+        public int Age { get; set; }
+        public Department Department { get; set; }
+        #region ICloneable 成员
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        //深拷贝
+        public Employee DeepClone()
+        {
+            using (Stream objectStream = new MemoryStream())
+            {
+                IFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(objectStream, this);
+                objectStream.Seek(0, SeekOrigin.Begin);
+                return formatter.Deserialize(objectStream) as Employee;
             }
         }
-        //连接查询join
-        var resJoin = from user in userlist
-                      join role in roleList
-                      on user.RoleId equals role.Rid
-                      select new
-                      {
-                          uname = user.UserName,
-                          rname = role.RoleName
-                      };
-        foreach (var item in resJoin)
+        public Employee ShallowClone()
         {
-            Console.WriteLine("uname:{0}+rname:{1}", item.uname, item.rname);
+            return Clone() as Employee;
         }
-        //left join,right join调整顺序即可
-        //var resJoin1 = from user in userlist
-        //               join role in roleList
-        //               on user.RoleId equals role.Rid into temp
-        //               from tt in temp.DefaultIfEmpty
-        //               select new
-        //               {
-        //                   uname = user.UserName,
-        //                   rname = role?.RoleName
-        //               };
 
-        //cross in
-        var resJoin2 = from user in userlist
-                       from role in roleList
-                       select new
-                       {
-                           uname = user?.UserName,
-                           rname = role?.RoleName
-                       };
-        //lambda方式
-        var resJoin3 = userlist.Join(roleList,
-            user => user.RoleId,
-            role => role.Rid,
-            (user, role) => new
-            {
-                uname = user.UserName,
-                rname = role.Rid
-            });
-        //遍历
-        foreach (var item in resJoin3)
+    }
+    class Department
+    {
+        public string Name { get; set; }
+        public override string ToString()
         {
-            Console.WriteLine("用户:{0}---角色:{1}", item.uname, item.rname);
+            return this.Name;
         }
-        //量词
-        //ALL 所有元素都符合的条件返回true
-        bool areAllAdmin = userlist.All(u => u.RoleId == 1);
-        //Any 有一个符合条件的返回true
+        #endregion
+    }
+    #endregion
+    #region 使用dynamic /daɪˈnæmɪk/
+    /*var是语法糖,支持智能感知，编译时实际类
+     * 型来替换该变量，dynamic是到运行时解析*/
+    public class DynamicSample
+    {
+        public string Name { get; set; }
+        public int Add(int a, int b)
+        {
+            return a + b;
+        }
+    }
+    #endregion
+    #region 元素数量可变的情况下不要使用数组
+    class ArrayLZ
+    {
+        public void a()
+        {
+            int[] iArr = new int[] { 1, 2, 3, 4, 5, 6, 7 };
+            ArrayList arrayList = ArrayList.Adapter(iArr);//数组转换ArrayList
+            arrayList.Add(7);
+            List<int> list = iArr.ToList<int>();//将数组转换List<T>
+            list.Add(8);
+            iArr = (int[])iArr.Resize(10);
 
+
+        }
+    }
+    //ReSize
+    public static class ClassForExtensions
+    {
+        public static Array Resize(this Array array, int newSize)
+        {
+            Type t = array.GetType().GetElementType();
+            Array newArray = Array.CreateInstance(t, newSize);
+            Array.Copy(array, 0, newArray, 0, Math.Min(array.Length, newSize));
+            return newArray;
+        }
+        //测试速度
+        public static void ResizeArray()
+        {
+            int[] iArr = { 0, 1, 2, 3, 4, 5, 6 };
+            Stopwatch watch1 = new Stopwatch();
+            watch1.Start();
+            iArr = (int[])iArr.Resize(10);
+            watch1.Stop();
+            Console.WriteLine("ResizeArray：" + watch1.Elapsed);
+        }
+        public static void ResizeList()
+        {
+            List<int> iArr = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6 });
+            Stopwatch watch2 = new Stopwatch();
+            watch2.Start();
+            iArr.Add(0);
+            iArr.Add(0);
+            iArr.Add(0);
+            watch2.Stop();
+            Console.WriteLine("ResizeList:" + watch2.Elapsed);
+
+        }
     }
 
     #endregion
-}
-#region 最小栈
-public class MinStack
-{
-    Stack<int> x_stack;
-    Stack<int> min_stack;
-    /** initialize your data structure here. */
-    public MinStack()
+    #region 多数情况下使用foreach,for索引器，foreach迭代器
+    //迭代器模式
+    public class Iterator
     {
-        min_stack.Push(int.MaxValue);
-    }
-
-    public void Push(int x)
-    {
-        x_stack.Push(x);
-        min_stack.Push(Math.Min(min_stack.Peek(), x));
-    }
-
-    public void Pop()
-    {
-        x_stack.Pop();
-        min_stack.Pop();
-    }
-
-    public int Top()
-    {
-        return x_stack.Peek();
-    }
-
-    public int GetMin()
-    {
-        return min_stack.Peek();
-    }
-
-}
-#endregion
-#region MyRegion
-
-
-public class ListNode
-{
-    public int val;
-    public ListNode next;
-    public ListNode(int val)
-    {
-        this.val = val;
-    }
-}
-#endregion
-
-
-
-#region 编写质量
-#region 正确实现浅拷贝和深拷贝
-[Serializable]
-class Employee : ICloneable
-{
-    public string IDCode { get; set; }
-    public int Age { get; set; }
-    public Department Department { get; set; }
-    #region ICloneable 成员
-    public object Clone()
-    {
-        return this.MemberwiseClone();
-    }
-
-    //深拷贝
-    public Employee DeepClone()
-    {
-        using (Stream objectStream = new MemoryStream())
+        public void IteratorA()
         {
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(objectStream, this);
-            objectStream.Seek(0, SeekOrigin.Begin);
-            return formatter.Deserialize(objectStream) as Employee;
+            //使用接口IMyEnumerable代替MyList
+            IMyEnumerable list = new MyList();
+            //得到迭代器，再循环中针对迭代器编码，而不是集合MyList
+            IMyEnumerator enumerator = list.GetMyEnumerator();
+            for (int i = 0; i < list.Count; i++)
+            {
+                object current = enumerator.Current;
+                enumerator.MoveNext();
+            }
+            while (enumerator.MoveNext())
+            {
+                object current = enumerator.Current;
+            }
+        }
+        /// <summary>
+        /// 要求所有迭代器全部实现该接口
+        /// </summary>
+        interface IMyEnumerator
+        {
+            bool MoveNext();
+            object Current { get; }
+        }
+
+        /// <summary>
+        /// 要求所有的集合实现该接口
+        /// 这样客户端就可以针对该接口编码
+        /// 而无需关注集体实现
+        /// </summary>
+        interface IMyEnumerable
+        {
+            IMyEnumerator GetMyEnumerator();
+            int Count { get; }
+        }
+        class MyList : IMyEnumerable
+        {
+            object[] item = new object[10];
+            IMyEnumerator myEnumerator;
+            public object this[int i]
+            {
+                get { return item[i]; }
+                set { this.item[i] = value; }
+            }
+            public int Count
+            {
+                get { return item.Length; }
+            }
+            public IMyEnumerator GetMyEnumerator()
+            {
+                if (myEnumerator == null)
+                {
+                    myEnumerator = new MyEnumerator(this);
+                }
+                return myEnumerator;
+            }
+        }
+        class MyEnumerator : IMyEnumerator
+        {
+            int index = 0;
+            MyList myList;
+            public MyEnumerator(MyList myList)
+            {
+                this.myList = myList;
+            }
+            public bool MoveNext()
+            {
+                if (index + 1 > myList.Count)
+                {
+                    index = 1;
+                    return false;
+                }
+                else
+                {
+                    index++;
+                    return true;
+                }
+            }
+            public object Current
+            {
+                get { return myList[index - 1]; }
+            }
         }
     }
-    public Employee ShallowClone()
-    {
-        return Clone() as Employee;
-    }
 
-}
-class Department
-{
-    public string Name { get; set; }
-    public override string ToString()
+    #endregion
+    #region 使用泛型集合代替非泛型集合
+    public class Generic
     {
-        return this.Name;
+        static int collectionCount = 0;
+        static Stopwatch watch = null;
+        static int testCount = 10000000;
+        static void TestBegin()
+        {
+            GC.Collect();//强制对所用代码进行即时垃圾回收
+            GC.WaitForPendingFinalizers();//挂起线程，执行终结器队列中的终结器(即析构方法)
+            GC.Collect();//再次对所用代码垃圾回收，主要包括终结器队列中出来的对象
+            collectionCount = GC.CollectionCount(0);//返回在0代中执行垃圾回收次数
+            watch = new Stopwatch();
+            watch.Start();
+        }
+        static void TestEnd()
+        {
+            watch.Stop();
+            Console.WriteLine("耗时:" + watch.ElapsedMilliseconds.ToString());
+            Console.WriteLine("垃圾回收次数:" + (GC.CollectionCount(0) - collectionCount));
+        }
+        static void TestArrayList()
+        {
+            ArrayList al = new ArrayList();
+            int temp = 0;
+            for (int i = 0; i < testCount; i++)
+            {
+                al.Add(i);
+                temp = (int)al[i];
+            }
+            al = null;
+        }
+        static void TestGenericList()
+        {
+            List<int> listT = new List<int>();
+            int temp = 0;
+            for (int i = 0; i < testCount; i++)
+            {
+                listT.Add(i);
+                temp = listT[i];
+            }
+            listT = null;
+        }
     }
     #endregion
-}
-#endregion
-#region 使用dynamic /daɪˈnæmɪk/
-/*var是语法糖,支持智能感知，编译时实际类
- * 型来替换该变量，dynamic是到运行时解析*/
-public class DynamicSample
-{
-    public string Name { get; set; }
-    public int Add(int a, int b)
-    {
-        return a + b;
-    }
-}
-#endregion
-#region 元素数量可变的情况下不要使用数组
-class ArrayLZ
-{
-    public void a()
-    {
-        int[] iArr = new int[] { 1, 2, 3, 4, 5, 6, 7 };
-        ArrayList arrayList = ArrayList.Adapter(iArr);//数组转换ArrayList
-        arrayList.Add(7);
-        List<int> list = iArr.ToList<int>();//将数组转换List<T>
-        list.Add(8);
-        iArr = (int[])iArr.Resize(10);
+    #region 避免List<T>作为自定义集合类的基类
 
-
-    }
-}
-//ReSize
-public static class ClassForExtensions
-{
-    public static Array Resize(this Array array, int newSize)
+    #endregion
+    #region 确保线性安全
+    class Person
     {
-        Type t = array.GetType().GetElementType();
-        Array newArray = Array.CreateInstance(t, newSize);
-        Array.Copy(array, 0, newArray, 0, Math.Min(array.Length, newSize));
-        return newArray;
+        public string Name { get; set; }
+        public int Age { get; set; }
     }
-    //测试速度
-    public static void ResizeArray()
+    #endregion
+    #endregion
+    public class UserInfo
     {
-        int[] iArr = { 0, 1, 2, 3, 4, 5, 6 };
-        Stopwatch watch1 = new Stopwatch();
-        watch1.Start();
-        iArr = (int[])iArr.Resize(10);
-        watch1.Stop();
-        Console.WriteLine("ResizeArray：" + watch1.Elapsed);
+        public int UId { get; set; }
+        public string UserName { get; set; }
+        public int Age { get; set; }
+        public int RoleId { get; set; }
     }
-    public static void ResizeList()
+    public class RandomizedCollection
     {
-        List<int> iArr = new List<int>(new int[] { 0, 1, 2, 3, 4, 5, 6 });
-        Stopwatch watch2 = new Stopwatch();
-        watch2.Start();
-        iArr.Add(0);
-        iArr.Add(0);
-        iArr.Add(0);
-        watch2.Stop();
-        Console.WriteLine("ResizeList:" + watch2.Elapsed);
-
-    }
-}
-
-#endregion
-#region 多数情况下使用foreach,for索引器，foreach迭代器
-//迭代器模式
-public class Iterator
-{
-    public void IteratorA()
-    {
-        //使用接口IMyEnumerable代替MyList
-        IMyEnumerable list = new MyList();
-        //得到迭代器，再循环中针对迭代器编码，而不是集合MyList
-        IMyEnumerator enumerator = list.GetMyEnumerator();
-        for (int i = 0; i < list.Count; i++)
+        //字典内使用HashSet是为了实现O(1)删除索引，而且索引不会重复
+        Dictionary<int, HashSet<int>> iDic { get; set; } = new Dictionary<int, HashSet<int>>();
+        List<int> values { get; set; } = new List<int>();
+        /** Initialize your data structure here. */
+        public RandomizedCollection()
         {
-            object current = enumerator.Current;
-            enumerator.MoveNext();
+            //列表随机插入是O(n)因为，要后移位置之后的元素，但追加在列表尾部的O(1)
+            //列表按索引查找的是O(1),按值查找是O(n)
         }
-        while (enumerator.MoveNext())
-        {
-            object current = enumerator.Current;
-        }
-    }
-    /// <summary>
-    /// 要求所有迭代器全部实现该接口
-    /// </summary>
-    interface IMyEnumerator
-    {
-        bool MoveNext();
-        object Current { get; }
-    }
 
-    /// <summary>
-    /// 要求所有的集合实现该接口
-    /// 这样客户端就可以针对该接口编码
-    /// 而无需关注集体实现
-    /// </summary>
-    interface IMyEnumerable
-    {
-        IMyEnumerator GetMyEnumerator();
-        int Count { get; }
-    }
-    class MyList : IMyEnumerable
-    {
-        object[] item = new object[10];
-        IMyEnumerator myEnumerator;
-        public object this[int i]
+        /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+        public bool Insert(int val)
         {
-            get { return item[i]; }
-            set { this.item[i] = value; }
-        }
-        public int Count
-        {
-            get { return item.Length; }
-        }
-        public IMyEnumerator GetMyEnumerator()
-        {
-            if (myEnumerator == null)
+            //使用一个字典维护某个数字的所有索引列表
+            if (!iDic.TryGetValue(val, out var indexSet))
             {
-                myEnumerator = new MyEnumerator(this);
+                indexSet = new HashSet<int>();
+                iDic.Add(val, indexSet);
             }
-            return myEnumerator;
+            values.Add(val);
+            indexSet.Add(values.Count - 1);
+            return true;
         }
-    }
-    class MyEnumerator : IMyEnumerator
-    {
-        int index = 0;
-        MyList myList;
-        public MyEnumerator(MyList myList)
+
+        /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+        public bool Remove(int val)
         {
-            this.myList = myList;
-        }
-        public bool MoveNext()
-        {
-            if (index + 1 > myList.Count)
+            //字典不存在某个数字的索引，也就不存在某个数字
+            if (!iDic.TryGetValue(val, out var valList) || valList.Count == 0)
             {
-                index = 1;
                 return false;
             }
-            else
+            var lastValue = values.Last();
+            if (lastValue == val)
             {
-                index++;
+                //直接在列表最后移除
+                valList.Remove(values.Count - 1);
+                values.RemoveAt(values.Count - 1);
                 return true;
             }
-        }
-        public object Current
-        {
-            get { return myList[index - 1]; }
-        }
-    }
-}
-
-#endregion
-#region 使用泛型集合代替非泛型集合
-public class Generic
-{
-    static int collectionCount = 0;
-    static Stopwatch watch = null;
-    static int testCount = 10000000;
-    static void TestBegin()
-    {
-        GC.Collect();//强制对所用代码进行即时垃圾回收
-        GC.WaitForPendingFinalizers();//挂起线程，执行终结器队列中的终结器(即析构方法)
-        GC.Collect();//再次对所用代码垃圾回收，主要包括终结器队列中出来的对象
-        collectionCount = GC.CollectionCount(0);//返回在0代中执行垃圾回收次数
-        watch = new Stopwatch();
-        watch.Start();
-    }
-    static void TestEnd()
-    {
-        watch.Stop();
-        Console.WriteLine("耗时:" + watch.ElapsedMilliseconds.ToString());
-        Console.WriteLine("垃圾回收次数:" + (GC.CollectionCount(0) - collectionCount));
-    }
-    static void TestArrayList()
-    {
-        ArrayList al = new ArrayList();
-        int temp = 0;
-        for (int i = 0; i < testCount; i++)
-        {
-            al.Add(i);
-            temp = (int)al[i];
-        }
-        al = null;
-    }
-    static void TestGenericList()
-    {
-        List<int> listT = new List<int>();
-        int temp = 0;
-        for (int i = 0; i < testCount; i++)
-        {
-            listT.Add(i);
-            temp = listT[i];
-        }
-        listT = null;
-    }
-}
-#endregion
-#region 避免List<T>作为自定义集合类的基类
-
-#endregion
-#region 确保线性安全
-class Person
-{
-    public string Name { get; set; }
-    public int Age { get; set; }
-}
-#endregion
-#endregion
-public class UserInfo
-{
-    public int UId { get; set; }
-    public string UserName { get; set; }
-    public int Age { get; set; }
-    public int RoleId { get; set; }
-}
-public class RandomizedCollection
-{
-    //字典内使用HashSet是为了实现O(1)删除索引，而且索引不会重复
-    Dictionary<int, HashSet<int>> iDic { get; set; } = new Dictionary<int, HashSet<int>>();
-    List<int> values { get; set; } = new List<int>();
-    /** Initialize your data structure here. */
-    public RandomizedCollection()
-    {
-        //列表随机插入是O(n)因为，要后移位置之后的元素，但追加在列表尾部的O(1)
-        //列表按索引查找的是O(1),按值查找是O(n)
-    }
-
-    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
-    public bool Insert(int val)
-    {
-        //使用一个字典维护某个数字的所有索引列表
-        if (!iDic.TryGetValue(val, out var indexSet))
-        {
-            indexSet = new HashSet<int>();
-            iDic.Add(val, indexSet);
-        }
-        values.Add(val);
-        indexSet.Add(values.Count - 1);
-        return true;
-    }
-
-    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
-    public bool Remove(int val)
-    {
-        //字典不存在某个数字的索引，也就不存在某个数字
-        if (!iDic.TryGetValue(val, out var valList) || valList.Count == 0)
-        {
-            return false;
-        }
-        var lastValue = values.Last();
-        if (lastValue == val)
-        {
-            //直接在列表最后移除
-            valList.Remove(values.Count - 1);
+            //将values最后一个元素的值替换要删除的元素的最后一个索引的位置，然后values删
+            //除最后一个元素，即为O(1)删除
+            //内替换的值得索引列表应该移除索引值(values的长度-1)，并追加一个被删除元素的所在的索引值
+            //（因为被替换的值被替换到这个索引了）
+            var valLastIndex = valList.Last();
+            var changeIndex = iDic[lastValue];
+            valList.Remove(valLastIndex);
+            changeIndex.Remove(values.Count - 1);
+            changeIndex.Add(valLastIndex);
+            values[valLastIndex] = lastValue;
             values.RemoveAt(values.Count - 1);
             return true;
         }
-        //将values最后一个元素的值替换要删除的元素的最后一个索引的位置，然后values删
-        //除最后一个元素，即为O(1)删除
-        //内替换的值得索引列表应该移除索引值(values的长度-1)，并追加一个被删除元素的所在的索引值
-        //（因为被替换的值被替换到这个索引了）
-        var valLastIndex = valList.Last();
-        var changeIndex = iDic[lastValue];
-        valList.Remove(valLastIndex);
-        changeIndex.Remove(values.Count - 1);
-        changeIndex.Add(valLastIndex);
-        values[valLastIndex] = lastValue;
-        values.RemoveAt(values.Count - 1);
-        return true;
-    }
 
-    /** Get a random element from the collection. */
-    public int GetRandom()
+        /** Get a random element from the collection. */
+        public int GetRandom()
+        {
+            return values[new Random().Next(0, values.Count)];
+        }
+    }
+    class RoleInfo
     {
-        return values[new Random().Next(0, values.Count)];
+        public int Rid { get; set; }
+        public string RoleName { get; set; }
     }
-}
-class RoleInfo
-{
-    public int Rid { get; set; }
-    public string RoleName { get; set; }
-}
 
-public class Node
-{
-    public int val;
-    public List<Node> children;
-    public Node left;
-    public Node right;
-    public Node next;
-
-    public Node() { }
-
-    public Node(int _val)
+    public class Node
     {
-        val = _val;
-    }
-    public Node(int _val, List<Node> _children)
-    {
-        val = _val;
-        children = _children;
-    }
+        public int val;
+        public List<Node> children;
+        public Node left;
+        public Node right;
+        public Node next;
 
-    public Node(int _val, Node _left, Node _right, Node _next)
-    {
-        val = _val;
-        left = _left;
-        right = _right;
-        next = _next;
+        public Node() { }
+
+        public Node(int _val)
+        {
+            val = _val;
+        }
+        public Node(int _val, List<Node> _children)
+        {
+            val = _val;
+            children = _children;
+        }
+
+        public Node(int _val, Node _left, Node _right, Node _next)
+        {
+            val = _val;
+            left = _left;
+            right = _right;
+            next = _next;
+        }
     }
-}
 }
 
 
