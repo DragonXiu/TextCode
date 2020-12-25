@@ -458,7 +458,7 @@ new int[] {-2,2}}, 1);
             Candy(new int[] { 1, 3, 2, 1, 1, 2, 1 });
             FindLengthOfLCIS(new int[] { 1, 3, 5, 4, 3, 4, 5, 6, 7 });
             ValidPalindrome("aabac");
-
+            HasAlternatingBits(10);
             Console.ReadLine();
         }
         #region 算法       
@@ -7808,6 +7808,84 @@ new int[] {-2,2}}, 1);
             //return true;
         }
         #endregion
+        #region 交替二斤数
+        public static bool HasAlternatingBits(int n)
+        {
+            //n = 1;
+            //List<int> nums = new List<int>();
+            //nums.Add(1); 
+            //while (nums[nums.Count-1]<=n)
+            //{
+            //    if (nums.Contains(n))
+            //    {
+            //        return true;
+            //    }
+            //    if (nums[nums.Count - 1]%2==0)
+            //    {
+            //        nums.Add(nums[nums.Count - 1]*2+1);
+            //    }
+            //    else
+            //    {
+            //        nums.Add(nums[nums.Count - 1] * 2 );
+            //    }
+
+            //}
+
+            //return false;
+            n = n ^ (n >> 1);
+            return (n & (n+ 1)) == 0;
+        }
+        #endregion
+        #region 员工的重要性
+        int sum_value= 0;
+        public int GetImportance(IList<Employee1> employees, int id)
+        {
+
+            values(employees,id);
+            return sum_value;
+        }
+        private void values(IList<Employee1> employees, int value)
+        {
+            for (int i = 0; i < employees.Count; i++)
+            {
+                if (employees[i].id == value)
+                {
+                    sum_value += employees[i].importance;
+                    for (int j = 0; j < employees[i].subordinates.Count; j++)
+                    {
+                        values(employees, employees[i].subordinates[i]);
+                    }
+                }
+            }
+
+        }
+        #endregion
+        #region 棒球比赛
+        public int CalPoints(string[] ops)
+        {
+            List<int> res = new List<int>();
+            foreach (var item in ops)
+            {
+                switch (item)
+                {
+                    case "C":
+                        res.RemoveAt(res.Count-1);
+                        break;
+                    case "D":
+                        res.Add(res[res.Count - 1] * 2);
+                        break;
+                    case "+":
+                        res.Add(res[res.Count - 1]* res[res.Count - 2]);
+                        break;
+                    default:
+                        res.Add(int.Parse(item));
+                        break;
+                }
+            }
+            return res.Sum();
+        }
+        #endregion
+
 
         #endregion
         #region LinQ
@@ -7903,6 +7981,12 @@ new int[] {-2,2}}, 1);
         }
 
         #endregion
+    }
+    class Employee1
+    {
+        public int id;
+        public int importance;
+        public IList<int> subordinates;
     }
     #region 最小栈
     public class MinStack
