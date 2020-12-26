@@ -459,6 +459,8 @@ new int[] {-2,2}}, 1);
             FindLengthOfLCIS(new int[] { 1, 3, 5, 4, 3, 4, 5, 6, 7 });
             ValidPalindrome("aabac");
             HasAlternatingBits(10);
+            MaximalRectangle(new char[][] { new char[] { '1', '0', '1', '0', '0' }, new char[] { '1', '0', '1', '1', '1' }, new char[] { '1', '1', '1', '1', '1' } ,
+            new char[]{ '1', '0', '0', '1', '0' } });
             Console.ReadLine();
         }
         #region 算法       
@@ -7833,15 +7835,15 @@ new int[] {-2,2}}, 1);
 
             //return false;
             n = n ^ (n >> 1);
-            return (n & (n+ 1)) == 0;
+            return (n & (n + 1)) == 0;
         }
         #endregion
         #region 员工的重要性
-        int sum_value= 0;
+        int sum_value = 0;
         public int GetImportance(IList<Employee1> employees, int id)
         {
 
-            values(employees,id);
+            values(employees, id);
             return sum_value;
         }
         private void values(IList<Employee1> employees, int value)
@@ -7869,13 +7871,13 @@ new int[] {-2,2}}, 1);
                 switch (item)
                 {
                     case "C":
-                        res.RemoveAt(res.Count-1);
+                        res.RemoveAt(res.Count - 1);
                         break;
                     case "D":
                         res.Add(res[res.Count - 1] * 2);
                         break;
                     case "+":
-                        res.Add(res[res.Count - 1]* res[res.Count - 2]);
+                        res.Add(res[res.Count - 1] * res[res.Count - 2]);
                         break;
                     default:
                         res.Add(int.Parse(item));
@@ -7883,6 +7885,106 @@ new int[] {-2,2}}, 1);
                 }
             }
             return res.Sum();
+        }
+        #endregion
+        #region 最大矩形
+        public static int MaximalRectangle(char[][] matrix)
+        {
+            //matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+            int m = matrix.Length;
+            if (m == 0)
+            {
+                return 0;
+            }
+            int n = matrix[0].Length;
+            int[][] left = new int[m][];
+            for (int i = 0; i < m; i++)
+            {
+                left[i] = new int[n];
+                for (int j = 0; j < n; j++)
+                {
+                    if (matrix[i][j] == '1')
+                    {
+                        left[i][j] = (j == 0 ? 0 : left[i][j - 1]) + 1;
+                    }
+                }
+            }
+            //left = [["1","0","1","0","0"],["1","0","1","2","3"],["1","2","3","4","5"],["1","0","0","1","0"]]
+            int ret = 0;
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (matrix[i][j] == '0')
+                    {
+                        continue;
+                    }
+
+                    int width = left[i][j];
+                    int area = width;
+                    for (int k = i - 1; k >= 0; k--)
+                    {
+                        width = Math.Min(width, left[k][j]);
+                        area = Math.Max(area, (i - k + 1) * width);
+                    }
+                    ret = Math.Max(ret, area);
+                    //ret: [1,1],[2,2,2,3],[3,3,3,
+                }
+            }
+            return ret;
+
+        }
+        #endregion
+        #region 二叉树中搜索
+        public TreeNode SearchBST(TreeNode root, int val)
+        {
+            //寻找值等于val的节点，如果节点不存在返回null
+            return val_root(root,val);
+        }
+        public TreeNode val_root(TreeNode root,int val)
+        {
+            if (root==null)
+            {
+                return null;
+            }
+            if (root.val==val)
+            {
+                return root;
+            }
+            return root.val > val? val_root(root.left, val):val_root(root.right, val);
+        }
+        #endregion
+        #region 数组的度
+        public int FindShortestSubArray(int[] nums)
+        {
+            var left = new Dictionary<int, int>();//第一次index
+            var right = new Dictionary<int, int>();//最后一次index
+            var count = new Dictionary<int, int>();//次数
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!left.ContainsKey(nums[i]))
+                {
+                    left.Add(nums[i], i);
+                    right.Add(nums[i], i);
+                    count.Add(nums[i], 1);
+                }
+                else
+                {
+                    right[nums[i]] = i;
+                    count[nums[i]]++;
+                }
+
+            }
+            int ans = nums.Length;
+            int degree = count.Values.Max();
+            foreach (var item in count)
+            {
+                if (item.Value==degree)
+                {
+                    ans = Math.Min(ans,right[item.Key]-left[item.Key]+1);
+                }
+            }
+            return ans;
         }
         #endregion
 
