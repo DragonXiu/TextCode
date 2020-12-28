@@ -7987,6 +7987,77 @@ new int[] {-2,2}}, 1);
             return ans;
         }
         #endregion
+        #region 买卖股票最佳时机||||
+        public int MaxProfit(int k, int[] prices)
+        {
+            if (prices==null||prices.Length==0)
+            {
+                return 0;
+            }
+            int n = prices.Length;
+            //当k非常大时转为无限次交易
+            if (k>=n/2)
+            {
+                int dp0 =, dp1 = -prices[0];
+                for (int i = 0; i < n; i++)
+                {
+                    int temp = dp0;
+                    dp0 = Math.Max(dp0,dp1+prices[i]);
+                    dp1 = Math.Max(dp1,dp0-prices[i]);
+                }
+                return Math.Max(dp0,dp1);
+            }
+            #region 动态规划+空间优化
+
+            //定义二维数组，交易了多少次，当前的买卖状态
+            int[][] dp = new int[k + 1][];
+            int res = 0;
+            for (int i = 0; i <=k; ++i)
+            {
+                dp[i] = new int[2];
+                dp[i][0] = 0;
+                dp[i][1] = -prices[0];
+            }
+            for (int i = 1; i < n; ++i)
+            {
+                for (int j = k; j > 0; --j)
+                {
+                    //处理第k次买入
+                    dp[j - 1][1] = Math.Max(dp[j - 1][1], dp[j - 1][0] - prices[i]);
+                    dp[j][0] = Math.Max(dp[j][0],dp[j-1][1]+prices[i]);
+                }
+            }
+            #endregion
+            return dp[k][0];
+        }
+        //计算k次交易，index表示当前是哪天，status是买卖状态，contnt为交易对象次数
+        private int dfs1(int index,int status,int count,int k, int[] prices)
+        {
+          
+            if (index == prices.Length || count == k)
+            {
+                return 0;
+            }
+            int a = 0, b = 0, c = 0;
+            //保持不动
+            a = dfs1(index + 1, status, count, k, prices);
+            if (status == 1)
+            {
+                //卖一股
+                b = dfs1(index + 1, 0, count + 1, k, prices) + prices[index];
+            }
+            else
+            {
+                //买一股
+                c = dfs1(index + 1, 1, count, k, prices) - prices[index];
+            }
+            return Math.Max(Math.Max(a, b), c);
+
+        }
+        #endregion
+        #region  数据流中的第 K 大元素
+
+        #endregion
 
 
         #endregion
