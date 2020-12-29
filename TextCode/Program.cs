@@ -7861,7 +7861,7 @@ new int[] {-2,2}}, 1);
             }
 
         }
-        #endregion
+        #endregion 
         #region 棒球比赛
         public int CalPoints(string[] ops)
         {
@@ -8057,6 +8057,56 @@ new int[] {-2,2}}, 1);
         #endregion
         #region  数据流中的第 K 大元素
 
+        #endregion
+        #region 按要求补齐数组
+        public int MinPatches(int[] nums, int n)
+        {
+            //贪心
+            //nums = [1,3], n = 6
+            int a = 0;
+            long x = 1;
+            int len = nums.Length, index = 0;
+            while (x<=n)//1<6   2<6  4<6
+            {
+                if (index<len&&nums[index]<=x) //0<2&&(nums[0]=1)==1    1<2&&(nums[1]=3)>2   1<2&&(nums[1]=3)<=4
+                {
+                    x += nums[index];   //x=1+1=2  x=4+3=7  
+                    index++; //0+1=1  1+1=2
+                }
+                else  
+                {
+                    x *= 2;  //x=2*2=4
+                    a++;// a=0+1 
+                }
+            }
+            return a;
+        }
+        #endregion
+        #region 二分查找
+        public int Search(int[] nums, int target)
+        {
+            int num = 0,left=0,right=nums.Length-1;
+
+            while (left<=right)
+            {
+                num = left + (right - left)/2;
+                if (nums[num]==target)
+                {
+                    return num;
+                }
+                else if (nums[num]>target)
+                {
+                    right = num - 1;
+                    //num = (1 + num ) / 2;
+                }
+                else
+                {
+                    left = num + 1;
+                    //num = (num + nums.Length) / 2;
+                }
+            }
+            return -1;
+        }
         #endregion
 
 
