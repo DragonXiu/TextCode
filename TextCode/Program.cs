@@ -461,6 +461,7 @@ new int[] {-2,2}}, 1);
             HasAlternatingBits(10);
             MaximalRectangle(new char[][] { new char[] { '1', '0', '1', '0', '0' }, new char[] { '1', '0', '1', '1', '1' }, new char[] { '1', '1', '1', '1', '1' } ,
             new char[]{ '1', '0', '0', '1', '0' } });
+            LastStoneWeight(new int[] { 2,4,1,1,7,8});
             Console.ReadLine();
         }
         #region 算法       
@@ -7998,7 +7999,7 @@ new int[] {-2,2}}, 1);
             //当k非常大时转为无限次交易
             if (k>=n/2)
             {
-                int dp0 =, dp1 = -prices[0];
+                int dp0 =0, dp1 = -prices[0];
                 for (int i = 0; i < n; i++)
                 {
                     int temp = dp0;
@@ -8106,6 +8107,37 @@ new int[] {-2,2}}, 1);
                 }
             }
             return -1;
+        }
+        #endregion
+        #region 最后一块石头的重量
+        public static int LastStoneWeight(int[] stones)
+        {
+            //[1,1,2,4,7,8]
+            //[2,4,1,1,1]
+            //[2,1,1,1]
+            //[1,1,1]
+            //[1]
+            Array.Sort(stones);
+            int[] nums = new int[stones[stones.Length - 1]];
+            //for (int i = 0; i < stones.Length - 1; i++)
+            //{
+            //    nums[stones]
+            //}
+            int n = stones.Length-1;
+            while (n>0)
+            {
+                Array.Sort(stones);
+                if (stones[n]==stones[n-1])
+                {
+                    n -=2;
+                }
+                else
+                {
+                    stones[n - 1] = stones[n] - stones[n - 1];
+                    n -=1;
+                }
+            }
+            return stones[0];
         }
         #endregion
 
