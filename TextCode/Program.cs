@@ -461,7 +461,8 @@ new int[] {-2,2}}, 1);
             HasAlternatingBits(10);
             MaximalRectangle(new char[][] { new char[] { '1', '0', '1', '0', '0' }, new char[] { '1', '0', '1', '1', '1' }, new char[] { '1', '1', '1', '1', '1' } ,
             new char[]{ '1', '0', '0', '1', '0' } });
-            LastStoneWeight(new int[] { 2,4,1,1,7,8});
+            LastStoneWeight(new int[] { 2, 4, 1, 1, 7, 8 });
+            EraseOverlapIntervals(new int[][] { new int[] { 1, 2 }, new int[] { 3, 5 }, new int[] { 2, 6 }});
             Console.ReadLine();
         }
         #region 算法       
@@ -8138,6 +8139,42 @@ new int[] {-2,2}}, 1);
                 }
             }
             return stones[0];
+        }
+        #endregion
+        #region 无重叠区间
+        public static int EraseOverlapIntervals(int[][] intervals)
+        {
+            int n = intervals.Length;
+            if (n==0)
+            {
+                return 0;
+            }
+            Array.Sort<int[]>(intervals,(x,y)=>x[0].CompareTo(y[0]));
+
+            int[] nums = new int[n];
+            Array.Fill(nums,1);
+            int num = intervals[0][1];
+            int ans = 1;
+            for (int i = 1; i < n; i++)
+            {
+                for (int j = i+1; j < n; j++)
+                {
+                    if (intervals[j][1]<=intervals[i][0])
+                    {
+                        nums[i] = Math.Max(nums[i],nums[j]+1); ;
+                    }
+                }
+            }
+            for (int i = 1; i < n;++ i)
+            {
+                if (intervals[i][0]>=num)
+                {
+                    ++ans;
+                    num = intervals[i][1];
+                }
+            }
+            //return n - nums.Max() ;
+            return n - ans;
         }
         #endregion
 
