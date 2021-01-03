@@ -8177,6 +8177,40 @@ new int[] {-2,2}}, 1);
             return n - ans;
         }
         #endregion
+        #region 分隔链表
+        public ListNode Partition(ListNode head, int x)
+        {
+            ListNode current = head;
+            ListNode list1 = new ListNode(0);
+            list1.next = head;
+            ListNode list2 = new ListNode(0);
+            list2.next = head;
+            ListNode head1 = list1;
+            ListNode head2 = list2;
+            bool usedList2 = false;
+            while (current!=null)
+            {
+                    if (current.val<x)
+                    {
+                        list1.next = new ListNode(current.val);
+                        list1 = list1.next;
+                    }
+                    else
+                    {
+                        list2.next = new ListNode(current.val);
+                        list2 = list2.next;
+                        usedList2 = true;
+                    }
+                    current = current.next;
+
+            }                if (usedList2)
+                {
+                    list1.next = head2.next;
+                }
+                return head1.next;
+
+        }
+        #endregion
 
 
         #endregion
