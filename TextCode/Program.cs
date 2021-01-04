@@ -463,6 +463,7 @@ new int[] {-2,2}}, 1);
             new char[]{ '1', '0', '0', '1', '0' } });
             LastStoneWeight(new int[] { 2, 4, 1, 1, 7, 8 });
             EraseOverlapIntervals(new int[][] { new int[] { 1, 2 }, new int[] { 3, 5 }, new int[] { 2, 6 }});
+            ToLowerCase("Hello");
             Console.ReadLine();
         }
         #region 算法       
@@ -8209,6 +8210,21 @@ new int[] {-2,2}}, 1);
                 }
                 return head1.next;
 
+        }
+        #endregion
+        #region 转成小写字母
+        public static string ToLowerCase(string str)
+        {
+            StringBuilder str1 = new StringBuilder();
+            str1.Append(str);
+            for (int i = 0; i < str1.Length; i++)
+            {
+                if (str1[i] >=65&&str1[i] <= 90)
+                {
+                    str1[i] = (char)(str1[i] +32);
+                }
+            }
+            return str1.ToString();
         }
         #endregion
 
