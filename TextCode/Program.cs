@@ -462,8 +462,10 @@ new int[] {-2,2}}, 1);
             MaximalRectangle(new char[][] { new char[] { '1', '0', '1', '0', '0' }, new char[] { '1', '0', '1', '1', '1' }, new char[] { '1', '1', '1', '1', '1' } ,
             new char[]{ '1', '0', '0', '1', '0' } });
             LastStoneWeight(new int[] { 2, 4, 1, 1, 7, 8 });
-            EraseOverlapIntervals(new int[][] { new int[] { 1, 2 }, new int[] { 3, 5 }, new int[] { 2, 6 }});
+            EraseOverlapIntervals(new int[][] { new int[] { 1, 2 }, new int[] { 3, 5 }, new int[] { 2, 6 } });
             ToLowerCase("Hello");
+            longestword(new string[]{ });
+            PivotIndex(new int[] { });
             Console.ReadLine();
         }
         #region 算法       
@@ -7942,19 +7944,19 @@ new int[] {-2,2}}, 1);
         public TreeNode SearchBST(TreeNode root, int val)
         {
             //寻找值等于val的节点，如果节点不存在返回null
-            return val_root(root,val);
+            return val_root(root, val);
         }
-        public TreeNode val_root(TreeNode root,int val)
+        public TreeNode val_root(TreeNode root, int val)
         {
-            if (root==null)
+            if (root == null)
             {
                 return null;
             }
-            if (root.val==val)
+            if (root.val == val)
             {
                 return root;
             }
-            return root.val > val? val_root(root.left, val):val_root(root.right, val);
+            return root.val > val ? val_root(root.left, val) : val_root(root.right, val);
         }
         #endregion
         #region 数组的度
@@ -7982,9 +7984,9 @@ new int[] {-2,2}}, 1);
             int degree = count.Values.Max();
             foreach (var item in count)
             {
-                if (item.Value==degree)
+                if (item.Value == degree)
                 {
-                    ans = Math.Min(ans,right[item.Key]-left[item.Key]+1);
+                    ans = Math.Min(ans, right[item.Key] - left[item.Key] + 1);
                 }
             }
             return ans;
@@ -7993,29 +7995,29 @@ new int[] {-2,2}}, 1);
         #region 买卖股票最佳时机||||
         public int MaxProfit(int k, int[] prices)
         {
-            if (prices==null||prices.Length==0)
+            if (prices == null || prices.Length == 0)
             {
                 return 0;
             }
             int n = prices.Length;
             //当k非常大时转为无限次交易
-            if (k>=n/2)
+            if (k >= n / 2)
             {
-                int dp0 =0, dp1 = -prices[0];
+                int dp0 = 0, dp1 = -prices[0];
                 for (int i = 0; i < n; i++)
                 {
                     int temp = dp0;
-                    dp0 = Math.Max(dp0,dp1+prices[i]);
-                    dp1 = Math.Max(dp1,dp0-prices[i]);
+                    dp0 = Math.Max(dp0, dp1 + prices[i]);
+                    dp1 = Math.Max(dp1, dp0 - prices[i]);
                 }
-                return Math.Max(dp0,dp1);
+                return Math.Max(dp0, dp1);
             }
             #region 动态规划+空间优化
 
             //定义二维数组，交易了多少次，当前的买卖状态
             int[][] dp = new int[k + 1][];
             int res = 0;
-            for (int i = 0; i <=k; ++i)
+            for (int i = 0; i <= k; ++i)
             {
                 dp[i] = new int[2];
                 dp[i][0] = 0;
@@ -8027,16 +8029,16 @@ new int[] {-2,2}}, 1);
                 {
                     //处理第k次买入
                     dp[j - 1][1] = Math.Max(dp[j - 1][1], dp[j - 1][0] - prices[i]);
-                    dp[j][0] = Math.Max(dp[j][0],dp[j-1][1]+prices[i]);
+                    dp[j][0] = Math.Max(dp[j][0], dp[j - 1][1] + prices[i]);
                 }
             }
             #endregion
             return dp[k][0];
         }
         //计算k次交易，index表示当前是哪天，status是买卖状态，contnt为交易对象次数
-        private int dfs1(int index,int status,int count,int k, int[] prices)
+        private int dfs1(int index, int status, int count, int k, int[] prices)
         {
-          
+
             if (index == prices.Length || count == k)
             {
                 return 0;
@@ -8069,14 +8071,14 @@ new int[] {-2,2}}, 1);
             int a = 0;
             long x = 1;
             int len = nums.Length, index = 0;
-            while (x<=n)//1<6   2<6  4<6
+            while (x <= n)//1<6   2<6  4<6
             {
-                if (index<len&&nums[index]<=x) //0<2&&(nums[0]=1)==1    1<2&&(nums[1]=3)>2   1<2&&(nums[1]=3)<=4
+                if (index < len && nums[index] <= x) //0<2&&(nums[0]=1)==1    1<2&&(nums[1]=3)>2   1<2&&(nums[1]=3)<=4
                 {
                     x += nums[index];   //x=1+1=2  x=4+3=7  
                     index++; //0+1=1  1+1=2
                 }
-                else  
+                else
                 {
                     x *= 2;  //x=2*2=4
                     a++;// a=0+1 
@@ -8088,16 +8090,16 @@ new int[] {-2,2}}, 1);
         #region 二分查找
         public int Search(int[] nums, int target)
         {
-            int num = 0,left=0,right=nums.Length-1;
+            int num = 0, left = 0, right = nums.Length - 1;
 
-            while (left<=right)
+            while (left <= right)
             {
-                num = left + (right - left)/2;
-                if (nums[num]==target)
+                num = left + (right - left) / 2;
+                if (nums[num] == target)
                 {
                     return num;
                 }
-                else if (nums[num]>target)
+                else if (nums[num] > target)
                 {
                     right = num - 1;
                     //num = (1 + num ) / 2;
@@ -8125,18 +8127,18 @@ new int[] {-2,2}}, 1);
             //{
             //    nums[stones]
             //}
-            int n = stones.Length-1;
-            while (n>0)
+            int n = stones.Length - 1;
+            while (n > 0)
             {
                 Array.Sort(stones);
-                if (stones[n]==stones[n-1])
+                if (stones[n] == stones[n - 1])
                 {
-                    n -=2;
+                    n -= 2;
                 }
                 else
                 {
                     stones[n - 1] = stones[n] - stones[n - 1];
-                    n -=1;
+                    n -= 1;
                 }
             }
             return stones[0];
@@ -8146,29 +8148,29 @@ new int[] {-2,2}}, 1);
         public static int EraseOverlapIntervals(int[][] intervals)
         {
             int n = intervals.Length;
-            if (n==0)
+            if (n == 0)
             {
                 return 0;
             }
-            Array.Sort<int[]>(intervals,(x,y)=>x[0].CompareTo(y[0]));
+            Array.Sort<int[]>(intervals, (x, y) => x[0].CompareTo(y[0]));
 
             int[] nums = new int[n];
-            Array.Fill(nums,1);
+            Array.Fill(nums, 1);
             int num = intervals[0][1];
             int ans = 1;
             for (int i = 1; i < n; i++)
             {
-                for (int j = i+1; j < n; j++)
+                for (int j = i + 1; j < n; j++)
                 {
-                    if (intervals[j][1]<=intervals[i][0])
+                    if (intervals[j][1] <= intervals[i][0])
                     {
-                        nums[i] = Math.Max(nums[i],nums[j]+1); ;
+                        nums[i] = Math.Max(nums[i], nums[j] + 1); ;
                     }
                 }
             }
-            for (int i = 1; i < n;++ i)
+            for (int i = 1; i < n; ++i)
             {
-                if (intervals[i][0]>=num)
+                if (intervals[i][0] >= num)
                 {
                     ++ans;
                     num = intervals[i][1];
@@ -8189,26 +8191,27 @@ new int[] {-2,2}}, 1);
             ListNode head1 = list1;
             ListNode head2 = list2;
             bool usedList2 = false;
-            while (current!=null)
+            while (current != null)
             {
-                    if (current.val<x)
-                    {
-                        list1.next = new ListNode(current.val);
-                        list1 = list1.next;
-                    }
-                    else
-                    {
-                        list2.next = new ListNode(current.val);
-                        list2 = list2.next;
-                        usedList2 = true;
-                    }
-                    current = current.next;
-
-            }                if (usedList2)
+                if (current.val < x)
                 {
-                    list1.next = head2.next;
+                    list1.next = new ListNode(current.val);
+                    list1 = list1.next;
                 }
-                return head1.next;
+                else
+                {
+                    list2.next = new ListNode(current.val);
+                    list2 = list2.next;
+                    usedList2 = true;
+                }
+                current = current.next;
+
+            }
+            if (usedList2)
+            {
+                list1.next = head2.next;
+            }
+            return head1.next;
 
         }
         #endregion
@@ -8219,15 +8222,224 @@ new int[] {-2,2}}, 1);
             str1.Append(str);
             for (int i = 0; i < str1.Length; i++)
             {
-                if (str1[i] >=65&&str1[i] <= 90)
+                if (str1[i] >= 65 && str1[i] <= 90)
                 {
-                    str1[i] = (char)(str1[i] +32);
+                    str1[i] = (char)(str1[i] + 32);
                 }
             }
             return str1.ToString();
         }
         #endregion
+        #region 较大分组的位置
+        public IList<IList<int>> LargeGroupPositions(string s)
+        {
+            int len = s.Length;
 
+            int a = 0, b = 0, num = 1, one = 0;
+            List<IList<int>> res = new List<IList<int>>();
+            for (int i = 1; i < len; i++)
+            {
+                if (s[i] != s[i - 1] || i == len - 1)
+                {
+                    if (num >= 3)
+                    {
+                        List<int> temp = new List<int>();
+                        temp.Add(i - num + 1);
+                        temp.Add(i - 1);
+                        res.Add(temp);
+                    }
+                }
+                //else if(num>3)
+                //{
+                //    num = 1;
+                //    List<int> temp = new List<int>();
+                //    temp.Add(one);
+                //    temp.Add(i-1);
+                //    res.Add(temp);
+                //    one = i;
+                //}
+                else
+                {
+                    num++;
+                }
+            }
+            return res;
+        }
+        #endregion
+        #region 1比特与2比特字符
+        public bool IsOneBitCharacter(int[] bits)
+        {
+            //[1, 0, 0]
+
+            int[] nums = new int[2];
+            for (int i = 0; i < bits.Length; i++)
+            {
+                nums[bits[i]]++;
+            }
+            if (nums[1] > 1)
+            {
+                if (nums[1] % 2 > nums[0])
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else if (nums[0] < 1)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+        #endregion
+        #region  词典中最长的单词
+        public static string longestword(string[] words)
+        {
+            words = new string[] { "rac", "rs", "ra", "on", "r", "otif", "o", "onpdu", "rsf", "rs", "ot", "oti", "racy", "onpd" };
+            //输入：
+            //words = ["w", "wo", "wor", "worl", "world"]
+            //输出："world"
+            //解释： 
+            //单词"world"可由"w", "wo", "wor", 和 "worl"添加一个字母组成。
+            //先找最长的还是长的
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+            Array.Sort(words);
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].Length==1)
+                {
+                    dic.Add(words[i], 1);
+                }
+                else 
+                {
+                    if (dic.ContainsKey(words[i].Substring(0,words[i].Length-1)))
+                    {
+                        dic.Remove(words[i].Substring(0, words[i].Length - 1));
+                        dic.Add(words[i], words[i].Length);
+                    }
+                }
+            }
+            string res = "";
+            int len = 0;
+            foreach (var item in dic)
+            {
+                if (item.Value>len)
+                {
+                    len = item.Value;
+                    res = item.Key;
+                }
+            }
+            return res;
+
+
+        }
+        #endregion
+        #region 寻找数组的中心索引
+        public static int PivotIndex(int[] nums)
+        {
+            //[1, 7, 3, 6, 5, 6] 3
+            //[1, 2, 3] -1
+            nums = new int[] { 1, 1, -1, -1, 0, 1 };
+            int sum = 0, leftSum = 0;
+            foreach (var item in nums)
+            {
+                sum += item;
+            }
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (leftSum==sum-leftSum-nums[i])
+                {
+                    return i;
+                }
+                leftSum += nums[i];
+            }
+            return -1;
+            //int one = 0;
+            //int one_v = nums[one];
+            //int two = nums.Length-1;
+            //int two_v = nums[two];
+            //while (two>one && two - one >= 2)
+            //{             
+                
+            //    if (one_v==two_v&&two-one==2)
+            //    {
+            //        return one + 1;
+            //    }
+            //    else
+            //    {
+            //        if (Math.Abs(one_v) > Math.Abs(two_v))
+            //        {
+            //            --two;
+            //            two_v += nums[two];
+            //        }
+            //        else if (Math.Abs(one_v )< Math.Abs(two_v))
+            //        {
+            //            ++one;
+            //            one_v += nums[one];
+            //        }
+            //        else
+            //        {
+            //            two--;
+            //            one++;
+            //        }
+            //    }
+            //}
+            //return -1;
+        }
+        #endregion
+        #region 除法求值
+        public double[] CalcEquation(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
+        {
+            //equations = [["a","b"],["b","c"]], values = [2.0,3.0], queries = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
+            int equationsSize = equations.Count;
+            UnionFind unionFind = new UnionFind(2*equationsSize);
+            //1.预处理，将变量的值与id进行映射，使得并查集的底层使用数组实现，方便编码
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+            int id = 0;
+            for (int i = 0; i < equationsSize; i++)
+            {
+                List<string> equation = (List<string>)equations[i];
+                string var1 = equation[0];
+                string var2 = equation[1];
+                if (!dic.ContainsKey(var1))
+                {
+                    dic.Add(var1,id);
+                    id++;
+                }
+                if (!dic.ContainsKey(var2))
+                {
+                    dic.Add(var2,id);
+                    id++;
+                }
+                unionFind.union(dic[var1],dic[var2],values[i]);
+            }
+            //2.做查询
+            int queriesSize = queries.Count;
+            double[] res = new double[queriesSize];
+            for (int i = 0; i < queriesSize; i++)
+            {
+                string var1 = queries[i][0];
+                string var2 = queries[i][1];
+                int id1 = dic[var1];
+                int id2 = dic[var2];
+                if (id1==null||id2==null)
+                {
+                    res[i] = -1.0d;
+                }
+                else
+                {
+                    res[i] = unionFind.isConnected(id1,id2);
+                }
+            }
+            return res;
+        }
+        #endregion
 
         #endregion
         #region LinQ
@@ -8630,6 +8842,59 @@ new int[] {-2,2}}, 1);
     }
     #endregion
     #endregion
+
+    public  class UnionFind
+    {
+        private int[] parent;
+        //指向父节点的权值
+        private double[] weight;
+        public UnionFind(int n)
+        {
+            this.parent = new int[n];
+            this.weight = new double[n];
+            for (int i = 0; i < n; i++)
+            {
+                parent[i] = i;
+                weight[i] = 1.0d;
+            }
+        }
+        public void union(int x,int y,double value)
+        {
+            int rootX = find(x);
+            int rootY = find(y);
+            if (rootX==rootY)
+            {
+                return;
+            }
+            parent[rootX] = rootY;
+            weight[rootX] = weight[y] * value / weight[x];
+        }
+        //路径压缩 return根节点的id
+        public int find(int x)
+        {
+            if (x!=parent[x])
+            {
+                int origin = parent[x];
+                parent[x] = find(parent[x]);
+                weight[x] *= weight[origin];
+            }
+            return parent[x];
+        }
+        public double isConnected(int x,int y)
+        {
+
+            int rootX = find(x);
+            int rootY = find(y);
+            if (rootX==rootY)
+            {
+                return weight[x] / weight[y];
+            }
+            else
+            {
+                return -1.0d;
+            }
+        }
+    }
     public class UserInfo
     {
         public int UId { get; set; }
