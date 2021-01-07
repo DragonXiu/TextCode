@@ -464,8 +464,9 @@ new int[] {-2,2}}, 1);
             LastStoneWeight(new int[] { 2, 4, 1, 1, 7, 8 });
             EraseOverlapIntervals(new int[][] { new int[] { 1, 2 }, new int[] { 3, 5 }, new int[] { 2, 6 } });
             ToLowerCase("Hello");
-            longestword(new string[]{ });
+            longestword(new string[] { });
             PivotIndex(new int[] { });
+            FindCircleNum(new int[][] { new int[] { 1, 1,0 }, new int[] { 1, 1, 0 }, new int[] { 0, 0, 1 } });
             Console.ReadLine();
         }
         #region 算法       
@@ -8438,6 +8439,126 @@ new int[] {-2,2}}, 1);
                 }
             }
             return res;
+        }
+        #endregion
+        #region 自除数
+        public IList<int> SelfDividingNumbers(int left, int right)
+        {
+            //个位数     
+            //int  x= 0, y=0;
+            //List<int> res = new List<int>();
+            //for (int i = 0; i <right+1-left; i++)
+            //{
+            //    x = left + i;
+            //    y = left + i;
+            //    while (true)
+            //    {
+            //        if (y%10==0||x%(y%10)!=0)
+            //        {
+            //            break;
+            //        }
+            //        if (y<1)
+            //        {
+            //            res.Add(x);
+            //            break;
+            //        }
+            //    }
+            //}
+            //return res;
+            List<int> res = new List<int>();
+            for (int i = left; i <right; ++i)
+            {
+                if (selfDividing(i))
+                {
+                    res.Add(i);
+                }
+            }
+            return res;
+        }
+        public bool selfDividing(int n)
+        {
+            string x = n.ToString() ;
+            foreach (var item in x)
+            {
+                if (item=='0'||(n%(item-'0')>0))
+                {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+        //public bool selfDividing(int n)
+        //{
+        //    int x = n;
+        //    while (x>0)
+        //    {
+        //        int d = x % 10;
+        //        x /=10;
+        //        if (d==0||(n%d)>0)
+        //        {
+        //            return false;
+        //        }                
+        //    }
+        //    return true;
+        //}
+        #endregion
+        #region 图像渲染
+        int[] dx = { 1, 0, 0, -1 };
+        int[] dy = { 0, 1, -1, 0 };
+        public int[][] FloodFill(int[][] image, int sr, int sc, int newColor)
+        {
+            #region 深度优先搜索
+            int currColor = image[sr][sc];//这个点的颜色
+            if (currColor!=newColor)//对比原来的颜色和新颜色
+            {
+                dfs(image,sr,sc,currColor,newColor);
+            }
+            return image;
+            #endregion
+        }
+        private void dfs(int[][]image,int x,int y,int color,int newColor)
+        {
+            if (image[x][y]==color)//
+            {
+                image[x][y] = newColor;
+                for (int i = 0; i < 4; i++)
+                {
+                    int mx = x + dx[i], my = y + dy[i];
+                    if (mx>=0&&mx<image.Length&&my>=0&&my<image[0].Length)
+                    {
+                        dfs(image,mx,my,color,newColor);
+                    }
+                }
+            }
+        }
+        #endregion
+        #region 省份数量
+        public static int FindCircleNum(int[][] isConnected)
+        {
+            int provinces = isConnected.Length;
+            bool[] visited = new bool[provinces];
+            int circles = 0;
+            for (int i = 0; i < provinces; i++)
+            {
+                if (!visited[i])
+                {
+                    dfs(isConnected,visited,provinces,i);
+                    circles++;
+                }
+            }
+            return circles;
+        }
+        private static void dfs(int [][]isConnected,bool[]visited,int province,int i)
+        {
+            for (int j = 0; j < province; j++)
+            {
+                if (isConnected[i][j]==1&&!visited[j])
+                {
+                    visited[j] = true;
+                    dfs(isConnected, visited, province, j);
+                }              
+            }
         }
         #endregion
 
