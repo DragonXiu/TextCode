@@ -468,6 +468,7 @@ new int[] {-2,2}}, 1);
             PivotIndex(new int[] { });
             FindCircleNum(new int[][] { new int[] { 1, 1,0 }, new int[] { 1, 1, 0 }, new int[] { 0, 0, 1 } });
             ShortestCompletingWord("1s3 456", new string[]{ "looks", "pest", "stew", "show" });
+            MaxSlidingWindow(new int[] { 1, 3, -1, -3, 5, 3, 6, 7 },1) ;
             Console.ReadLine();
         }
         #region 算法       
@@ -8672,6 +8673,60 @@ new int[] {-2,2}}, 1);
             }
             return res;
         }
+        #endregion
+        #region 滑动窗口最大值
+        public static int[] MaxSlidingWindow(int[] nums, int k)
+        {
+            int n = nums.Length;
+            int[] res = new int[n - k + 1];
+            LinkedList<int> dq = new LinkedList<int>();
+            for (int i = 0; i < n; i++)
+            {
+                if (dq.Count != 0 && dq.First.Value < (i - k + 1))
+                {
+                    dq.RemoveFirst();//超出窗口长度时删除队首
+                }
+                while (dq.Count != 0 && nums[i] >= nums[dq.Last.Value])
+                {
+                    dq.RemoveLast();//如果遍历的元素大于队尾元素就删除队尾
+                }
+                dq.AddLast(i);//添加
+                if (i >= k - 1)
+                {
+                    res[i - k + 1] = nums[dq.First.Value];//结果
+                }
+            }
+            return res;
+
+        }
+        //public static int[] MaxSlidingWindow(int[] nums, int k)
+        //{
+        //    //nums = [1,3,-1,-3,5,3,6,7], k = 3 结果 [3,3,5,5,6,7]
+        //    List<int> res = new List<int>();
+        //    int i = 0;
+        //    int n = k - 1;
+        //    if (nums.Length < k)
+        //    {
+        //        Array.Sort(nums);
+        //        res.Add(nums[nums.Length - 1]);
+        //        return res.ToArray();
+        //    }
+        //    while (n < nums.Length)
+        //    {
+        //        int num = int.MinValue;
+        //        for (int j = i; j <= n; j++)
+        //        {
+        //            if (nums[j] > num)
+        //            {
+        //                num = nums[j];
+        //            }
+        //        }
+        //        res.Add(num);
+        //        i++;
+        //        n++;
+        //    }
+        //    return res.ToArray();
+        //}
         #endregion
 
         #endregion
