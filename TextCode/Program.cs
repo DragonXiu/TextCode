@@ -467,6 +467,7 @@ new int[] {-2,2}}, 1);
             longestword(new string[] { });
             PivotIndex(new int[] { });
             FindCircleNum(new int[][] { new int[] { 1, 1,0 }, new int[] { 1, 1, 0 }, new int[] { 0, 0, 1 } });
+            ShortestCompletingWord("1s3 456", new string[]{ "looks", "pest", "stew", "show" });
             Console.ReadLine();
         }
         #region 算法       
@@ -8559,6 +8560,117 @@ new int[] {-2,2}}, 1);
                     dfs(isConnected, visited, province, j);
                 }              
             }
+        }
+        #endregion
+        #region 寻找比目标字母大的最小字母
+        public char NextGreatestLetter(char[] letters, char target)
+        {
+            char one = letters[0];
+            char tweo = letters[letters.Length - 1];
+            if (one > target||tweo < target)
+            {
+                return one;
+            }
+            for (int i = 0; i < letters.Length; i++)
+            {
+                if (letters[i]>one)
+                {
+                    return letters[i];
+                }
+            }
+            return ' ';
+        }
+        #endregion
+        #region 至少是其他数字两倍的最大数
+        public int DominantIndex(int[] nums)
+        {
+            if (nums.Length==1)
+            {
+                return 0;
+            }
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (dic.ContainsKey(nums[i]))
+                {
+                    dic[nums[i]] = i;
+                }
+                else
+                {
+                    dic.Add(nums[i],i);
+                }
+            }
+            Array.Sort(nums);
+            if (nums[nums.Length-1]>=2*nums[nums.Length-2])
+            {
+                return dic[nums[nums.Length - 1]];
+            }
+            return -1;
+            
+        }
+        #endregion
+        #region 最短补全
+        public static  string ShortestCompletingWord(string licensePlate, string[] words)
+        {
+            //"1s3 PSt"  ["step", "steps", "stripe", "stepple"]
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+
+            foreach (var item in licensePlate.ToLower())
+            {
+                if (item>=97&&item<=122)
+                {
+                    if (dic.ContainsKey(item))
+                    {
+                        dic[item]++;
+                    }
+                    else
+                    {
+                        dic.Add(item,1);
+                    }
+                }
+            }
+            int num = 0;
+            string res = "";    
+            int len = 16;
+            for (int i = 0; i < words.Length; i++)
+            {
+                int temp = 0;
+
+                Dictionary<char, int> keyValues = new Dictionary<char, int>();
+                foreach (var item in words[i])
+                {
+                    if (keyValues.ContainsKey(item))
+                    {
+                        keyValues[item]++;
+                    }
+                    else
+                    {
+                        keyValues.Add(item, 1);
+                    }
+                }
+                foreach (var item in keyValues)
+                {
+
+                    if (dic.ContainsKey(item.Key))
+                    {
+                        if (dic[item.Key]>item.Value)
+                        {
+                            temp += item.Value; 
+                        }
+                        else
+                        {
+                            temp += dic[item.Key];
+                        }
+                    }
+                }
+                if (temp > num || (temp == num && len > words[i].Length))
+                {
+                    len = words[i].Length;
+                    num = temp;
+                    res = words[i];
+                }
+            }
+            return res;
         }
         #endregion
 
