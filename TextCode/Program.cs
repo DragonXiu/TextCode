@@ -469,6 +469,14 @@ new int[] {-2,2}}, 1);
             FindCircleNum(new int[][] { new int[] { 1, 1,0 }, new int[] { 1, 1, 0 }, new int[] { 0, 0, 1 } });
             ShortestCompletingWord("1s3 456", new string[]{ "looks", "pest", "stew", "show" });
             MaxSlidingWindow(new int[] { 1, 3, -1, -3, 5, 3, 6, 7 },1) ;
+            MaxProfit1(new int[] { 3, 3, 5, 0, 0, 3, 1, 4 });
+            SummaryRanges(new int[] { -1,0});
+            SmallestStringWithSwaps("qdwyt", new List<IList<int>>() { 
+                new List<int>() { 2, 3 }
+            ,new List<int>() { 3, 2 }
+            , new List<int>() { 0, 1 }
+             , new List<int>() { 4, 0  }
+             , new List<int>() { 3, 2 } });
             Console.ReadLine();
         }
         #region 算法       
@@ -8727,7 +8735,147 @@ new int[] {-2,2}}, 1);
         //    }
         //    return res.ToArray();
         //}
+        #endregion#region   
+        #region 股票四
+        public static int MaxProfit1(int[] prices)
+        {
+             int n = prices.Length;
+            int buy1 =  -prices[0], sell1 = 0;
+            int buy2 =  -prices[0], sell2 = 0;
+            for (int i = 0; i < n; ++i)
+            {
+                buy1 = Math.Max(buy1,-prices[i]);            //-1 -1 -1 -1 -1
+                sell1 = Math.Max(sell1,buy1+prices[i]); //  0   1  2   3  4
+                buy2 = Math.Max(buy2,sell1-prices[i]);  // -1 -1 -1 -1 -1
+                sell2 = Math.Max(sell2,buy2+prices[i]); //  0   1   2   3  4  
+            }
+            return sell2;
+        }
         #endregion
+        #region 汇总区间
+        public static IList<string> SummaryRanges(int[] nums)
+        {
+            //输入：nums = [0,1,2,4,5,7]
+            //输出：["0->2","4->5","7"]
+            List<string> res = new List<string>();
+            if (nums.Length==1)
+            {
+                res.Add(nums[0].ToString());
+            }
+            int one = nums[0];
+            //StringBuilder str = new StringBuilder();
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i]- nums[i-1] != 1)
+                {
+                    if (nums[i - 1] != one)
+                    {
+                        res.Add(one.ToString() + "->" + nums[i - 1].ToString());
+                    }
+                    else
+                    {
+                        res.Add(one.ToString());
+                    }
+                    one = nums[i];
+                    if (i == nums.Length - 1)
+                    {
+                        res.Add(one.ToString());
+                    }
+                }
+                else if(i == nums.Length - 1)
+                {
+                    res.Add(one.ToString() + "->" + nums[i ].ToString());
+                }
+            }
+            return res;
+        }
+        #endregion
+        #region 交换字符串中的元素
+        public static string SmallestStringWithSwaps(string s, IList<IList<int>> pairs)
+        {
+          //  var nums = a.ToArray();
+            int n = pairs.Count;
+            if (n<1)
+            {
+                return s;
+            }
+            int a = 0;
+            for (int i = 0; i < n-1; i++)
+            {
+                for (int j = 0; j < n-i-1; j++)
+                {
+                    if (pairs[j][0]>pairs[j+1][0])
+                    {
+                        var temp = pairs[j];
+                        pairs[j] = pairs[j + 1];
+                        pairs[j + 1]=temp;
+                        a = 1;
+                    }
+                
+                }    if (a==0)
+                    {
+                        break;
+                    }
+            }
+            List<int> nums = new List<int>();
+            List<List<int>> lists = new List<List<int>>();
+            lists.Add(new List<int>() { pairs[0][0], pairs[0][1] });
+            for (int i = 0; i < n; i++)
+            {
+                bool flag = false;
+                for (int j = 0; j < lists.Count; j++)
+                {
+                    if (lists[j].Contains(pairs[i][0]) && !lists[j].Contains(pairs[i][1]))
+                    {
+                        lists[j].Add(pairs[i][1]);
+                    }
+                    else if (lists[j].Contains(pairs[i][1]) && !lists[j].Contains(pairs[i][0]))
+                    {
+                        lists[j].Add(pairs[i][0]);
+                    }
+                    else if (!lists[j].Contains(pairs[i][1]) && !lists[j].Contains(pairs[i][0]))
+                    {
+                        flag=true;
+                    }
+
+                }
+                if (flag)
+                {
+                    lists.Add(new List<int>() { pairs[i][0], pairs[i][1] });
+                }               
+            }      
+            StringBuilder str = new StringBuilder();
+            str.Append(s);
+            for (int i = 0; i < lists.Count; i++)
+            {
+                char[] chars = new char[lists[i].Count];
+                for (int j = 0; j< lists[i].Count; j++)
+                {
+                    chars[j] = s[lists[i][j]];
+                }
+                Array.Sort(chars);
+                for (int j = 0; j < lists[i].Count; j++)
+                {
+                    lists[i].Sort();
+                    int m = lists[i][j];
+                    str[m] = chars[j];
+                }
+            }
+      
+          
+
+
+            return str.ToString();
+            //for (int i = 0; i < nums.Length; i++)
+            //{
+            //    str.Append(nums[i]);
+            //}
+            //return str.ToString();
+        }
+
+        #endregion
+
+
 
         #endregion
         #region LinQ
