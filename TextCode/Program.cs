@@ -8874,12 +8874,125 @@ new int[] {-2,2}}, 1);
         }
 
         #endregion
+        #region 项目管理
+        public int[] SortItems(int n, int m, int[] group, IList<IList<int>> beforeItems)
+        {
+            List<List<int>> groupItem = new List<List<int>>();
+            for (int i = 0; i < n + m; ++i)
+            {
+                groupItem.Add(new List<int>());
+            }
+            //组间和组内依赖图
+            List<List<int>> groupGraph = new List<List<int>>();
+            for (int i = 0; i < n + m; ++i)
+            {
+                groupGraph.Add(new List<int>());
+            }
+            List<List<int>> itemGraph = new List<List<int>>();
+            for (int i = 0; i < n; ++i)
+            {
+                itemGraph.Add(new List<int>()); ;
+            }
+
+            //组间和组内入度数组
+            int[] groupDegree = new int[n + m];
+            int[] itemDegree = new int[n];
+
+            List<int> id = new List<int>();
+            for (int i = 0; i < n+m; ++i)
+            {
+                id.Add(i);
+            }
+
+            int leftId = m;
+            //给未分配的Item分配一个groupId
+            for (int i = 0; i < n; ++i)
+            {
+                if (group[i]==-1)
+                {
+                    group[i] = leftId;
+                    leftId += 1;
+                }
+                groupItem[group[i]].Add(i);
+            }
+            //依赖关系图
+            for (int i = 0; i < n; ++i)
+            {
+                int curGroupId = group[i];
+                foreach (var item in beforeItems[i])
+                {
+                    int beforeGroupId = group[item];
+                    if (beforeGroupId==curGroupId)
+                    {
+                        itemDegree[i] += 1;
+                        itemGraph[item].Add(i);
+                    }
+                    else
+                    {
+                        groupDegree[curGroupId] += 1;
+                        groupGraph[beforeGroupId].Add(curGroupId);
+                    }
+                }
+            }
+            //组间拓扑关系排序
+            List<int> groupTopSort = topSort(groupDegree, groupGraph, id);
+            if (groupTopSort.Count==0)
+            {
+                return new int[0];
+            }
+            int[] ans = new int[n];
+            int index = 0;
+            //组内拓扑关系排序
+            foreach (var item in groupTopSort)
+            {
+                int size = groupItem[item].Count;
+                if (size==0)
+                {
+                    continue;
+                }
+                List<int> res = topSort(itemDegree,itemGraph,groupItem[item]);
+                if (res.Count==0)
+                {
+                    return new int[0];
+                }
+                foreach (var it in res)
+                {
+                    ans[index++] = it;
+                }
+            }
+            return ans;
+        }
+        public List<int> topSort(int[] deg, List<List<int>> graph, List<int> items)
+        {
+            Queue<int> queue = new Queue<int>();
+            foreach (var item in items)
+            {
+                if (deg[item]==0)
+                {
+                    queue.Enqueue(item);
+                }                
+            }
+            List<int> res = new List<int>();
+            while (queue.Count>0)
+            {
+                int u = queue.Dequeue();
+                res.Add(u);
+                foreach (var item in graph[u])
+                {
+                    if (--deg[item]==0)
+                    {
+                        queue.Enqueue(item);
+                    }
+                }
+            }
+            return res.Count == items.Count ? res : new List<int>();
+        }
+            #endregion
 
 
-
-        #endregion
-        #region LinQ
-        private static void DataInit()
+            #endregion
+            #region LinQ
+            private static void DataInit()
         {
             IList<UserInfo> userlist = new List<UserInfo>() {
         new UserInfo(){UId=1,UserName="zs",Age=23,RoleId=1},
