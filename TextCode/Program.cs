@@ -8987,12 +8987,49 @@ new int[] {-2,2}}, 1);
             }
             return res.Count == items.Count ? res : new List<int>();
         }
-            #endregion
+        #endregion
+        #region 冗余连接
+        public int[] FindRedundantConnection(int[][] edges)
+        {
+            int nodesCount = edges.Length;
+            int[] parent = new int[nodesCount+1];
+            for (int i = 1; i < nodesCount; i++)
+            {
+                parent[i]= i;
+            }
+            for (int i = 0; i < nodesCount; i++)
+            {
+                int[] edge = edges[i];
+                int node1 = edge[0], node2 = edge[1];
+                if (find(parent,node1)!=find(parent,node2))
+                {
+                    union(parent,node1,node2);
+                }
+                else
+                {
+                    return edge;
+                }
+            }
+            return new int[0];
+        }
+        public void union(int[]parent,int index1,int index2)
+        {
+            parent[find(parent,index1)]=find(parent,index2);
+        }
+        public int find(int[] parent,int index)
+        {
+            if (parent[index]!=index)
+            {
+                parent[index] = find(parent,parent[index]);
+            }
+            return parent[index];
+        }
+        #endregion
 
 
-            #endregion
-            #region LinQ
-            private static void DataInit()
+        #endregion
+        #region LinQ
+        private static void DataInit()
         {
             IList<UserInfo> userlist = new List<UserInfo>() {
         new UserInfo(){UId=1,UserName="zs",Age=23,RoleId=1},
