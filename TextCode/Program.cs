@@ -470,13 +470,22 @@ new int[] {-2,2}}, 1);
             ShortestCompletingWord("1s3 456", new string[]{ "looks", "pest", "stew", "show" });
             MaxSlidingWindow(new int[] { 1, 3, -1, -3, 5, 3, 6, 7 },1) ;
             MaxProfit1(new int[] { 3, 3, 5, 0, 0, 3, 1, 4 });
-            SummaryRanges(new int[] { -1,0});
+            SummaryRanges(new int[] { -1, 0 });
+            var counter = 1;
+            var result1= Sum() + Sum();
+
+            int Sum()
+            {
+                return counter++;
+            }
+            Console.WriteLine("SUM:"+result.ToString());
             SmallestStringWithSwaps("qdwyt", new List<IList<int>>() { 
                 new List<int>() { 2, 3 }
             ,new List<int>() { 3, 2 }
             , new List<int>() { 0, 1 }
              , new List<int>() { 4, 0  }
              , new List<int>() { 3, 2 } });
+            PrefixesDivBy5(new int[] { 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1 });
             Console.ReadLine();
         }
         #region 算法       
@@ -9023,6 +9032,53 @@ new int[] {-2,2}}, 1);
                 parent[index] = find(parent,parent[index]);
             }
             return parent[index];
+        }
+        #endregion
+        #region 可被 5 整除的二进制前缀
+        public static IList<bool> PrefixesDivBy5(int[] A)
+        {
+            List<bool> a = new List<bool>();
+            long num = 0;
+            //1,0,0,1,0,1,0,0,1,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,0,1,0,0,0,0,1,1,0,1,0,0,0,1
+
+            for (int i = 0; i < A.Length; i++)
+            {
+                num = (num << 1) + A[i];
+                //num = num * 2 + A[i];
+                if (num % 5 == 0)
+                {
+                    a.Add(true);
+                }
+                else
+                {
+                    a.Add(false);
+                }
+            }
+            return a;
+        }
+        #endregion
+        #region 旋转字符串
+        public bool RotateString(string A, string B)
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append(A);
+            for (int i = 0; i < A.Length; i++)
+            {
+                if (B.CompareTo(str.ToString())==0)
+                {
+                    return true;
+                }
+
+                str = str.Remove(0, 1).Append(A[i]);
+            }
+            #region 奇妙
+            //if (A.Length!=B.Length)
+            //{
+            //    return false;
+            //}
+            //return (A + A).Contains(B);
+            #endregion
+            return false;
         }
         #endregion
 
