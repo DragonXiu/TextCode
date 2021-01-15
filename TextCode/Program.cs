@@ -9081,6 +9081,91 @@ new int[] {-2,2}}, 1);
             return false;
         }
         #endregion
+        #region 移除最多的同行或同列石头
+        public int RemoveStones(int[][] stones)
+        {
+            //UnionFind1 unionFind1 = new UnionFind1();
+            //foreach (var item in stones)
+            //{
+            //    unionFind1.union(item[0]+ 10000, item[1]);
+            //}
+            //return stones.Length - unionFind1.getCount();
+            int n = stones.Length;
+            List<List<int>> edge = new List<List<int>>();
+            for (int i = 0; i < n; i++)
+            {
+                edge.Add(new List<int>());
+                for (int j = 0; j < n; j++)
+                {
+                    if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+                    {
+                        edge[i].Add(j);
+                    }
+                }
+            }
+            bool[] vis = new bool[n];
+            int num = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if (!vis[i])
+                {
+                    num++;
+                    dfs(i, edge, vis);
+                }
+            }
+            return n - num;
+        }
+        public void dfs(int x, List<List<int>> edge, bool[] vis)
+        {
+            vis[x] = true;
+            foreach (var item in edge[x])
+            {
+                if (!vis[item])
+                {
+                    dfs(item, edge, vis);
+                }
+            }
+        }
+       
+        private class UnionFind1
+        {
+            private Dictionary<int, int> parent;
+            private int count;
+            public UnionFind1()
+            {
+                this.parent = new Dictionary<int, int>();
+                this.count = 0;
+            }
+            public int getCount()
+            {
+                return count;
+            }
+            public int find(int x)
+            {
+                if (!parent.ContainsKey(x))
+                {
+                    parent.Add(x,x);
+                    count++;
+                }
+                if (x!=parent[x])
+                {
+                    parent.Add(x,find(parent[x]));
+                }
+                return parent[x];
+            }
+            public void union(int x,int y)
+            {
+                int rootX = find(x);
+                int rootY = find(y);
+                if (rootX==rootY)
+                {
+                    return;
+                }
+                parent.Add(rootX,rootY);
+                count--;
+            }
+        }
+        #endregion
 
 
         #endregion
