@@ -466,26 +466,27 @@ new int[] {-2,2}}, 1);
             ToLowerCase("Hello");
             longestword(new string[] { });
             PivotIndex(new int[] { });
-            FindCircleNum(new int[][] { new int[] { 1, 1,0 }, new int[] { 1, 1, 0 }, new int[] { 0, 0, 1 } });
-            ShortestCompletingWord("1s3 456", new string[]{ "looks", "pest", "stew", "show" });
-            MaxSlidingWindow(new int[] { 1, 3, -1, -3, 5, 3, 6, 7 },1) ;
+            FindCircleNum(new int[][] { new int[] { 1, 1, 0 }, new int[] { 1, 1, 0 }, new int[] { 0, 0, 1 } });
+            ShortestCompletingWord("1s3 456", new string[] { "looks", "pest", "stew", "show" });
+            MaxSlidingWindow(new int[] { 1, 3, -1, -3, 5, 3, 6, 7 }, 1);
             MaxProfit1(new int[] { 3, 3, 5, 0, 0, 3, 1, 4 });
             SummaryRanges(new int[] { -1, 0 });
             var counter = 1;
-            var result1= Sum() + Sum();
+            var result1 = Sum() + Sum();
 
             int Sum()
             {
                 return counter++;
             }
-            Console.WriteLine("SUM:"+result.ToString());
-            SmallestStringWithSwaps("qdwyt", new List<IList<int>>() { 
+            Console.WriteLine("SUM:" + result.ToString());
+            SmallestStringWithSwaps("qdwyt", new List<IList<int>>() {
                 new List<int>() { 2, 3 }
             ,new List<int>() { 3, 2 }
             , new List<int>() { 0, 1 }
              , new List<int>() { 4, 0  }
              , new List<int>() { 3, 2 } });
             PrefixesDivBy5(new int[] { 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1 });
+            RotatedDigits(100);
             Console.ReadLine();
         }
         #region 算法       
@@ -8332,13 +8333,13 @@ new int[] {-2,2}}, 1);
             Array.Sort(words);
             for (int i = 0; i < words.Length; i++)
             {
-                if (words[i].Length==1)
+                if (words[i].Length == 1)
                 {
                     dic.Add(words[i], 1);
                 }
-                else 
+                else
                 {
-                    if (dic.ContainsKey(words[i].Substring(0,words[i].Length-1)))
+                    if (dic.ContainsKey(words[i].Substring(0, words[i].Length - 1)))
                     {
                         dic.Remove(words[i].Substring(0, words[i].Length - 1));
                         dic.Add(words[i], words[i].Length);
@@ -8349,7 +8350,7 @@ new int[] {-2,2}}, 1);
             int len = 0;
             foreach (var item in dic)
             {
-                if (item.Value>len)
+                if (item.Value > len)
                 {
                     len = item.Value;
                     res = item.Key;
@@ -8373,7 +8374,7 @@ new int[] {-2,2}}, 1);
             }
             for (int i = 0; i < nums.Length; i++)
             {
-                if (leftSum==sum-leftSum-nums[i])
+                if (leftSum == sum - leftSum - nums[i])
                 {
                     return i;
                 }
@@ -8386,7 +8387,7 @@ new int[] {-2,2}}, 1);
             //int two_v = nums[two];
             //while (two>one && two - one >= 2)
             //{             
-                
+
             //    if (one_v==two_v&&two-one==2)
             //    {
             //        return one + 1;
@@ -8418,7 +8419,7 @@ new int[] {-2,2}}, 1);
         {
             //equations = [["a","b"],["b","c"]], values = [2.0,3.0], queries = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]
             int equationsSize = equations.Count;
-            UnionFind unionFind = new UnionFind(2*equationsSize);
+            UnionFind unionFind = new UnionFind(2 * equationsSize);
             //1.预处理，将变量的值与id进行映射，使得并查集的底层使用数组实现，方便编码
             Dictionary<string, int> dic = new Dictionary<string, int>();
             int id = 0;
@@ -8429,15 +8430,15 @@ new int[] {-2,2}}, 1);
                 string var2 = equation[1];
                 if (!dic.ContainsKey(var1))
                 {
-                    dic.Add(var1,id);
+                    dic.Add(var1, id);
                     id++;
                 }
                 if (!dic.ContainsKey(var2))
                 {
-                    dic.Add(var2,id);
+                    dic.Add(var2, id);
                     id++;
                 }
-                unionFind.union(dic[var1],dic[var2],values[i]);
+                unionFind.union(dic[var1], dic[var2], values[i]);
             }
             //2.做查询
             int queriesSize = queries.Count;
@@ -8448,13 +8449,13 @@ new int[] {-2,2}}, 1);
                 string var2 = queries[i][1];
                 int id1 = dic[var1];
                 int id2 = dic[var2];
-                if (id1==null||id2==null)
+                if (id1 == null || id2 == null)
                 {
                     res[i] = -1.0d;
                 }
                 else
                 {
-                    res[i] = unionFind.isConnected(id1,id2);
+                    res[i] = unionFind.isConnected(id1, id2);
                 }
             }
             return res;
@@ -8485,7 +8486,7 @@ new int[] {-2,2}}, 1);
             //}
             //return res;
             List<int> res = new List<int>();
-            for (int i = left; i <right; ++i)
+            for (int i = left; i < right; ++i)
             {
                 if (selfDividing(i))
                 {
@@ -8496,10 +8497,10 @@ new int[] {-2,2}}, 1);
         }
         public bool selfDividing(int n)
         {
-            string x = n.ToString() ;
+            string x = n.ToString();
             foreach (var item in x)
             {
-                if (item=='0'||(n%(item-'0')>0))
+                if (item == '0' || (n % (item - '0') > 0))
                 {
                     return false;
                 }
@@ -8529,24 +8530,24 @@ new int[] {-2,2}}, 1);
         {
             #region 深度优先搜索
             int currColor = image[sr][sc];//这个点的颜色
-            if (currColor!=newColor)//对比原来的颜色和新颜色
+            if (currColor != newColor)//对比原来的颜色和新颜色
             {
-                dfs(image,sr,sc,currColor,newColor);
+                dfs(image, sr, sc, currColor, newColor);
             }
             return image;
             #endregion
         }
-        private void dfs(int[][]image,int x,int y,int color,int newColor)
+        private void dfs(int[][] image, int x, int y, int color, int newColor)
         {
-            if (image[x][y]==color)//
+            if (image[x][y] == color)//
             {
                 image[x][y] = newColor;
                 for (int i = 0; i < 4; i++)
                 {
                     int mx = x + dx[i], my = y + dy[i];
-                    if (mx>=0&&mx<image.Length&&my>=0&&my<image[0].Length)
+                    if (mx >= 0 && mx < image.Length && my >= 0 && my < image[0].Length)
                     {
-                        dfs(image,mx,my,color,newColor);
+                        dfs(image, mx, my, color, newColor);
                     }
                 }
             }
@@ -8562,21 +8563,21 @@ new int[] {-2,2}}, 1);
             {
                 if (!visited[i])
                 {
-                    dfs(isConnected,visited,provinces,i);
+                    dfs(isConnected, visited, provinces, i);
                     circles++;
                 }
             }
             return circles;
         }
-        private static void dfs(int [][]isConnected,bool[]visited,int province,int i)
+        private static void dfs(int[][] isConnected, bool[] visited, int province, int i)
         {
             for (int j = 0; j < province; j++)
             {
-                if (isConnected[i][j]==1&&!visited[j])
+                if (isConnected[i][j] == 1 && !visited[j])
                 {
                     visited[j] = true;
                     dfs(isConnected, visited, province, j);
-                }              
+                }
             }
         }
         #endregion
@@ -8585,13 +8586,13 @@ new int[] {-2,2}}, 1);
         {
             char one = letters[0];
             char tweo = letters[letters.Length - 1];
-            if (one > target||tweo < target)
+            if (one > target || tweo < target)
             {
                 return one;
             }
             for (int i = 0; i < letters.Length; i++)
             {
-                if (letters[i]>one)
+                if (letters[i] > one)
                 {
                     return letters[i];
                 }
@@ -8602,7 +8603,7 @@ new int[] {-2,2}}, 1);
         #region 至少是其他数字两倍的最大数
         public int DominantIndex(int[] nums)
         {
-            if (nums.Length==1)
+            if (nums.Length == 1)
             {
                 return 0;
             }
@@ -8615,27 +8616,27 @@ new int[] {-2,2}}, 1);
                 }
                 else
                 {
-                    dic.Add(nums[i],i);
+                    dic.Add(nums[i], i);
                 }
             }
             Array.Sort(nums);
-            if (nums[nums.Length-1]>=2*nums[nums.Length-2])
+            if (nums[nums.Length - 1] >= 2 * nums[nums.Length - 2])
             {
                 return dic[nums[nums.Length - 1]];
             }
             return -1;
-            
+
         }
         #endregion
         #region 最短补全
-        public static  string ShortestCompletingWord(string licensePlate, string[] words)
+        public static string ShortestCompletingWord(string licensePlate, string[] words)
         {
             //"1s3 PSt"  ["step", "steps", "stripe", "stepple"]
             Dictionary<char, int> dic = new Dictionary<char, int>();
 
             foreach (var item in licensePlate.ToLower())
             {
-                if (item>=97&&item<=122)
+                if (item >= 97 && item <= 122)
                 {
                     if (dic.ContainsKey(item))
                     {
@@ -8643,12 +8644,12 @@ new int[] {-2,2}}, 1);
                     }
                     else
                     {
-                        dic.Add(item,1);
+                        dic.Add(item, 1);
                     }
                 }
             }
             int num = 0;
-            string res = "";    
+            string res = "";
             int len = 16;
             for (int i = 0; i < words.Length; i++)
             {
@@ -8671,9 +8672,9 @@ new int[] {-2,2}}, 1);
 
                     if (dic.ContainsKey(item.Key))
                     {
-                        if (dic[item.Key]>item.Value)
+                        if (dic[item.Key] > item.Value)
                         {
-                            temp += item.Value; 
+                            temp += item.Value;
                         }
                         else
                         {
@@ -8748,15 +8749,15 @@ new int[] {-2,2}}, 1);
         #region 股票四
         public static int MaxProfit1(int[] prices)
         {
-             int n = prices.Length;
-            int buy1 =  -prices[0], sell1 = 0;
-            int buy2 =  -prices[0], sell2 = 0;
+            int n = prices.Length;
+            int buy1 = -prices[0], sell1 = 0;
+            int buy2 = -prices[0], sell2 = 0;
             for (int i = 0; i < n; ++i)
             {
-                buy1 = Math.Max(buy1,-prices[i]);            //-1 -1 -1 -1 -1
-                sell1 = Math.Max(sell1,buy1+prices[i]); //  0   1  2   3  4
-                buy2 = Math.Max(buy2,sell1-prices[i]);  // -1 -1 -1 -1 -1
-                sell2 = Math.Max(sell2,buy2+prices[i]); //  0   1   2   3  4  
+                buy1 = Math.Max(buy1, -prices[i]);            //-1 -1 -1 -1 -1
+                sell1 = Math.Max(sell1, buy1 + prices[i]); //  0   1  2   3  4
+                buy2 = Math.Max(buy2, sell1 - prices[i]);  // -1 -1 -1 -1 -1
+                sell2 = Math.Max(sell2, buy2 + prices[i]); //  0   1   2   3  4  
             }
             return sell2;
         }
@@ -8767,7 +8768,7 @@ new int[] {-2,2}}, 1);
             //输入：nums = [0,1,2,4,5,7]
             //输出：["0->2","4->5","7"]
             List<string> res = new List<string>();
-            if (nums.Length==1)
+            if (nums.Length == 1)
             {
                 res.Add(nums[0].ToString());
             }
@@ -8775,7 +8776,7 @@ new int[] {-2,2}}, 1);
             //StringBuilder str = new StringBuilder();
             for (int i = 1; i < nums.Length; i++)
             {
-                if (nums[i]- nums[i-1] != 1)
+                if (nums[i] - nums[i - 1] != 1)
                 {
                     if (nums[i - 1] != one)
                     {
@@ -8791,9 +8792,9 @@ new int[] {-2,2}}, 1);
                         res.Add(one.ToString());
                     }
                 }
-                else if(i == nums.Length - 1)
+                else if (i == nums.Length - 1)
                 {
-                    res.Add(one.ToString() + "->" + nums[i ].ToString());
+                    res.Add(one.ToString() + "->" + nums[i].ToString());
                 }
             }
             return res;
@@ -8802,29 +8803,30 @@ new int[] {-2,2}}, 1);
         #region 交换字符串中的元素
         public static string SmallestStringWithSwaps(string s, IList<IList<int>> pairs)
         {
-          //  var nums = a.ToArray();
+            //  var nums = a.ToArray();
             int n = pairs.Count;
-            if (n<1)
+            if (n < 1)
             {
                 return s;
             }
             int a = 0;
-            for (int i = 0; i < n-1; i++)
+            for (int i = 0; i < n - 1; i++)
             {
-                for (int j = 0; j < n-i-1; j++)
+                for (int j = 0; j < n - i - 1; j++)
                 {
-                    if (pairs[j][0]>pairs[j+1][0])
+                    if (pairs[j][0] > pairs[j + 1][0])
                     {
                         var temp = pairs[j];
                         pairs[j] = pairs[j + 1];
-                        pairs[j + 1]=temp;
+                        pairs[j + 1] = temp;
                         a = 1;
                     }
-                
-                }    if (a==0)
-                    {
-                        break;
-                    }
+
+                }
+                if (a == 0)
+                {
+                    break;
+                }
             }
             List<int> nums = new List<int>();
             List<List<int>> lists = new List<List<int>>();
@@ -8844,21 +8846,21 @@ new int[] {-2,2}}, 1);
                     }
                     else if (!lists[j].Contains(pairs[i][1]) && !lists[j].Contains(pairs[i][0]))
                     {
-                        flag=true;
+                        flag = true;
                     }
 
                 }
                 if (flag)
                 {
                     lists.Add(new List<int>() { pairs[i][0], pairs[i][1] });
-                }               
-            }      
+                }
+            }
             StringBuilder str = new StringBuilder();
             str.Append(s);
             for (int i = 0; i < lists.Count; i++)
             {
                 char[] chars = new char[lists[i].Count];
-                for (int j = 0; j< lists[i].Count; j++)
+                for (int j = 0; j < lists[i].Count; j++)
                 {
                     chars[j] = s[lists[i][j]];
                 }
@@ -8870,8 +8872,8 @@ new int[] {-2,2}}, 1);
                     str[m] = chars[j];
                 }
             }
-      
-          
+
+
 
 
             return str.ToString();
@@ -8908,7 +8910,7 @@ new int[] {-2,2}}, 1);
             int[] itemDegree = new int[n];
 
             List<int> id = new List<int>();
-            for (int i = 0; i < n+m; ++i)
+            for (int i = 0; i < n + m; ++i)
             {
                 id.Add(i);
             }
@@ -8917,7 +8919,7 @@ new int[] {-2,2}}, 1);
             //给未分配的Item分配一个groupId
             for (int i = 0; i < n; ++i)
             {
-                if (group[i]==-1)
+                if (group[i] == -1)
                 {
                     group[i] = leftId;
                     leftId += 1;
@@ -8931,7 +8933,7 @@ new int[] {-2,2}}, 1);
                 foreach (var item in beforeItems[i])
                 {
                     int beforeGroupId = group[item];
-                    if (beforeGroupId==curGroupId)
+                    if (beforeGroupId == curGroupId)
                     {
                         itemDegree[i] += 1;
                         itemGraph[item].Add(i);
@@ -8945,7 +8947,7 @@ new int[] {-2,2}}, 1);
             }
             //组间拓扑关系排序
             List<int> groupTopSort = topSort(groupDegree, groupGraph, id);
-            if (groupTopSort.Count==0)
+            if (groupTopSort.Count == 0)
             {
                 return new int[0];
             }
@@ -8955,12 +8957,12 @@ new int[] {-2,2}}, 1);
             foreach (var item in groupTopSort)
             {
                 int size = groupItem[item].Count;
-                if (size==0)
+                if (size == 0)
                 {
                     continue;
                 }
-                List<int> res = topSort(itemDegree,itemGraph,groupItem[item]);
-                if (res.Count==0)
+                List<int> res = topSort(itemDegree, itemGraph, groupItem[item]);
+                if (res.Count == 0)
                 {
                     return new int[0];
                 }
@@ -8976,19 +8978,19 @@ new int[] {-2,2}}, 1);
             Queue<int> queue = new Queue<int>();
             foreach (var item in items)
             {
-                if (deg[item]==0)
+                if (deg[item] == 0)
                 {
                     queue.Enqueue(item);
-                }                
+                }
             }
             List<int> res = new List<int>();
-            while (queue.Count>0)
+            while (queue.Count > 0)
             {
                 int u = queue.Dequeue();
                 res.Add(u);
                 foreach (var item in graph[u])
                 {
-                    if (--deg[item]==0)
+                    if (--deg[item] == 0)
                     {
                         queue.Enqueue(item);
                     }
@@ -9001,18 +9003,18 @@ new int[] {-2,2}}, 1);
         public int[] FindRedundantConnection(int[][] edges)
         {
             int nodesCount = edges.Length;
-            int[] parent = new int[nodesCount+1];
+            int[] parent = new int[nodesCount + 1];
             for (int i = 1; i < nodesCount; i++)
             {
-                parent[i]= i;
+                parent[i] = i;
             }
             for (int i = 0; i < nodesCount; i++)
             {
                 int[] edge = edges[i];
                 int node1 = edge[0], node2 = edge[1];
-                if (find(parent,node1)!=find(parent,node2))
+                if (find(parent, node1) != find(parent, node2))
                 {
-                    union(parent,node1,node2);
+                    union(parent, node1, node2);
                 }
                 else
                 {
@@ -9021,15 +9023,15 @@ new int[] {-2,2}}, 1);
             }
             return new int[0];
         }
-        public void union(int[]parent,int index1,int index2)
+        public void union(int[] parent, int index1, int index2)
         {
-            parent[find(parent,index1)]=find(parent,index2);
+            parent[find(parent, index1)] = find(parent, index2);
         }
-        public int find(int[] parent,int index)
+        public int find(int[] parent, int index)
         {
-            if (parent[index]!=index)
+            if (parent[index] != index)
             {
-                parent[index] = find(parent,parent[index]);
+                parent[index] = find(parent, parent[index]);
             }
             return parent[index];
         }
@@ -9064,7 +9066,7 @@ new int[] {-2,2}}, 1);
             str.Append(A);
             for (int i = 0; i < A.Length; i++)
             {
-                if (B.CompareTo(str.ToString())==0)
+                if (B.CompareTo(str.ToString()) == 0)
                 {
                     return true;
                 }
@@ -9126,7 +9128,7 @@ new int[] {-2,2}}, 1);
                 }
             }
         }
-       
+
         private class UnionFind1
         {
             private Dictionary<int, int> parent;
@@ -9144,26 +9146,303 @@ new int[] {-2,2}}, 1);
             {
                 if (!parent.ContainsKey(x))
                 {
-                    parent.Add(x,x);
+                    parent.Add(x, x);
                     count++;
                 }
-                if (x!=parent[x])
+                if (x != parent[x])
                 {
-                    parent.Add(x,find(parent[x]));
+                    parent.Add(x, find(parent[x]));
                 }
                 return parent[x];
             }
-            public void union(int x,int y)
+            public void union(int x, int y)
             {
                 int rootX = find(x);
                 int rootY = find(y);
-                if (rootX==rootY)
+                if (rootX == rootY)
                 {
                     return;
                 }
-                parent.Add(rootX,rootY);
+                parent.Add(rootX, rootY);
                 count--;
             }
+        }
+        #endregion
+        #region 打砖块
+        private int rows;
+        private int cols;
+        public static int[][] DIRECTIONS = new int[][] { new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { -1, 0 }, new int[] { 0, -1 } };
+
+        public int[] HitBricks(int[][] grid, int[][] hits)
+        {
+            this.rows = grid.Length; //行
+            this.cols = grid[0].Length;//列
+            //第一步：把grid中的砖头全部击碎，橙船算法问题不能修改输入数据，这一步非必须可认为一种代替规范
+            int[][] copy = new int[rows][];
+            for (int i = 0; i < rows; i++)
+            {
+                copy[i] = new int[cols];
+                for (int j = 0; j < cols; j++)
+                {
+                    copy[i][j] = grid[i][j];
+                }
+            }
+            //copy中的砖头全部击碎
+            foreach (var item in hits)
+            {
+                copy[item[0]][item[1]] = 0;
+            }
+            //第二步：建图，把砖块和砖块的连接关系输入并查集，size表示二维网格的大小，
+            //也表示虚拟的屋顶在并查集中的编号
+            int size = rows * cols;
+            UnionFind2 unionFind2 = new UnionFind2(size + 1);
+            //将下标为0的这一行的转与屋顶相连
+            for (int i = 0; i < cols; i++)
+            {
+                if (copy[0][i] == 1)
+                {
+                    unionFind2.union(i, size);
+                }
+            }
+            //其余网格如果是砖块、向左看一下，如果是砖块，在并查集中进行合并
+            for (int i = 1; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (copy[i][j] == 1)
+                    {
+                        if (copy[i - 1][j] == 1)
+                        {
+                            unionFind2.union(getIndex2(i - 1, j), getIndex2(i, j));
+                        }
+                        // 如果左边也是砖块
+                        if (j > 0 && copy[i][j - 1] == 1)
+                        {
+                            unionFind2.union(getIndex2(i, j - 1), getIndex2(i, j));
+                        }
+                    }
+                }
+            }
+            //第三步：按照hits的逆序，在copy中补回砖块，把每一次的不会的砖块
+            //与屋顶相连的砖块的增量记录到 res 数组中
+            int hitsLen = hits.Length;
+            int[] res = new int[hitsLen];
+            for (int i = hitsLen - 1; i >= 0; i--)
+            {
+                int x = hits[i][0];
+                int y = hits[i][1];
+                // 注意：这里不能用 copy，语义上表示，如果原来在 grid 中，这一块是空白，这一步不会产生任何砖块掉落
+                // 逆向补回的时候，与屋顶相连的砖块数量也肯定不会增加
+                if (grid[x][y] == 0)
+                {
+                    continue;
+                }
+                //补回之前的屋顶相连的转快熟
+                int origin = unionFind2.getSize(size);
+                //注意如果不会这个节点在第一行，要告诉哦并查集它与屋顶相连（逻辑同第 2 步）
+                if (x == 0)
+                {
+                    unionFind2.union(y, size);
+                }
+                //在4个方向看一下，如果相连的 4个方向有砖块，合并他们
+                foreach (var item in DIRECTIONS)
+                {
+                    int newX = x + item[0];
+                    int newY = y + item[1];
+                    if (intArea(newX, newY) && copy[newX][newY] == 1)
+                    {
+                        unionFind2.union(getIndex2(x, y), getIndex2(newX, newY));
+                    }
+                }
+                //补回之后与屋顶相连的砖块数
+                int current = unionFind2.getSize(size);
+                // 减去的 1 是逆向补回的砖块（正向移除的砖块），与 0 比较大小，是因为存在一种情况，添加当前砖块，不会使得与屋顶连接的砖块数更多
+                res[i] = Math.Max(0, current - origin - 1);
+
+                // 真正补上这个砖块
+                copy[x][y] = 1;
+            }
+            return res;
+        }
+        //输入坐标二维网格中的是否越界
+        private bool intArea(int x, int y)
+        {
+            return x >= 0 && x < rows && y >= 0 && y <= cols;
+        }
+        //二维坐标转换为一维坐标
+        private int getIndex2(int x, int y)
+        {
+            return x * cols + y;
+        }
+
+        class UnionFind2
+        {
+            //当前节点的父亲节点
+            private int[] parent;
+            //当前节点为根节点的字数节点总数
+            private int[] size;
+            public UnionFind2(int n)
+            {
+                parent = new int[n];
+                size = new int[n];
+                for (int i = 0; i < n; i++)
+                {
+                    parent[i] = i;
+                    size[i] = 1;
+                }
+            }
+            //路径压缩，只要求每个不相交结合的根节点总数
+            //数值正确即可，因此在路径过程中不用维护数组
+            public int find(int x)
+            {
+                if (x != parent[x])
+                {
+                    parent[x] = find(parent[x]);
+                }
+                return parent[x];
+            }
+            public void union(int x, int y)
+            {
+                int rootX = find(x);
+                int rootY = find(y);
+                if (rootX == rootY)
+                {
+                    return;
+                }
+                parent[rootX] = rootY;
+                //在合并的时候维护数组size
+                size[rootY] += size[rootX];
+            }
+            //在并查集德根节点的字数节点总数
+            public int getSize(int x)
+            {
+                int root = find(x);
+                return size[root];
+            }
+        }
+        #endregion
+        #region 旋转数字
+        public static int RotatedDigits(int N)
+        {
+            int res = 0;
+            List<char> list = new List<char>(){ '3', '4', '7' };
+            for (int i = 1; i <= N; i++)
+            {
+                string str = i.ToString();
+                int num = 0;
+                foreach (var item in str)
+                {
+                    if (list.Contains(item))
+                    {
+                        num =str.Length;
+                        break;
+                    }
+                    if (item=='1'||item=='0'||item=='8')
+                    {
+                        num++;
+                    }
+                }
+                if (num<str.Length)
+                {
+                    res++;
+                }
+
+            }
+            return res;
+        }
+        #endregion
+        #region 宝石与石头
+        public int NumJewelsInStones(string jewels, string stones)
+        {
+            int[] arr = new int[57];
+            for (int i = 0; i < stones.Length; i++)
+            {
+                arr[stones[i] - 'A']++;
+            }
+            int res = 0;
+            for (int i = 0; i < jewels.Length; i++)
+            {
+                res += arr[jewels[i] - 'A'];
+            }
+            return res;
+        }
+        #endregion
+        #region 最常见字母
+        public string MostCommonWord(string paragraph, string[] banned)
+        {
+            return "";
+        }
+        #endregion
+        #region 账户合并
+        //利用一个字符串的映射存储并查集
+        Dictionary<string, string> accoutsDic;
+        public IList<IList<string>> AccountsMerge(IList<IList<string>> accounts)
+        {
+            accoutsDic = new Dictionary<string, string>();
+            //这个映射存储每个邮箱对应账号名字
+            Dictionary<string, string> names = new Dictionary<string, string>();
+            //遍历所有账户构建并查集对应的账户名字
+            foreach (var item in accounts)
+            {
+                for (int i = 0; i < item.Count; i++)
+                {
+                    if (!accoutsDic.ContainsKey(item[i]))
+                    {
+                        //如果并查集集中没有这个邮箱，则添加邮箱，其根本元素就是本身
+                        accoutsDic.Add(item[i],item[i]);
+                        //添加该邮箱对应的账户名
+                        names.Add(item[i],item[0]);
+                    }
+                    if (i>1)
+                    {
+                        if (accoutsDic.ContainsKey(item[i]))
+                        {
+                            accoutsDic.Remove(item[i]);
+                            accoutsDic.Add(item[i], Find(item[i - 1]));
+                        }
+                        //并查集的合并操作，合并一个账户中的所有邮箱
+                 
+                    }
+                }
+            }
+
+            //暂时存储答案中邮箱列表，每个键值对的键就是每个并查集集合的根元素
+            Dictionary<string, List<string>> temp = new Dictionary<string, List<string>>();
+            foreach (var item in accoutsDic.Keys)
+            {
+                //获取当前邮箱对应并查集的根元素
+                string root = Find(item);
+                //将当前存储答案邮箱放入根元素的对应的列表中
+                if (!temp.ContainsKey(root))
+                {
+                    temp.Add(root,new List<string>());
+                }
+                temp[root].Add( item);
+            }
+            List<IList<string>> res = new List<IList<string>>();
+            //将答案从映射中放到列表中
+            foreach (var item in temp.Keys)
+            {
+                // 获取当前根元素对应的列表
+                List<String> layer = temp[item];
+                // 题目要求的排序
+               // Array.Sort(layer);
+                // 添加姓名
+                layer.Add(names[item]);
+                // 将当前列表加入答案
+                res.Add(layer);
+            }
+
+            return res;
+        }
+        //并查集查找模板函数,这里用字符字符串换了之前的整型
+        private string Find(string x)
+        {
+            if (accoutsDic[x]!=x)
+            {
+                accoutsDic.Add(x,Find(accoutsDic[x]));
+            }
+            return accoutsDic[x];
         }
         #endregion
 
@@ -9570,7 +9849,7 @@ new int[] {-2,2}}, 1);
     #endregion
     #endregion
 
-    public  class UnionFind
+    public class UnionFind
     {
         private int[] parent;
         //指向父节点的权值
@@ -9585,11 +9864,11 @@ new int[] {-2,2}}, 1);
                 weight[i] = 1.0d;
             }
         }
-        public void union(int x,int y,double value)
+        public void union(int x, int y, double value)
         {
             int rootX = find(x);
             int rootY = find(y);
-            if (rootX==rootY)
+            if (rootX == rootY)
             {
                 return;
             }
@@ -9599,7 +9878,7 @@ new int[] {-2,2}}, 1);
         //路径压缩 return根节点的id
         public int find(int x)
         {
-            if (x!=parent[x])
+            if (x != parent[x])
             {
                 int origin = parent[x];
                 parent[x] = find(parent[x]);
@@ -9607,12 +9886,12 @@ new int[] {-2,2}}, 1);
             }
             return parent[x];
         }
-        public double isConnected(int x,int y)
+        public double isConnected(int x, int y)
         {
 
             int rootX = find(x);
             int rootY = find(y);
-            if (rootX==rootY)
+            if (rootX == rootY)
             {
                 return weight[x] / weight[y];
             }
