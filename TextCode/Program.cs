@@ -487,6 +487,8 @@ new int[] {-2,2}}, 1);
              , new List<int>() { 3, 2 } });
             PrefixesDivBy5(new int[] { 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1 });
             RotatedDigits(100);
+            CountPrimeSetBits(842, 888);
+            UniqueMorseRepresentations(new string[] { "gin", "zen", "gig", "msg" });
             Console.ReadLine();
         }
         #region 算法       
@@ -9325,7 +9327,7 @@ new int[] {-2,2}}, 1);
         public static int RotatedDigits(int N)
         {
             int res = 0;
-            List<char> list = new List<char>(){ '3', '4', '7' };
+            List<char> list = new List<char>() { '3', '4', '7' };
             for (int i = 1; i <= N; i++)
             {
                 string str = i.ToString();
@@ -9334,15 +9336,15 @@ new int[] {-2,2}}, 1);
                 {
                     if (list.Contains(item))
                     {
-                        num =str.Length;
+                        num = str.Length;
                         break;
                     }
-                    if (item=='1'||item=='0'||item=='8')
+                    if (item == '1' || item == '0' || item == '8')
                     {
                         num++;
                     }
                 }
-                if (num<str.Length)
+                if (num < str.Length)
                 {
                     res++;
                 }
@@ -9389,11 +9391,11 @@ new int[] {-2,2}}, 1);
                     if (!accoutsDic.ContainsKey(item[i]))
                     {
                         //如果并查集集中没有这个邮箱，则添加邮箱，其根本元素就是本身
-                        accoutsDic.Add(item[i],item[i]);
+                        accoutsDic.Add(item[i], item[i]);
                         //添加该邮箱对应的账户名
-                        names.Add(item[i],item[0]);
+                        names.Add(item[i], item[0]);
                     }
-                    if (i>1)
+                    if (i > 1)
                     {
                         if (accoutsDic.ContainsKey(item[i]))
                         {
@@ -9401,7 +9403,7 @@ new int[] {-2,2}}, 1);
                             accoutsDic.Add(item[i], Find(item[i - 1]));
                         }
                         //并查集的合并操作，合并一个账户中的所有邮箱
-                 
+
                     }
                 }
             }
@@ -9415,9 +9417,9 @@ new int[] {-2,2}}, 1);
                 //将当前存储答案邮箱放入根元素的对应的列表中
                 if (!temp.ContainsKey(root))
                 {
-                    temp.Add(root,new List<string>());
+                    temp.Add(root, new List<string>());
                 }
-                temp[root].Add( item);
+                temp[root].Add(item);
             }
             List<IList<string>> res = new List<IList<string>>();
             //将答案从映射中放到列表中
@@ -9426,7 +9428,7 @@ new int[] {-2,2}}, 1);
                 // 获取当前根元素对应的列表
                 List<String> layer = temp[item];
                 // 题目要求的排序
-               // Array.Sort(layer);
+                // Array.Sort(layer);
                 // 添加姓名
                 layer.Add(names[item]);
                 // 将当前列表加入答案
@@ -9438,14 +9440,13 @@ new int[] {-2,2}}, 1);
         //并查集查找模板函数,这里用字符字符串换了之前的整型
         private string Find(string x)
         {
-            if (accoutsDic[x]!=x)
+            if (accoutsDic[x] != x)
             {
-                accoutsDic.Add(x,Find(accoutsDic[x]));
+                accoutsDic.Add(x, Find(accoutsDic[x]));
             }
             return accoutsDic[x];
         }
         #endregion
-
         #region 连接所有点最小值
         public int MinCostConnectPoints(int[][] points)
         {
@@ -9481,6 +9482,210 @@ new int[] {-2,2}}, 1);
                 }
             }
             return sum;
+        }
+        #endregion
+        #region 二进制表示质数个计算置位
+        public static int CountPrimeSetBits(int L, int R)
+        {
+            L = 6; R = 10;
+            int res = 0;
+            for (int i = L; i <= R; i++)
+            {
+                string str = Convert.ToString(L, 2);
+                int num = 0;
+                for (int j = 0; j < str.Length; j++)
+                {
+                    if (str[j] == '1')
+                    {
+                        num++;
+                    }
+                }
+                if (num == 2 || num == 3 || num == 5 || num == 7 || num == 11 || num == 13 || num == 17 || num == 19)
+                {
+                    res++;
+                }
+            }
+            return res;
+        }
+        #endregion
+        #region  找到最小生成树里的关键边和伪关键边
+        public IList<IList<int>> FindCriticalAndPseudoCriticalEdges(int n, int[][] edges)
+        {
+            int m = edges.Length;
+            int[][] newEdges = new int[m][];
+            for (int i = 0; i < m; ++i)
+            {
+                newEdges[i] = new int[4];
+                for (int j = 0; j < 3; ++j)
+                {
+                    newEdges[i][j] = edges[i][j];
+                }
+                newEdges[i][3] = i;
+            }
+            var comparer = Comparer<int[]>.Create((int[] a, int[] b) =>
+            {
+                return a[2] - b[2];
+            });
+            Array.Sort(newEdges, comparer);
+            //计算value
+            UnionFind3 unionFind3 = new UnionFind3(n);
+            int value = 0;
+            for (int i = 0; i < m; ++i)
+            {
+                if (unionFind3.unite(newEdges[i][0], newEdges[i][1]))
+                {
+                    value += newEdges[i][2];
+                }
+            }
+            List<IList<int>> ans = new List<IList<int>>();
+            for (int i = 0; i < 2; ++i)
+            {
+                ans.Add(new List<int>());
+            }
+            for (int i = 0; i < m; ++i)
+            {
+                //判断是否是关键边
+                UnionFind3 uf = new UnionFind3(n);
+                int v = 0;
+                for (int j = 0; j < m; ++j)
+                {
+                    if (i != j && uf.unite(newEdges[j][0], newEdges[j][1]))
+                    {
+                        v += newEdges[j][2];
+                    }
+                }
+                if (uf.setCount != 1 || (uf.setCount == 1 && v > value))
+                {
+                    ans[0].Add(newEdges[i][3]);
+                    continue;
+                }
+                //判断是否为关键边
+                uf = new UnionFind3(n);
+                uf.unite(newEdges[i][0], newEdges[i][1]);
+                v = newEdges[i][2];
+                for (int j = 0; j < m; ++j)
+                {
+                    if (i != j && uf.unite(newEdges[j][0], newEdges[j][1]))
+                    {
+                        v += newEdges[j][2];
+                    }
+                }
+                if (v == value)
+                {
+                    ans[1].Add(newEdges[i][3]);
+                }
+            }
+            return ans;
+        }
+        //并查集模板
+        class UnionFind3
+        {
+            int[] parent;
+            int[] size;
+            int n;
+            //当前联通分量数目
+            public int setCount;
+            public UnionFind3(int n)
+            {
+                this.n = n;
+                this.setCount = n;
+                this.parent = new int[n];
+                this.size = new int[n];
+                Array.Fill(size, 1);
+                for (int i = 0; i < n; ++i)
+                {
+                    parent[i] = i;
+                }
+            }
+            public int findset(int x)
+            {
+                return parent[x] == x ? x : (parent[x] = findset(parent[x]));
+            }
+            public bool unite(int x, int y)
+            {
+                x = findset(x);
+                y = findset(y);
+                if (x == y)
+                {
+                    return false;
+                }
+                if (size[x] < size[y])
+                {
+                    int temp = x;
+                    x = y;
+                    y = temp;
+                }
+                parent[y] = x;
+                size[x] += size[y];
+                --setCount;
+                return true;
+            }
+            public bool connected(int x, int y)
+            {
+                x = findset(x);
+                y = findset(y);
+                return x == y;
+
+            }
+        }
+
+        #endregion
+        #region 托普利茨矩阵
+        public bool IsToeplitzMatrix(int[][] matrix)
+        {
+            bool flag = true;
+            int col = matrix[0].Length;//列
+            int row = matrix.Length;//行
+            int num = 0;
+            for (int i = 0; i < col; i++)
+            {
+                num = matrix[0][i];
+
+                for (int j = 1, k = i + 1; j < row && k < col; j++, k++)
+                {
+                    if (matrix[j][k] != num)
+                    {
+                        return false;
+                    }
+                }
+            }
+            for (int i = 0; i < row; i++)
+            {
+                num = matrix[i][0];
+                for (int j = i + 1, k = 1; j < row && k < col; j++, k++)
+                {
+                    if (num != matrix[j][k])
+                    {
+                        return false;
+                    }
+                }
+            }
+            return flag;
+        }
+        #endregion
+        #region 唯一摩尔斯密码
+        public static int UniqueMorseRepresentations(string[] words)
+        {
+            string[] dic = new string[] {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-."
+                ,"---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+            Dictionary<string, int> res = new Dictionary<string, int>();
+            for (int i = 0; i < words.Length; i++)
+            {
+                string temp = "";
+                foreach (var item in words[i])
+                {
+                    temp += dic[item - 'a'];                   
+                }
+                if (res.ContainsKey(temp))
+                {
+                    res[temp]++;
+                }
+                else
+                {
+                    res.Add(temp, 1);
+                }
+            }
+            return res.Count;
         }
         #endregion
 
@@ -9581,7 +9786,7 @@ new int[] {-2,2}}, 1);
     }
     class Employee1
     {
-        public int id;  
+        public int id;
         public int importance;
         public IList<int> subordinates;
     }
