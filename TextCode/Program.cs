@@ -9688,6 +9688,105 @@ new int[] {-2,2}}, 1);
             return res.Count;
         }
         #endregion
+        #region 数组形式的整数加法、
+        public IList<int> AddToArrayForm(int[] A, int K)
+        {
+            int n = A.Length - 1;
+            List<int> res = new List<int>();
+            res = A.ToList();
+            int value = 0;
+
+            while (n>0)
+            {
+                int sum = res[n] + K % 10 + value;
+                if (sum >= 10)
+                {
+                    res[n] = sum % 10;
+                    value = 1;
+                }
+                else
+                {
+                    res[n] = sum;
+                    value = 0;
+                }
+                K = K / 10;
+                n--;                
+            }   
+      
+            while (K>0)
+            {
+                value = K % 10 + value;
+                if (value >10)
+                {
+                    res.Insert(0, value%10);
+                    value = 1;
+                }
+                else
+                {
+                    res.Insert(0, value);
+                    value = 0;
+                }
+                K = K / 10;
+            }
+            if (value == 1)
+            {
+                res.Insert(0, 1);
+            }
+
+            return res;  
+        }
+        #endregion
+        #region 二叉树最小距离
+        int? prev;
+          int   ans;
+        public int MinDiffInBST(TreeNode root)
+        {
+            prev = null;
+            dfs2(root);
+            ans = int.MaxValue;
+            return ans;
+        }
+        public void dfs2(TreeNode root)
+        {
+            if (root==null)
+            {
+                return;
+            }
+            dfs2(root.left);
+            if (prev!=null)
+            {
+                ans = Math.Min(ans,(int)(root.val-prev));
+            }
+            prev = root.val;
+            dfs2(root.right);
+
+        }
+        #endregion
+        #region 写字符串需要的行数
+        public int[] NumberOfLines(int[] widths, string s)
+        {
+            int[] res = new int[2];
+            int num = 0;
+            int n = 1;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (100-num> widths[s[i] - 'a'])
+                {
+                    num += widths[s[i] - 'a'];
+                }
+                else
+                {
+                    num = 0;
+                    num += widths[s[i] - 'a'];
+                    n++;
+                }
+                
+            }
+            res[0] = n;
+            res[1] = num;
+            return res;
+        }
+        #endregion
 
         #endregion
         #region LinQ
