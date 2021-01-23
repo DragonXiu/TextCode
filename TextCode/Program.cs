@@ -9787,6 +9787,108 @@ new int[] {-2,2}}, 1);
             return res;
         }
         #endregion
+        #region 连通网络的操作次数
+        List<int>[] edges;
+        bool[] used;
+        public int MakeConnected(int n, int[][] connections)
+        {
+            if (connections.Length<n-1)
+            {
+                return -1;
+            }
+            edges = new List<int>[n];
+            for (int i = 0; i < n; ++i)
+            {
+                edges[i] = new List<int>();
+            }
+            foreach (var item in connections)
+            {
+                edges[item[0]].Add(item[1]);
+                edges[item[1]].Add(item[0]);
+            }
+            used = new bool[n];
+            int ans = 0;
+            for (int i = 0; i < n;++ i)
+            {
+                if (!used[i])
+                {
+                    dfs3(i);
+                    ++ans;
+                }
+            }
+            return ans - 1;
+        }
+        private void dfs3(int u)
+        {
+            used[u] = true;
+            foreach (var item in edges[u])
+            {
+                if (!used[item])
+                {
+                    dfs3(item);
+                }
+            }
+        }
+        #endregion
+        #region 子域名访问计数
+        public IList<string> SubdomainVisits(string[] cpdomains)
+        {
+            //定义字典
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+            for (int i = 0; i < cpdomains.Length; i++)  
+            {
+                string[] temp = cpdomains[i].Split(" ");
+                DicDeal(dic,temp[1],int.Parse(temp[0]));
+                string[] temp1 = temp[1].Split(".");
+                int len = temp1.Length - 1;
+                DicDeal(dic, temp1[len], int.Parse(temp[0]));
+                if (len==2)
+                {
+                    DicDeal(dic, temp1[len-1] +"."+ temp1[len], int.Parse(temp[0]));
+                }
+            }
+            List<string> res = new List<string>();
+            foreach (var item in dic)
+            {
+                res.Add(item.Value.ToString()+" "+item.Key);
+            }
+            return res;
+        }
+        private void DicDeal(Dictionary<string,int>dic,string str,int num)
+        {
+            if (dic.ContainsKey(str))
+            {
+                dic[str] += num;
+            }
+            else
+            {
+                dic.Add(str ,num);
+            }
+        }
+        #endregion
+        #region 最大三角形面积
+        public double LargestTriangleArea(int[][] points)
+        {
+            int n = points.Length;
+            double ans = 0;
+            for (int i = 0; i < n; ++i)
+            {
+                for (int j = i+1; j < n; ++j)
+                {
+                    for (int k = j+1; k < n;++ k)
+                    {
+                        ans = Math.Max(ans, Area(points[i], points[j], points[k]);
+                    }
+                }
+            }
+            return ans;
+        }
+        public double Area(int []P,int[]Q,int[]R)
+        {
+            return 0.5 * Math.Abs(P[0] * Q[1] + Q[0] * R[1] + R[0] * P[1]
+                            - P[1] * Q[0] - Q[1] * R[0] - R[1] * P[0]);
+        }
+        #endregion
 
         #endregion
         #region LinQ
