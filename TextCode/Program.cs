@@ -489,6 +489,9 @@ new int[] {-2,2}}, 1);
             RotatedDigits(100);
             CountPrimeSetBits(842, 888);
             UniqueMorseRepresentations(new string[] { "gin", "zen", "gig", "msg" });
+             MostCommonWord1("Bob hit a ball, the hit BALL flew far after it was hit.",new string[]{ "hit"});
+            ShortestToChar("loveleetcode",'e');
+
             Console.ReadLine();
         }
         #region 算法       
@@ -9368,13 +9371,7 @@ new int[] {-2,2}}, 1);
             }
             return res;
         }
-        #endregion
-        #region 最常见字母
-        public string MostCommonWord(string paragraph, string[] banned)
-        {
-            return "";
-        }
-        #endregion
+        #endregion    
         #region 账户合并
         //利用一个字符串的映射存储并查集
         Dictionary<string, string> accoutsDic;
@@ -9877,7 +9874,7 @@ new int[] {-2,2}}, 1);
                 {
                     for (int k = j+1; k < n;++ k)
                     {
-                        ans = Math.Max(ans, Area(points[i], points[j], points[k]);
+                        ans = Math.Max(ans, Area(points[i], points[j], points[k]));
                     }
                 }
             }
@@ -9889,7 +9886,179 @@ new int[] {-2,2}}, 1);
                             - P[1] * Q[0] - Q[1] * R[0] - R[1] * P[0]);
         }
         #endregion
+        #region 由斜杠划分区域
+        public int RegionsBySlashes(string[] grid)
+        {
+            int n = grid.Length;
+            int[] f = new int[n*n*4];
+            for (int i = 0; i < n*n*4; i++)
+            {
+                f[i] = i;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    int idx = i * n + j;
+                    if (i<n-1)
+                    {
+                        int bottm = idx + n;
+                        merge(f,idx*4+2,bottm*4);
+                    }
+                    if (j<n-1)
+                    {
+                        int right = idx + 1;
+                        merge(f,idx*4+1,right*4+3);
+                    }
+                    if (grid[i][j]=='/')
+                    {
+                        merge(f, idx * 4, idx * 4 + 3);
+                        merge(f, idx * 4 + 1, idx * 4 + 2);
+                    }
+                    else if (grid[i][j] == '\\')
+                    {
+                        merge(f, idx * 4, idx * 4 + 1);
+                        merge(f, idx * 4 + 2, idx * 4 + 3);
+                    }
+                    else
+                    {
+                        merge(f, idx * 4, idx * 4 + 1);
+                        merge(f, idx * 4 + 1, idx * 4 + 2);
+                        merge(f, idx * 4 + 2, idx * 4 + 3);
+                    }
+                }
+            }
+            List<int> fathers = new List<int>();
+            for (int i = 0; i < n*n*4; i++)
+            {
+                int fa = find(f,i);
+                fathers.Add(fa);
+            }
+            return fathers.Count;
+              
+        }
+        public int find1(int[]f,int x)
+        {
+            if (f[x]==x)
+            {
+                return x;
+            }
+            int fa = find1(f,f[x]);
+            f[x] = fa;
+            return fa;
+        }
+        public void merge(int[] f,int x,int y)
+        {
+            int fx = find(f,x);
+            int fy = find(f,y);
+            f[fx] = fy;
+        }
+        #endregion
+        #region 最常见的单词
+        public static string MostCommonWord1(string paragraph, string[] banned)
+        {
+            //paragraph = "Bob hit a ball, the hit BALL flew far after it was hit."
+            //banned = ["hit"]
+            //输出: "ball"
+            paragraph = @"R? C' x! X. M; z' V! w. N. T? Y' w? n, Z, Z? Y' R; V' f; V' I; t? X? Z; l? R, Q! Z. R. R, O. S! w; p' T. u? U! n, V, M. p? Q, O? q' t. B, k. u. H' T; T? S; Y! S! i? q! K' z' S! v; L. x; q; W? m? y, Z! x. y. j? N' R' I? r? V! Z; s, O? s; V, I, e? U' w! T? T! u; U! e? w? z; t! C! z? U, p' p! r. x; U! Z; u! j; T! X! N' F? n! P' t, X. s; q'";
+             banned =new string[]{ "m", "i", "s", "w", "y", "d", "q", "l", "a", "p", "n", "t", "u", "b", "o", "e", "f", "g", "c", "x" };
 
+            paragraph = paragraph.ToLower();
+            string str = "";
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+            for (int i = 0; i < paragraph.Length; i++)
+            {
+                if (paragraph[i] - 'a' < 0 || paragraph[i] - 'a' > 26)
+                {
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        if (dic.ContainsKey(str))
+                        {
+                            dic[str]++;
+                        }
+                        else
+                        {
+                            dic.Add(str, 1);
+                        }
+                        str = "";
+                    }
+                }
+                else
+                {
+                    str += paragraph[i].ToString();
+                }
+            }
+            if (str != "" && dic.ContainsKey(str))
+            {
+                dic[str]++;
+            }
+            else
+            {
+                dic.Add(str, 1);
+            }
+            str = "";
+            int num = int.MinValue;
+            string res = "";
+            foreach (var item in dic)
+            {
+                if (banned.Contains(item.Key))
+                {
+                    continue;
+                }
+                else
+                {
+                    if (item.Value > num)
+                    {
+                        num = item.Value;
+                        res = item.Key;
+                    }
+                }
+            }
+            return res;
+        }
+        #endregion
+        #region 字符的最短距离
+        public static int[] ShortestToChar(string S, char C)
+        {
+            //输入：S = "loveleetcode", C = 'e'
+            List<int> list = new List<int>();
+            for (int i = 0; i < S.Length; i++)
+            {
+                if (S[i]==C)
+                {
+                    list.Add(i);
+                }
+            }
+            int[] arr = new int[S.Length];
+            for (int i = 0; i < S.Length; i++)
+            {
+                if (S[i]==C)
+                {
+                    arr[i] = 0;
+                }
+                else
+                {
+                    int n = int.MaxValue;
+                    for (int j = 0; j < list.Count; j++)
+                    {
+                        int temp = Math.Abs(i - list[j]);
+                        if (temp < n)
+                        {
+                            n = temp;
+                        }
+                    }
+                    arr[i] = n;
+                }
+            }
+            return arr;
+            //输出：[3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0]
+
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
