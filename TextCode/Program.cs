@@ -489,9 +489,9 @@ new int[] {-2,2}}, 1);
             RotatedDigits(100);
             CountPrimeSetBits(842, 888);
             UniqueMorseRepresentations(new string[] { "gin", "zen", "gig", "msg" });
-             MostCommonWord1("Bob hit a ball, the hit BALL flew far after it was hit.",new string[]{ "hit"});
-            ShortestToChar("loveleetcode",'e');
-
+            MostCommonWord1("Bob hit a ball, the hit BALL flew far after it was hit.", new string[] { "hit" });
+            ShortestToChar("loveleetcode", 'e');
+            NumEquivDominoPairs(new int[][] { new int[] { 1, 2 }, new int[] { 2, 1 }, new int[] { 3, 4 }, new int[] { 5, 6 } });
             Console.ReadLine();
         }
         #region 算法       
@@ -9671,7 +9671,7 @@ new int[] {-2,2}}, 1);
                 string temp = "";
                 foreach (var item in words[i])
                 {
-                    temp += dic[item - 'a'];                   
+                    temp += dic[item - 'a'];
                 }
                 if (res.ContainsKey(temp))
                 {
@@ -9693,7 +9693,7 @@ new int[] {-2,2}}, 1);
             res = A.ToList();
             int value = 0;
 
-            while (n>0)
+            while (n > 0)
             {
                 int sum = res[n] + K % 10 + value;
                 if (sum >= 10)
@@ -9707,15 +9707,15 @@ new int[] {-2,2}}, 1);
                     value = 0;
                 }
                 K = K / 10;
-                n--;                
-            }   
-      
-            while (K>0)
+                n--;
+            }
+
+            while (K > 0)
             {
                 value = K % 10 + value;
-                if (value >10)
+                if (value > 10)
                 {
-                    res.Insert(0, value%10);
+                    res.Insert(0, value % 10);
                     value = 1;
                 }
                 else
@@ -9730,12 +9730,12 @@ new int[] {-2,2}}, 1);
                 res.Insert(0, 1);
             }
 
-            return res;  
+            return res;
         }
         #endregion
         #region 二叉树最小距离
         int? prev;
-          int   ans;
+        int ans;
         public int MinDiffInBST(TreeNode root)
         {
             prev = null;
@@ -9745,14 +9745,14 @@ new int[] {-2,2}}, 1);
         }
         public void dfs2(TreeNode root)
         {
-            if (root==null)
+            if (root == null)
             {
                 return;
             }
             dfs2(root.left);
-            if (prev!=null)
+            if (prev != null)
             {
-                ans = Math.Min(ans,(int)(root.val-prev));
+                ans = Math.Min(ans, (int)(root.val - prev));
             }
             prev = root.val;
             dfs2(root.right);
@@ -9767,7 +9767,7 @@ new int[] {-2,2}}, 1);
             int n = 1;
             for (int i = 0; i < s.Length; i++)
             {
-                if (100-num> widths[s[i] - 'a'])
+                if (100 - num > widths[s[i] - 'a'])
                 {
                     num += widths[s[i] - 'a'];
                 }
@@ -9777,7 +9777,7 @@ new int[] {-2,2}}, 1);
                     num += widths[s[i] - 'a'];
                     n++;
                 }
-                
+
             }
             res[0] = n;
             res[1] = num;
@@ -9789,7 +9789,7 @@ new int[] {-2,2}}, 1);
         bool[] used;
         public int MakeConnected(int n, int[][] connections)
         {
-            if (connections.Length<n-1)
+            if (connections.Length < n - 1)
             {
                 return -1;
             }
@@ -9805,7 +9805,7 @@ new int[] {-2,2}}, 1);
             }
             used = new bool[n];
             int ans = 0;
-            for (int i = 0; i < n;++ i)
+            for (int i = 0; i < n; ++i)
             {
                 if (!used[i])
                 {
@@ -9832,26 +9832,26 @@ new int[] {-2,2}}, 1);
         {
             //定义字典
             Dictionary<string, int> dic = new Dictionary<string, int>();
-            for (int i = 0; i < cpdomains.Length; i++)  
+            for (int i = 0; i < cpdomains.Length; i++)
             {
                 string[] temp = cpdomains[i].Split(" ");
-                DicDeal(dic,temp[1],int.Parse(temp[0]));
+                DicDeal(dic, temp[1], int.Parse(temp[0]));
                 string[] temp1 = temp[1].Split(".");
                 int len = temp1.Length - 1;
                 DicDeal(dic, temp1[len], int.Parse(temp[0]));
-                if (len==2)
+                if (len == 2)
                 {
-                    DicDeal(dic, temp1[len-1] +"."+ temp1[len], int.Parse(temp[0]));
+                    DicDeal(dic, temp1[len - 1] + "." + temp1[len], int.Parse(temp[0]));
                 }
             }
             List<string> res = new List<string>();
             foreach (var item in dic)
             {
-                res.Add(item.Value.ToString()+" "+item.Key);
+                res.Add(item.Value.ToString() + " " + item.Key);
             }
             return res;
         }
-        private void DicDeal(Dictionary<string,int>dic,string str,int num)
+        private void DicDeal(Dictionary<string, int> dic, string str, int num)
         {
             if (dic.ContainsKey(str))
             {
@@ -9859,39 +9859,16 @@ new int[] {-2,2}}, 1);
             }
             else
             {
-                dic.Add(str ,num);
+                dic.Add(str, num);
             }
         }
         #endregion
-        #region 最大三角形面积
-        public double LargestTriangleArea(int[][] points)
-        {
-            int n = points.Length;
-            double ans = 0;
-            for (int i = 0; i < n; ++i)
-            {
-                for (int j = i+1; j < n; ++j)
-                {
-                    for (int k = j+1; k < n;++ k)
-                    {
-                        ans = Math.Max(ans, Area(points[i], points[j], points[k]));
-                    }
-                }
-            }
-            return ans;
-        }
-        public double Area(int []P,int[]Q,int[]R)
-        {
-            return 0.5 * Math.Abs(P[0] * Q[1] + Q[0] * R[1] + R[0] * P[1]
-                            - P[1] * Q[0] - Q[1] * R[0] - R[1] * P[0]);
-        }
-        #endregion
-        #region 由斜杠划分区域
+         #region 由斜杠划分区域
         public int RegionsBySlashes(string[] grid)
         {
             int n = grid.Length;
-            int[] f = new int[n*n*4];
-            for (int i = 0; i < n*n*4; i++)
+            int[] f = new int[n * n * 4];
+            for (int i = 0; i < n * n * 4; i++)
             {
                 f[i] = i;
             }
@@ -9900,17 +9877,17 @@ new int[] {-2,2}}, 1);
                 for (int j = 0; j < n; j++)
                 {
                     int idx = i * n + j;
-                    if (i<n-1)
+                    if (i < n - 1)
                     {
                         int bottm = idx + n;
-                        merge(f,idx*4+2,bottm*4);
+                        merge(f, idx * 4 + 2, bottm * 4);
                     }
-                    if (j<n-1)
+                    if (j < n - 1)
                     {
                         int right = idx + 1;
-                        merge(f,idx*4+1,right*4+3);
+                        merge(f, idx * 4 + 1, right * 4 + 3);
                     }
-                    if (grid[i][j]=='/')
+                    if (grid[i][j] == '/')
                     {
                         merge(f, idx * 4, idx * 4 + 3);
                         merge(f, idx * 4 + 1, idx * 4 + 2);
@@ -9929,28 +9906,28 @@ new int[] {-2,2}}, 1);
                 }
             }
             List<int> fathers = new List<int>();
-            for (int i = 0; i < n*n*4; i++)
+            for (int i = 0; i < n * n * 4; i++)
             {
-                int fa = find(f,i);
+                int fa = find(f, i);
                 fathers.Add(fa);
             }
             return fathers.Count;
-              
+
         }
-        public int find1(int[]f,int x)
+        public int find1(int[] f, int x)
         {
-            if (f[x]==x)
+            if (f[x] == x)
             {
                 return x;
             }
-            int fa = find1(f,f[x]);
+            int fa = find1(f, f[x]);
             f[x] = fa;
             return fa;
         }
-        public void merge(int[] f,int x,int y)
+        public void merge(int[] f, int x, int y)
         {
-            int fx = find(f,x);
-            int fy = find(f,y);
+            int fx = find(f, x);
+            int fy = find(f, y);
             f[fx] = fy;
         }
         #endregion
@@ -9961,7 +9938,7 @@ new int[] {-2,2}}, 1);
             //banned = ["hit"]
             //输出: "ball"
             paragraph = @"R? C' x! X. M; z' V! w. N. T? Y' w? n, Z, Z? Y' R; V' f; V' I; t? X? Z; l? R, Q! Z. R. R, O. S! w; p' T. u? U! n, V, M. p? Q, O? q' t. B, k. u. H' T; T? S; Y! S! i? q! K' z' S! v; L. x; q; W? m? y, Z! x. y. j? N' R' I? r? V! Z; s, O? s; V, I, e? U' w! T? T! u; U! e? w? z; t! C! z? U, p' p! r. x; U! Z; u! j; T! X! N' F? n! P' t, X. s; q'";
-             banned =new string[]{ "m", "i", "s", "w", "y", "d", "q", "l", "a", "p", "n", "t", "u", "b", "o", "e", "f", "g", "c", "x" };
+            banned = new string[] { "m", "i", "s", "w", "y", "d", "q", "l", "a", "p", "n", "t", "u", "b", "o", "e", "f", "g", "c", "x" };
 
             paragraph = paragraph.ToLower();
             string str = "";
@@ -10028,7 +10005,7 @@ new int[] {-2,2}}, 1);
             List<int> list = new List<int>();
             for (int i = 0; i < S.Length; i++)
             {
-                if (S[i]==C)
+                if (S[i] == C)
                 {
                     list.Add(i);
                 }
@@ -10036,7 +10013,7 @@ new int[] {-2,2}}, 1);
             int[] arr = new int[S.Length];
             for (int i = 0; i < S.Length; i++)
             {
-                if (S[i]==C)
+                if (S[i] == C)
                 {
                     arr[i] = 0;
                 }
@@ -10057,6 +10034,105 @@ new int[] {-2,2}}, 1);
             return arr;
             //输出：[3, 2, 1, 0, 1, 0, 0, 1, 2, 2, 1, 0]
 
+        }
+        #endregion
+        #region 等价多米诺骨牌对的数量
+        public static int NumEquivDominoPairs(int[][] dominoes)
+        {
+            dominoes = new int[][] { new int[] { 1, 2 }, new int[] { 2, 1 }, new int[] { 1, 2 }, new int[] { 1, 2 } };
+            List<int[]> arr = dominoes.ToList();
+            int res = 0;
+            for (int i = 0; i < arr.Count; i++)
+            {   
+                int n = 0;
+                for (int j = i + 1; j < arr.Count;)
+                {   
+                    if ((arr[i][0] == arr[j][0] && arr[i][1] == arr[j][1]) || (arr[i][0] == arr[j][1] && arr[i][1] == arr[j][0]))
+                    {
+                        n++;
+                        arr.RemoveAt(j);
+                    }
+                    else
+                    {
+                        j++;
+                    } 
+                }
+                while (n>0)
+                {
+                    res += n;
+                    n--;
+                }
+            }
+
+            return res;
+        }
+        #endregion
+        #region 亲密字符串
+        public bool BuddyStrings(string A, string B)
+        {
+            if (A.Length != B.Length)
+            {
+                return false;
+            }
+            int[] arr = new int[2];
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+            int n = 0;
+            for (int i = 0; i < A.Length; i++)
+            {
+                if (dic.ContainsKey(A[i]))
+                {
+                    dic[A[i]]++;
+                }
+                else
+                {
+                    dic.Add(A[i],1);
+                }
+                if (A[i]!=B[i])
+                {
+                    ++n;
+                    if (n>2)
+                    {
+                        return false;
+                    }
+                    arr[n] = i;
+                }
+            }
+            if (n==2&& (A[arr[1]] ==B[arr[0]]&& A[arr[0]] == B[arr[1]]))
+            {
+                return true;
+            }
+            else if (n==0)
+            {
+                foreach (var item in dic.Values)
+                {
+                    if (item>1)
+                    {
+                        return true;
+                    }
+                }
+            }
+                
+            return false;
+   
+        }
+        #endregion
+        #region 模拟行走机器人
+        public int RobotSim(int[] commands, int[][] obstacles)
+        {
+            int[] res = new int[2];
+            var comparer = Comparer<int[]>.Create((int[] a, int[] b) =>
+            {
+                if (a[0]!=b[0])
+                {
+                    return b[0].CompareTo(a[0]);
+                }
+                else
+                {
+                    return a[1].CompareTo(b[1]);
+                }
+            });
+            Array.Sort(obstacles,comparer);
+            return 1;
         }
         #endregion
         #endregion
