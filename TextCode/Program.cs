@@ -10135,6 +10135,51 @@ new int[] {-2,2}}, 1);
             return 1;
         }
         #endregion
+        #region 山羊拉丁文
+        public string ToGoatLatin(string S)
+        {
+            string[] arr = S.Split(" ");
+            char[] yuan = new char[] { 'a','e','i','o', 'u' ,'A', 'E', 'I', 'O', 'U' };
+            StringBuilder str = new StringBuilder();
+            string res = "";
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (res!="")
+                {
+                    res += " ";
+                }
+                str.Clear();
+                str.Append(arr[i]);
+                if (yuan.Contains(str[0]))
+                {
+                    str.Append("ma");
+                }
+                else
+                {
+                    str.Append(str[0]);
+                    str.Remove(0, 1);
+                    str.Append("ma");
+                }
+                for (int j = 0; j < i; j++)
+                {
+                    str.Append("a");
+                }
+                res += str.ToString();
+            }
+            return res;
+        }
+        #endregion
+        #region 山脉索引数组
+        public int PeakIndexInMountainArray(int[] arr)
+        {
+            int i=0;
+            while (arr[i] < arr[i + 1]) 
+            {
+                i++;
+            }
+            return i;
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
