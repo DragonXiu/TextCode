@@ -10180,6 +10180,29 @@ new int[] {-2,2}}, 1);
             return i;
         }
         #endregion
+        #region 翻转图像
+        public int[][] FlipAndInvertImage(int[][] A)
+        {
+            for (int i = 0; i < A.Length; i++)
+            {
+                int a = 0, b = A[i].Length - 1;
+                while (a!=b&&a<b)
+                {
+                    int temp = A[i][a];
+                    A[i][a] = A[i][b];
+                    A[i][b]=temp;
+                    a++;
+                    b++;
+                }
+                for (int j = 0; j < A[i].Length; j++)
+                {
+                    A[i][j] = A[i][j]==0?1:0;
+                }
+            }
+            return A;
+        }
+        #endregion
+
         #endregion
         #region LinQ
         private static void DataInit()
