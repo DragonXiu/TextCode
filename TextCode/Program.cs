@@ -10203,7 +10203,7 @@ new int[] {-2,2}}, 1);
             return A;
         }
         #endregion
-        #region . 最小体力消耗路径
+        #region 最小体力消耗路径
         private static int[][] dirs = new int[][] { new int[] { -1, 0 }, new int[] { 1, 0 }, new int[] { 0, -1 }, new int[] { 0, 1 } };
         public static int MinimumEffortPath(int[][] heights)
         {
