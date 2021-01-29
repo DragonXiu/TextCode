@@ -492,6 +492,7 @@ new int[] {-2,2}}, 1);
             MostCommonWord1("Bob hit a ball, the hit BALL flew far after it was hit.", new string[] { "hit" });
             ShortestToChar("loveleetcode", 'e');
             NumEquivDominoPairs(new int[][] { new int[] { 1, 2 }, new int[] { 2, 1 }, new int[] { 3, 4 }, new int[] { 5, 6 } });
+            MinimumEffortPath(new int[][] { new int[] { 1, 2, 2 }, new int[] { 3, 8, 2 }, new int[] { 5, 3, 5 } });
             Console.ReadLine();
         }
         #region 算法       
@@ -10200,6 +10201,48 @@ new int[] {-2,2}}, 1);
                 }
             }
             return A;
+        }
+        #endregion
+        #region . 最小体力消耗路径
+        private static int[][] dirs = new int[][] { new int[] { -1, 0 }, new int[] { 1, 0 }, new int[] { 0, -1 }, new int[] { 0, 1 } };
+        public static int MinimumEffortPath(int[][] heights)
+        {
+            int a = heights.Length;
+            int b = heights[0].Length;
+            int left = 0, right = 999999, ans = 0;
+            while (left<=right)
+            {
+                int mid = (left + right) / 2;
+                Queue<int[]> queue = new Queue<int[]>();
+                queue.Enqueue(new int[] { 0,0});
+                bool[] seen = new bool[a*b];
+                seen[0] = true;
+                while (queue.Count!=0)
+                {
+                    int[] cell = queue.Dequeue();
+                    int x = cell[0], y = cell[1];
+                    for (int i = 1; i < 4; i++)
+                    {
+                        int nx = x + dirs[i][0];
+                        int ny = y + dirs[i][1];
+                        if (nx>=0&&nx<=a&&ny>=0&&ny<b&&!seen[nx*b+ny]&&Math.Abs(heights[x][y]-heights[nx][ny])<=mid)
+                        {
+                            queue.Enqueue(new int[] { nx,ny});
+                            seen[nx * b + ny] = true;
+                        }
+                    }
+                }
+                if (seen[a*b-1])
+                {
+                    ans = mid;
+                    right = mid - 1;
+                }
+                else
+                {
+                    left = mid + 1;
+                }
+            }
+            return ans;
         }
         #endregion
 
