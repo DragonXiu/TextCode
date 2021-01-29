@@ -493,6 +493,7 @@ new int[] {-2,2}}, 1);
             ShortestToChar("loveleetcode", 'e');
             NumEquivDominoPairs(new int[][] { new int[] { 1, 2 }, new int[] { 2, 1 }, new int[] { 3, 4 }, new int[] { 5, 6 } });
             MinimumEffortPath(new int[][] { new int[] { 1, 2, 2 }, new int[] { 3, 8, 2 }, new int[] { 5, 3, 5 } });
+            BinaryGap(22);
             Console.ReadLine();
         }
         #region 算法       
@@ -10225,7 +10226,7 @@ new int[] {-2,2}}, 1);
                     {
                         int nx = x + dirs[i][0];
                         int ny = y + dirs[i][1];
-                        if (nx>=0&&nx<=a&&ny>=0&&ny<b&&!seen[nx*b+ny]&&Math.Abs(heights[x][y]-heights[nx][ny])<=mid)
+                        if (nx>=0&&nx<=a&&ny>=0&&ny<b&& (nx * b + ny )<a*b&& !seen[nx*b+ny]&&Math.Abs(heights[x][y]-heights[nx][ny])<=mid)
                         {
                             queue.Enqueue(new int[] { nx,ny});
                             seen[nx * b + ny] = true;
@@ -10243,6 +10244,45 @@ new int[] {-2,2}}, 1);
                 }
             }
             return ans;
+        }
+        #endregion
+        #region 二进制间隔
+        public static int BinaryGap(int n)
+        {
+            string str = Convert.ToString(n,2);
+            bool flag = false;
+            int len = int.MinValue,index=0;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i]=='1'&&!flag)
+                {
+                    flag = true;
+                    index = i;
+                }
+                else if (str[i] == '1' && flag)
+                {
+                    len = Math.Max(i - index, len);
+                    index = i;
+                }
+            }
+            return len;
+        }
+        #endregion
+        #region 最小差值|
+        public int SmallestRangeI(int[] A, int K)
+        {
+            Array.Sort(A);
+            int a = A[0];
+            int b = A[A.Length-1];
+            if (K> (b - a) || 2*K>(b-a))
+            {
+                return 0;
+            }
+            else if ( 2 * K < (b - a))
+            {
+                return (b - a) - 2 * K;
+            }
+            return 0;
         }
         #endregion
 
@@ -10395,7 +10435,7 @@ new int[] {-2,2}}, 1);
         }
     }
     #endregion
-
+     
 
 
     #region 编写质量
