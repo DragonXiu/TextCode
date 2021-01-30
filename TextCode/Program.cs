@@ -10285,7 +10285,101 @@ new int[] {-2,2}}, 1);
             return 0;
         }
         #endregion
+        #region 水位上升的泳池中游泳
+        public int SwimInWater(int[][] grid)
+        {
+            return 1;
+        }
+        #endregion
+        #region 重复N次的元素
+        public int RepeatedNTimes(int[] A)
+        {
+            int n = A.Length / 2;
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            foreach (var item in A)
+            {
+                if (dic.ContainsKey(item))
+                {
+                    dic[item]++;
+                }
+                else
+                {
+                    dic.Add(item,1);
+                }
+            }
+            foreach (var item in dic)
+            {
+                if (item.Value==n)
+                {
+                    return item.Key;                       
+                }
+            }
+            return 0;
+        }
+        #endregion
+        #region MyRegion
+        public int he(int[] heights)
+        {
+            int[] temp = new int[heights.Length];
+            Array.Copy(heights, temp, heights.Length);
+            Array.Sort(heights);
+            int n = 0;
+            for (int i = 0; i < heights.Length; i++)
+            {
+                if (temp[i] != heights[i])
+                {
+                    n++;
+                }
+            }
+                return n;
 
+            }
+        #endregion
+        #region 替换空格
+        public string ReplaceSpace(string s)
+        {
+            StringBuilder str = new StringBuilder();
+            str.Replace(" ","%20");
+            str.Append(s.Trim());
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (str[i]==' ')
+                {
+                    str.Remove(i,1);
+                    str.Insert(i,"%20");
+                }
+            }
+            return str.ToString();
+        }
+        #endregion
+        #region 配对空格
+        public int ExchangeBits(int num)
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append(Convert.ToString(num,2));
+            int n = 1;char  value='';
+            for (int i = str.Length-1; i >=0; i--)
+            {
+                if (n==2)
+                {
+                    str[i + 1] = str[i];
+                    str[i] = value;
+                    n = 1;
+                }
+                else
+                {
+                    n = 2;
+                    value = str[i];
+                }
+            }
+            if (n==2)
+            {
+                str[0] = '0';
+                str.Insert(0,value);
+            }
+            return Convert.ToInt32(str.ToString(),10) ;
+        }
+        #endregion
         #endregion
         #region LinQ
         private static void DataInit()
