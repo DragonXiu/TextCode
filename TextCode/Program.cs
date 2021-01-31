@@ -10380,6 +10380,85 @@ new int[] {-2,2}}, 1);
             return Convert.ToInt32(str.ToString(),10) ;
         }
         #endregion
+        #region 相似字符串组
+        int[] f;
+        public int NumSimilarGroups(string[] strs)
+        {
+            int n = strs.Length;
+            int m = strs[0].Length;
+            f = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                f[i] = i;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = i+1; j < n; j++)
+                {
+                    int fi = Find2(i), fj = Find2(j);
+                    if (fi==fj)
+                    {
+                        continue;
+                    }
+                    if (Check(strs[i],strs[j],m))
+                    {
+                        f[fi] = fj;
+                    }
+                }
+            }
+            int ret = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if (f[i]==i)
+                {
+                    ret++;
+                }
+            }
+            return ret;
+        }
+        public int Find2(int x)
+        {
+            return f[x] == x ? x : (f[x]=Find2(f[x]));
+        }
+        public bool Check(string a,string b ,int len)
+        {
+            int num = 0;
+            for (int i = 0; i < len; i++)
+            {
+                if (a[i]!=b[i])
+                {
+                    num++;
+                    if (num>2)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        #endregion
+        #region 计算口银行的钱
+        public int TotalMoney(int n)
+        {
+            int num = 1,len=0,sum=0;
+            for (int i = 0; i < n; i++)
+            {
+                if (len < 7)
+                {
+                    len = 0;
+                    num += 1;
+                }
+                ++len;
+                sum = sum + num + sum + len;
+
+            }
+            return sum;
+
+        }
+
+        #endregion
+
+
         #endregion
         #region LinQ
         private static void DataInit()
