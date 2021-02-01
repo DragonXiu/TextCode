@@ -494,6 +494,7 @@ new int[] {-2,2}}, 1);
             NumEquivDominoPairs(new int[][] { new int[] { 1, 2 }, new int[] { 2, 1 }, new int[] { 3, 4 }, new int[] { 5, 6 } });
             MinimumEffortPath(new int[][] { new int[] { 1, 2, 2 }, new int[] { 3, 8, 2 }, new int[] { 5, 3, 5 } });
             BinaryGap(22);
+            MaximumUnits(new int[][] { new int[] {5,10 } ,new int[] {2,5 },new int[] { 4,7},new int[] { 3,9} },10);
             Console.ReadLine();
         }
         #region 算法       
@@ -10357,7 +10358,7 @@ new int[] {-2,2}}, 1);
         {
             StringBuilder str = new StringBuilder();
             str.Append(Convert.ToString(num,2));
-            int n = 1;char  value='';
+            int n = 1;char  value=' ';
             for (int i = str.Length-1; i >=0; i--)
             {
                 if (n==2)
@@ -10456,6 +10457,60 @@ new int[] {-2,2}}, 1);
 
         }
 
+        #endregion
+        #region 公平的糖果交换
+        public int[] FairCandySwap(int[] A, int[] B)
+        {
+            int sumA = 0,sumB=0;
+            int[] ans = new int[2];
+            foreach (var item in A)
+            {
+                sumA += item;
+            }
+            foreach (var item in B)
+            {
+                sumB += item;
+            }
+            int i = 0, j = 0;
+            while (i<A.Length&&j<B.Length)
+            {
+                if (sumA - A[i] + B[j] == sumB - B[j] + A[i])
+                {
+                    ans[0] = A[i];
+                    ans[1] = B[j];
+                    return ans;
+                }
+                else if (sumA - A[i] + B[j] >= sumB - B[j] + A[i])
+                {
+                    i++;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+         
+            return ans;
+        }
+        #endregion
+        #region 卡车上最大单元数
+        public static int MaximumUnits(int[][] boxTypes, int truckSize)
+        {
+            int n=0;
+            Array.Sort<int[]>(boxTypes, (x, y) => (x[1]).CompareTo(y[1]));
+            for (int i = boxTypes.Length-1; i >=0; i--)
+            {
+                if (truckSize < boxTypes[i][0])
+                {
+                    n += (truckSize * boxTypes[i][1);
+                    break;
+                }
+                truckSize -= boxTypes[i][0];
+                n += (boxTypes[i][0] * boxTypes[i][1] );
+
+            }
+            return n;
+        }
         #endregion
 
 
