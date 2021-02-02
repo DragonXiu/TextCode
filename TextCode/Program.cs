@@ -494,7 +494,8 @@ new int[] {-2,2}}, 1);
             NumEquivDominoPairs(new int[][] { new int[] { 1, 2 }, new int[] { 2, 1 }, new int[] { 3, 4 }, new int[] { 5, 6 } });
             MinimumEffortPath(new int[][] { new int[] { 1, 2, 2 }, new int[] { 3, 8, 2 }, new int[] { 5, 3, 5 } });
             BinaryGap(22);
-            MaximumUnits(new int[][] { new int[] {5,10 } ,new int[] {2,5 },new int[] { 4,7},new int[] { 3,9} },10);
+            MaximumUnits(new int[][] { new int[] { 5, 10 }, new int[] { 2, 5 }, new int[] { 4, 7 }, new int[] { 3, 9 } }, 10);
+            CharacterReplacement("ABAB",1);
             Console.ReadLine();
         }
         #region 算法       
@@ -9866,7 +9867,7 @@ new int[] {-2,2}}, 1);
             }
         }
         #endregion
-         #region 由斜杠划分区域
+        #region 由斜杠划分区域
         public int RegionsBySlashes(string[] grid)
         {
             int n = grid.Length;
@@ -10046,10 +10047,10 @@ new int[] {-2,2}}, 1);
             List<int[]> arr = dominoes.ToList();
             int res = 0;
             for (int i = 0; i < arr.Count; i++)
-            {   
+            {
                 int n = 0;
                 for (int j = i + 1; j < arr.Count;)
-                {   
+                {
                     if ((arr[i][0] == arr[j][0] && arr[i][1] == arr[j][1]) || (arr[i][0] == arr[j][1] && arr[i][1] == arr[j][0]))
                     {
                         n++;
@@ -10058,9 +10059,9 @@ new int[] {-2,2}}, 1);
                     else
                     {
                         j++;
-                    } 
+                    }
                 }
-                while (n>0)
+                while (n > 0)
                 {
                     res += n;
                     n--;
@@ -10088,35 +10089,35 @@ new int[] {-2,2}}, 1);
                 }
                 else
                 {
-                    dic.Add(A[i],1);
+                    dic.Add(A[i], 1);
                 }
-                if (A[i]!=B[i])
+                if (A[i] != B[i])
                 {
                     ++n;
-                    if (n>2)
+                    if (n > 2)
                     {
                         return false;
                     }
                     arr[n] = i;
                 }
             }
-            if (n==2&& (A[arr[1]] ==B[arr[0]]&& A[arr[0]] == B[arr[1]]))
+            if (n == 2 && (A[arr[1]] == B[arr[0]] && A[arr[0]] == B[arr[1]]))
             {
                 return true;
             }
-            else if (n==0)
+            else if (n == 0)
             {
                 foreach (var item in dic.Values)
                 {
-                    if (item>1)
+                    if (item > 1)
                     {
                         return true;
                     }
                 }
             }
-                
+
             return false;
-   
+
         }
         #endregion
         #region 模拟行走机器人
@@ -10125,7 +10126,7 @@ new int[] {-2,2}}, 1);
             int[] res = new int[2];
             var comparer = Comparer<int[]>.Create((int[] a, int[] b) =>
             {
-                if (a[0]!=b[0])
+                if (a[0] != b[0])
                 {
                     return b[0].CompareTo(a[0]);
                 }
@@ -10134,7 +10135,7 @@ new int[] {-2,2}}, 1);
                     return a[1].CompareTo(b[1]);
                 }
             });
-            Array.Sort(obstacles,comparer);
+            Array.Sort(obstacles, comparer);
             return 1;
         }
         #endregion
@@ -10142,12 +10143,12 @@ new int[] {-2,2}}, 1);
         public string ToGoatLatin(string S)
         {
             string[] arr = S.Split(" ");
-            char[] yuan = new char[] { 'a','e','i','o', 'u' ,'A', 'E', 'I', 'O', 'U' };
+            char[] yuan = new char[] { 'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U' };
             StringBuilder str = new StringBuilder();
             string res = "";
             for (int i = 0; i < arr.Length; i++)
             {
-                if (res!="")
+                if (res != "")
                 {
                     res += " ";
                 }
@@ -10175,8 +10176,8 @@ new int[] {-2,2}}, 1);
         #region 山脉索引数组
         public int PeakIndexInMountainArray(int[] arr)
         {
-            int i=0;
-            while (arr[i] < arr[i + 1]) 
+            int i = 0;
+            while (arr[i] < arr[i + 1])
             {
                 i++;
             }
@@ -10189,17 +10190,17 @@ new int[] {-2,2}}, 1);
             for (int i = 0; i < A.Length; i++)
             {
                 int a = 0, b = A[i].Length - 1;
-                while (a!=b&&a<b)
+                while (a != b && a < b)
                 {
                     int temp = A[i][a];
                     A[i][a] = A[i][b];
-                    A[i][b]=temp;
+                    A[i][b] = temp;
                     a++;
                     b++;
                 }
                 for (int j = 0; j < A[i].Length; j++)
                 {
-                    A[i][j] = A[i][j]==0?1:0;
+                    A[i][j] = A[i][j] == 0 ? 1 : 0;
                 }
             }
             return A;
@@ -10212,14 +10213,14 @@ new int[] {-2,2}}, 1);
             int a = heights.Length;
             int b = heights[0].Length;
             int left = 0, right = 999999, ans = 0;
-            while (left<=right)
+            while (left <= right)
             {
                 int mid = (left + right) / 2;
                 Queue<int[]> queue = new Queue<int[]>();
-                queue.Enqueue(new int[] { 0,0});
-                bool[] seen = new bool[a*b];
+                queue.Enqueue(new int[] { 0, 0 });
+                bool[] seen = new bool[a * b];
                 seen[0] = true;
-                while (queue.Count!=0)
+                while (queue.Count != 0)
                 {
                     int[] cell = queue.Dequeue();
                     int x = cell[0], y = cell[1];
@@ -10227,14 +10228,14 @@ new int[] {-2,2}}, 1);
                     {
                         int nx = x + dirs[i][0];
                         int ny = y + dirs[i][1];
-                        if (nx>=0&&nx<=a&&ny>=0&&ny<b&& (nx * b + ny )<a*b&& !seen[nx*b+ny]&&Math.Abs(heights[x][y]-heights[nx][ny])<=mid)
+                        if (nx >= 0 && nx <= a && ny >= 0 && ny < b && (nx * b + ny) < a * b && !seen[nx * b + ny] && Math.Abs(heights[x][y] - heights[nx][ny]) <= mid)
                         {
-                            queue.Enqueue(new int[] { nx,ny});
+                            queue.Enqueue(new int[] { nx, ny });
                             seen[nx * b + ny] = true;
                         }
                     }
                 }
-                if (seen[a*b-1])
+                if (seen[a * b - 1])
                 {
                     ans = mid;
                     right = mid - 1;
@@ -10250,12 +10251,12 @@ new int[] {-2,2}}, 1);
         #region 二进制间隔
         public static int BinaryGap(int n)
         {
-            string str = Convert.ToString(n,2);
+            string str = Convert.ToString(n, 2);
             bool flag = false;
-            int len = int.MinValue,index=0;
+            int len = int.MinValue, index = 0;
             for (int i = 0; i < str.Length; i++)
             {
-                if (str[i]=='1'&&!flag)
+                if (str[i] == '1' && !flag)
                 {
                     flag = true;
                     index = i;
@@ -10274,12 +10275,12 @@ new int[] {-2,2}}, 1);
         {
             Array.Sort(A);
             int a = A[0];
-            int b = A[A.Length-1];
-            if (K> (b - a) || 2*K>(b-a))
+            int b = A[A.Length - 1];
+            if (K > (b - a) || 2 * K > (b - a))
             {
                 return 0;
             }
-            else if ( 2 * K < (b - a))
+            else if (2 * K < (b - a))
             {
                 return (b - a) - 2 * K;
             }
@@ -10305,14 +10306,14 @@ new int[] {-2,2}}, 1);
                 }
                 else
                 {
-                    dic.Add(item,1);
+                    dic.Add(item, 1);
                 }
             }
             foreach (var item in dic)
             {
-                if (item.Value==n)
+                if (item.Value == n)
                 {
-                    return item.Key;                       
+                    return item.Key;
                 }
             }
             return 0;
@@ -10332,22 +10333,22 @@ new int[] {-2,2}}, 1);
                     n++;
                 }
             }
-                return n;
+            return n;
 
-            }
+        }
         #endregion
         #region 替换空格
         public string ReplaceSpace(string s)
         {
             StringBuilder str = new StringBuilder();
-            str.Replace(" ","%20");
+            str.Replace(" ", "%20");
             str.Append(s.Trim());
             for (int i = 0; i < s.Length; i++)
             {
-                if (str[i]==' ')
+                if (str[i] == ' ')
                 {
-                    str.Remove(i,1);
-                    str.Insert(i,"%20");
+                    str.Remove(i, 1);
+                    str.Insert(i, "%20");
                 }
             }
             return str.ToString();
@@ -10357,11 +10358,11 @@ new int[] {-2,2}}, 1);
         public int ExchangeBits(int num)
         {
             StringBuilder str = new StringBuilder();
-            str.Append(Convert.ToString(num,2));
-            int n = 1;char  value=' ';
-            for (int i = str.Length-1; i >=0; i--)
+            str.Append(Convert.ToString(num, 2));
+            int n = 1; char value = ' ';
+            for (int i = str.Length - 1; i >= 0; i--)
             {
-                if (n==2)
+                if (n == 2)
                 {
                     str[i + 1] = str[i];
                     str[i] = value;
@@ -10373,12 +10374,12 @@ new int[] {-2,2}}, 1);
                     value = str[i];
                 }
             }
-            if (n==2)
+            if (n == 2)
             {
                 str[0] = '0';
-                str.Insert(0,value);
+                str.Insert(0, value);
             }
-            return Convert.ToInt32(str.ToString(),10) ;
+            return Convert.ToInt32(str.ToString(), 10);
         }
         #endregion
         #region 相似字符串组
@@ -10394,14 +10395,14 @@ new int[] {-2,2}}, 1);
             }
             for (int i = 0; i < n; i++)
             {
-                for (int j = i+1; j < n; j++)
+                for (int j = i + 1; j < n; j++)
                 {
                     int fi = Find2(i), fj = Find2(j);
-                    if (fi==fj)
+                    if (fi == fj)
                     {
                         continue;
                     }
-                    if (Check(strs[i],strs[j],m))
+                    if (Check(strs[i], strs[j], m))
                     {
                         f[fi] = fj;
                     }
@@ -10410,7 +10411,7 @@ new int[] {-2,2}}, 1);
             int ret = 0;
             for (int i = 0; i < n; i++)
             {
-                if (f[i]==i)
+                if (f[i] == i)
                 {
                     ret++;
                 }
@@ -10419,17 +10420,17 @@ new int[] {-2,2}}, 1);
         }
         public int Find2(int x)
         {
-            return f[x] == x ? x : (f[x]=Find2(f[x]));
+            return f[x] == x ? x : (f[x] = Find2(f[x]));
         }
-        public bool Check(string a,string b ,int len)
+        public bool Check(string a, string b, int len)
         {
             int num = 0;
             for (int i = 0; i < len; i++)
             {
-                if (a[i]!=b[i])
+                if (a[i] != b[i])
                 {
                     num++;
-                    if (num>2)
+                    if (num > 2)
                     {
                         return false;
                     }
@@ -10441,7 +10442,7 @@ new int[] {-2,2}}, 1);
         #region 计算口银行的钱
         public int TotalMoney(int n)
         {
-            int num = 1,len=0,sum=0;
+            int num = 1, len = 0, sum = 0;
             for (int i = 0; i < n; i++)
             {
                 if (len < 7)
@@ -10461,7 +10462,7 @@ new int[] {-2,2}}, 1);
         #region 公平的糖果交换
         public int[] FairCandySwap(int[] A, int[] B)
         {
-            int sumA = 0,sumB=0;
+            int sumA = 0, sumB = 0;
             int[] ans = new int[2];
             foreach (var item in A)
             {
@@ -10472,7 +10473,7 @@ new int[] {-2,2}}, 1);
                 sumB += item;
             }
             int i = 0, j = 0;
-            while (i<A.Length&&j<B.Length)
+            while (i < A.Length && j < B.Length)
             {
                 if (sumA - A[i] + B[j] == sumB - B[j] + A[i])
                 {
@@ -10489,27 +10490,77 @@ new int[] {-2,2}}, 1);
                     j++;
                 }
             }
-         
+
             return ans;
         }
         #endregion
         #region 卡车上最大单元数
         public static int MaximumUnits(int[][] boxTypes, int truckSize)
         {
-            int n=0;
+            int n = 0;
             Array.Sort<int[]>(boxTypes, (x, y) => (x[1]).CompareTo(y[1]));
-            for (int i = boxTypes.Length-1; i >=0; i--)
+            for (int i = boxTypes.Length - 1; i >= 0; i--)
             {
                 if (truckSize < boxTypes[i][0])
                 {
-                    n += (truckSize * boxTypes[i][1);
+                    n += (truckSize * boxTypes[i][1]);
                     break;
                 }
                 truckSize -= boxTypes[i][0];
-                n += (boxTypes[i][0] * boxTypes[i][1] );
+                n += (boxTypes[i][0] * boxTypes[i][1]);
 
             }
             return n;
+        }
+        #endregion
+        #region 替换后的最长重复字符
+        public static int CharacterReplacement(string s, int k)
+        {
+            //输入：s = "ABAB", k = 2
+            //输出：4
+            //输入：s = "AABABBA", k = 1
+            //输出：4
+            int[] nums = new int[26];//拆分存储s
+            int len = s.Length;
+            if (k>=len)
+            {
+                return len;
+            }
+            int n = 0;
+            int left = 0, right = 0;//定义两个指针
+            while (right<len)
+            {
+                nums[s[right] - 'A']++;
+                n = Math.Max(n,nums[s[right]-'A']);
+                if (right-left+1-n>k)
+                {
+                    nums[s[left] - 'A']--;
+                    left++;
+                }
+                right++;
+            }
+            return right - left;
+        }
+        #endregion
+        #region 重新格式化电话号码
+        public string ReformatNumber(string number)
+        {
+            StringBuilder str = new StringBuilder();
+            str.Append(number);
+            int n = 0;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (str[i]==' '||str[i]=='-')
+                {
+                    str.Remove(i,1);
+                }
+            }
+            if (str.Length>3)
+            {
+                str.Insert(3,'-');
+            }
+
+            return str.ToString();
         }
         #endregion
 
@@ -10663,7 +10714,7 @@ new int[] {-2,2}}, 1);
         }
     }
     #endregion
-     
+
 
 
     #region 编写质量
