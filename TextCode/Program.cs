@@ -495,7 +495,7 @@ new int[] {-2,2}}, 1);
             MinimumEffortPath(new int[][] { new int[] { 1, 2, 2 }, new int[] { 3, 8, 2 }, new int[] { 5, 3, 5 } });
             BinaryGap(22);
             MaximumUnits(new int[][] { new int[] { 5, 10 }, new int[] { 2, 5 }, new int[] { 4, 7 }, new int[] { 3, 9 } }, 10);
-            CharacterReplacement("ABAB",1);
+            CharacterReplacement("ABAB", 1);
             Console.ReadLine();
         }
         #region 算法       
@@ -10522,17 +10522,17 @@ new int[] {-2,2}}, 1);
             //输出：4
             int[] nums = new int[26];//拆分存储s
             int len = s.Length;
-            if (k>=len)
+            if (k >= len)
             {
                 return len;
             }
             int n = 0;
             int left = 0, right = 0;//定义两个指针
-            while (right<len)
+            while (right < len)
             {
                 nums[s[right] - 'A']++;
-                n = Math.Max(n,nums[s[right]-'A']);
-                if (right-left+1-n>k)
+                n = Math.Max(n, nums[s[right] - 'A']);
+                if (right - left + 1 - n > k)
                 {
                     nums[s[left] - 'A']--;
                     left++;
@@ -10550,17 +10550,103 @@ new int[] {-2,2}}, 1);
             int n = 0;
             for (int i = 0; i < str.Length; i++)
             {
-                if (str[i]==' '||str[i]=='-')
+                if (str[i] == ' ' || str[i] == '-')
                 {
-                    str.Remove(i,1);
+                    str.Remove(i, 1);
                 }
             }
-            if (str.Length>3)
+            if (str.Length > 3)
             {
-                str.Insert(3,'-');
+                str.Insert(3, '-');
             }
 
             return str.ToString();
+        }
+        #endregion
+        #region 滑动窗口中位数
+        public double[] MedianSlidingWindow(int[] nums, int k)
+        {
+            int resultLength = nums.Length - k + 1;
+            double[] result = new double[resultLength];
+            int[] window = new int[k];
+
+            // 窗口初始化并排序记录第一个中位数
+            for (int i = 0; i < k; i++)
+            {
+                window[i] = nums[i];
+            }
+            Array.Sort(window);
+            result[0] = GetMedian(window);
+
+            // 窗口开始滑动
+            for (int n = 1; n < resultLength; n++)
+            {
+                // 定位需要删除的元素位置
+                int rmIndex = 0;
+                for (int i = 0; i < k; i++)
+                {
+                    if (window[i] == nums[n - 1])
+                    {
+                        rmIndex = i;
+                        break;
+                    }
+                }
+
+                // 定位新元素需要插入的位置
+                int newNum = nums[n + k - 1];
+                int adIndex = 0;
+                for (int i = 0; i < k; i++)
+                {
+                    if (newNum > window[i])
+                    {
+                        adIndex++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (adIndex <= rmIndex)
+                {
+                    // 如果新元素需要插入的位置在删除元素位置左侧，那么中间元素向右移动覆盖掉被删除的元素
+                    for (int i = rmIndex; i > adIndex; i--)
+                    {
+                        window[i] = window[i - 1];
+                    }
+                }
+                else
+                {
+                    // 如果新元素需要插入的位置在删除元素位置右侧，那么应去除需要删除元素造成的影响因此adIndex--;
+                    adIndex--;
+                    // 中间元素向左移动覆盖掉被删除的元素
+                    for (int i = rmIndex; i < adIndex; i++)
+                    {
+                        window[i] = window[i + 1];
+                    }
+                }
+                // 将新元素放入相应的位置
+                window[adIndex] = newNum;
+                result[n] = GetMedian(window);
+            }
+            return result;
+        }
+
+        // 获取window数组的中位数
+        public double GetMedian(int[] window)
+        {
+            double median = 0;
+            int k = window.Length;
+            if (k % 2 == 0)
+            {
+                long sum = ((long)window[k / 2] + (long)window[k / 2 - 1]);
+                median = sum / 2.0;
+            }
+            else
+            {
+                median = window[k / 2];
+            }
+            return median;
         }
         #endregion
 
