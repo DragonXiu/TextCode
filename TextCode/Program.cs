@@ -15,6 +15,7 @@ using System.Collections;
 using System.Threading;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Services.Common;
+using static TextCode.Program.ProgramS;
 
 namespace TextCode
 {
@@ -473,7 +474,6 @@ new int[] {-2,2}}, 1);
             SummaryRanges(new int[] { -1, 0 });
             var counter = 1;
             var result1 = Sum() + Sum();
-
             int Sum()
             {
                 return counter++;
@@ -496,8 +496,31 @@ new int[] {-2,2}}, 1);
             BinaryGap(22);
             MaximumUnits(new int[][] { new int[] { 5, 10 }, new int[] { 2, 5 }, new int[] { 4, 7 }, new int[] { 3, 9 } }, 10);
             CharacterReplacement("ABAB", 1);
+
+
+            int a = 1; int b = 2; int c = 3;
+            ProgramS p = new ProgramS(); p.d = 4;
+            Rect r = new Rect(); r.e = 5;
+            string k = "tt";
+            Setvalue(a, ref b, out c, p, r, k);
+            Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c,p.d, r.e, k);
+            Console.Read();
             Console.ReadLine();
         }
+        public class ProgramS
+        {
+            public struct Rect
+            {
+                public int e;
+            }
+            public int d = 4;
+        }
+        public static void Setvalue(int a, ref int b, out int c, ProgramS p, Rect r, string k)
+        {
+            a = 5; b = 6; c = 7; p.d = 8; r.e = 9; k = "500";
+        }
+
+
         #region 算法       
         #region 查找字符串
 
@@ -1350,8 +1373,8 @@ new int[] {-2,2}}, 1);
         {
             /*，如果我们真的在买卖股票，我们肯定会想：如果我是在历史最低点买的股票就好了！太好了，在题目中，我们只要用一个变量记录一个历史最低价格 minprice，我们就可以假设自己的股票是在那天买的。那么我们在第 i 天卖出股票能得到的利润就是 prices[i] - minprice。
 
-因此，我们只需要遍历价格数组一遍，记录历史最低点，然后在每一天考虑这么一个问题：如果我是在历史最低点买进的，那么我今天卖出能赚多少钱？当考虑完所有天数之时，我们就得到了最好的答案。
-*/
+    因此，我们只需要遍历价格数组一遍，记录历史最低点，然后在每一天考虑这么一个问题：如果我是在历史最低点买进的，那么我今天卖出能赚多少钱？当考虑完所有天数之时，我们就得到了最好的答案。
+    */
             int minprice = int.MaxValue;
             int maxprofit = 0;
             for (int i = 0; i < prices.Length; i++)
@@ -1629,7 +1652,7 @@ new int[] {-2,2}}, 1);
              * 它们就会分别跑了一步或两步并相遇。其他情况又会怎样呢？例如，我们没有考虑快
              * 跑者在慢跑者之后两步或三步的情况。 其实不难想到，因为在下一次或者下下次迭代后
              * ，又会变成上面提到的情况 A。
-*/
+    */
             if (head == null || head.next == null)
             {
                 return false;
@@ -4447,9 +4470,9 @@ new int[] {-2,2}}, 1);
             #endregion
             #region MyRegion
             /*先找处链表L的中间结点，为此设置两个指针p和q，指针p每次走一步，指针q每次走两步，当指针q到达链尾时，指针p正好在链表的中间结点；
-2、然后将L的后半段结点原地逆置；
-3、从单链表前后两段中 依次各取一个结点，按要求重排；
-*/
+    2、然后将L的后半段结点原地逆置；
+    3、从单链表前后两段中 依次各取一个结点，按要求重排；
+    */
             //void reorderList(ListNode* head)
             //        {
             //            ListNode* p = head,*q = head,*r,*s = head;
@@ -4512,7 +4535,7 @@ new int[] {-2,2}}, 1);
         public int GetSum(int a, int b)
         {
             /*异或得到不进位加法的和，按位与并左移一位得到进位的和，两者相加即为两数之和。出口为进位为0。
-可用迭代或递归。*/
+    可用迭代或递归。*/
             int aa = a, bb = b, c;
             do
             {
@@ -7118,8 +7141,8 @@ new int[] {-2,2}}, 1);
             //新建两个字典
             Dictionary<int, int> dic1 = new Dictionary<int, int>(); //存储原数组中数字i出现的次数
             Dictionary<int, int> dic2 = new Dictionary<int, int>();//存储以数字i结尾的且符合题意的连续子序列个数
-            //以nums =[1, 2, 3, 3, 4, 4, 5]
-            //初始化：nc[1] = 1、nc[2] = 1、nc[3] = 2、nc[4] = 2、nc[5] = 1，tail[i]都为0
+                                                                   //以nums =[1, 2, 3, 3, 4, 4, 5]
+                                                                   //初始化：nc[1] = 1、nc[2] = 1、nc[3] = 2、nc[4] = 2、nc[5] = 1，tail[i]都为0
             foreach (var item in nums)
             {
                 if (dic1.ContainsKey(item))
@@ -7216,7 +7239,7 @@ new int[] {-2,2}}, 1);
         public static int MatrixScore(int[][] A)
         {
             int m = A.Length, n = A[0].Length;//m行，n列
-            //对最左边列，最优情况取值都为1
+                                              //对最左边列，最优情况取值都为1
             int res = m * (1 << (n - 1));
             for (int i = 1; i < n; i++)
             {
@@ -7896,7 +7919,7 @@ new int[] {-2,2}}, 1);
             }
 
         }
-        #endregion 
+        #endregion
         #region 棒球比赛
         public int CalPoints(string[] ops)
         {
@@ -9186,7 +9209,7 @@ new int[] {-2,2}}, 1);
         {
             this.rows = grid.Length; //行
             this.cols = grid[0].Length;//列
-            //第一步：把grid中的砖头全部击碎，橙船算法问题不能修改输入数据，这一步非必须可认为一种代替规范
+                                       //第一步：把grid中的砖头全部击碎，橙船算法问题不能修改输入数据，这一步非必须可认为一种代替规范
             int[][] copy = new int[rows][];
             for (int i = 0; i < rows; i++)
             {
@@ -9375,7 +9398,7 @@ new int[] {-2,2}}, 1);
             }
             return res;
         }
-        #endregion    
+        #endregion
         #region 账户合并
         //利用一个字符串的映射存储并查集
         Dictionary<string, string> accoutsDic;
@@ -10647,6 +10670,77 @@ new int[] {-2,2}}, 1);
                 median = window[k / 2];
             }
             return median;
+        }
+        #endregion
+        #region 可获得的最大点数
+        public int MaxScore(int[] cardPoints, int k)
+        {
+            int n = cardPoints.Length;
+            //活动窗口大小为n-k
+            int windowSize = n - k;
+            //选前n-k个作为初始值
+            int sum = 0;
+            for (int i = 0; i < windowSize; ++i)
+            {
+                sum += cardPoints[i];
+            }
+            int minSum = sum;
+            for (int i = windowSize; i < n; ++i)
+            {
+                //滑动窗口每向右移动一格，增加从右侧进入窗口的元素值，并减少从左侧离开窗口的元素值
+                sum += cardPoints[i] - cardPoints[i - windowSize];
+                minSum = Math.Min(minSum, sum);
+            }
+            return cardPoints.Sum() - minSum;
+        }
+        #endregion
+        #region 最长湍流子数组
+        public int MaxTurbulenceSize(int[] arr)
+        {
+            int len = arr.Length;
+            int ret = 1;
+            int left = 0, right = 0;
+            while (right< len - 1)
+            {
+                if (left==right)
+                {
+                    if (arr[left]==arr[left+1])
+                    {
+                        left++;
+                    }
+                    right++;
+                }
+                else
+                {
+                    if (arr[right-1]<arr[right]&&arr[right]>arr[right+1])
+                    {
+                        right++;
+                    }
+                    else if (arr[right - 1] > arr[right] && arr[right] < arr[right + 1])
+                    {
+                        right++;
+                    }
+                    else
+                    {
+                        left = right;
+                    }
+                }
+                ret = Math.Max(ret,right-left+1);
+            }
+            return ret;
+
+        }
+        #endregion
+        #region 找到最高海拔
+        public int LargestAltitude(int[] gain)
+        {
+            int n = 0;
+            int res = int.MinValue;
+            for (int i = 0; i < gain.Length; i++)
+            {
+                Math.Max(res, n + gain[i]);
+            }
+            return res;
         }
         #endregion
 
