@@ -503,7 +503,7 @@ new int[] {-2,2}}, 1);
             Rect r = new Rect(); r.e = 5;
             string k = "tt";
             Setvalue(a, ref b, out c, p, r, k);
-            Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c,p.d, r.e, k);
+            Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c, p.d, r.e, k);
             Console.Read();
             Console.ReadLine();
         }
@@ -10700,11 +10700,11 @@ new int[] {-2,2}}, 1);
             int len = arr.Length;
             int ret = 1;
             int left = 0, right = 0;
-            while (right< len - 1)
+            while (right < len - 1)
             {
-                if (left==right)
+                if (left == right)
                 {
-                    if (arr[left]==arr[left+1])
+                    if (arr[left] == arr[left + 1])
                     {
                         left++;
                     }
@@ -10712,7 +10712,7 @@ new int[] {-2,2}}, 1);
                 }
                 else
                 {
-                    if (arr[right-1]<arr[right]&&arr[right]>arr[right+1])
+                    if (arr[right - 1] < arr[right] && arr[right] > arr[right + 1])
                     {
                         right++;
                     }
@@ -10725,7 +10725,7 @@ new int[] {-2,2}}, 1);
                         left = right;
                     }
                 }
-                ret = Math.Max(ret,right-left+1);
+                ret = Math.Max(ret, right - left + 1);
             }
             return ret;
 
@@ -10739,6 +10739,57 @@ new int[] {-2,2}}, 1);
             for (int i = 0; i < gain.Length; i++)
             {
                 Math.Max(res, n + gain[i]);
+            }
+            return res;
+        }
+        #endregion
+        #region k个不同整数的子数组
+        public int SubarraysWithKDistinct(int[] A, int K)
+        {
+            int res = 0;
+            //定义字典
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+
+            int start = 0;
+            int current = 0;
+            int index = 0;
+            while (index < A.Length)
+            {
+                //如果字典不存在添加，在就叠加
+                if (!dic.ContainsKey(A[index])) 
+                    dic.Add(A[index], 0);
+                dic[A[index]]++;
+                if (dic.Keys.Count == K)
+                {
+                    // if dict[A[current]] == 1, decreasing it will make it to be 0
+                    // then it should be removed from the dict, 
+                    // and dict.Keys.Count == K - 1
+                    // so stop when dict[A[current]] == 1
+                    //如果将==1的--，然后从dic中移除
+                    while (dic[A[current]] > 1)
+                    {
+                        dic[A[current++]]--;
+                    }
+                    //from(start, index) to (current, index),
+                    //they all contain K diffrent numbers
+                    //so add them(count = current - start + 1)
+                    res += current - start + 1;
+                    index++;
+                }
+                else if (dic.Keys.Count > K)
+                {
+                    //We should start at the next left number
+                    //else the sum of diffrent numbers will be over K
+                    //So try to remove the left number 
+                    //to make the sum equals to K
+                    while (dic.Keys.Count > K)
+                    {
+                        dic.Remove(A[current++]);
+                        start = current;
+                    }
+                    dic.Remove(A[index]);
+                }
+                else index++;
             }
             return res;
         }
