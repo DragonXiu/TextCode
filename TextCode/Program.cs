@@ -503,7 +503,9 @@ new int[] {-2,2}}, 1);
             Rect r = new Rect(); r.e = 5;
             string k = "tt";
             Setvalue(a, ref b, out c, p, r, k);
-            Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c, p.d, r.e, k);
+           // Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c, p.d, r.e, k);
+            LongestOnes(new int[] { 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1 },1);
+
             Console.Read();
             Console.ReadLine();
         }
@@ -10794,7 +10796,96 @@ new int[] {-2,2}}, 1);
             return res;
         }
         #endregion
+        #region MyRegion
+        public List<int> Find(int[]nums)
+        {
+            var a = nums.ToList();
+            a.Sort();
+            var b = a[0];
+            var c = a.Count();
+            var d = a[c-1];
+            List<int> e = new List<int>();
+            for (int i = d; i <=d; i++)
+            {
+                e.Add(i);
+            }
+            var g = e.Except(a).ToList();
+            return g;
+        }
+        #endregion
+        #region 最大连续1的个数|||
+        public static int LongestOnes(int[] A, int K)
+        {
+            int left = 0;
+            int right = 0;
+            int countZero = 0;
+            int res = 0;
+            while (right < A.Length)
+            {
+                if (A[right] == 0) countZero++;
+                right++;
 
+                if (countZero > K)
+                {
+                    while (countZero > K)
+                    {
+                        if (A[left] == 0) countZero--;
+                        left++;
+
+                    }
+
+                }
+                res = Math.Max(res, right - left);
+            }
+            return res;
+            //int maxLen = 0, temp = 0;
+            //int len = A.Length;
+            //int k = K;
+            //for (int i = 0; i < len; i++)
+            //{
+            //    if (A[i] == 0 && k != 0)
+            //    {
+            //        k--;
+            //        temp++;
+            //    }
+            //    else if (A[i] == 0 && k == 0)
+            //    {
+            //        if (K == 0)
+            //        {
+            //            maxLen = Math.Max(maxLen, temp);
+            //            temp = 0;
+            //            continue;
+            //        }
+            //        k = K - 1;
+            //        maxLen = Math.Max(maxLen, temp);
+            //        temp = 1;
+            //        for (int j = i - 1; j >= 0; j--)
+            //        {
+            //            if (A[j] == 1)
+            //            {
+            //                temp++;
+            //            }
+            //            else if (A[j] == 0 && k != 0)
+            //            {
+            //                k--;
+            //                temp++;
+            //            }
+            //            else if (A[j] == 0 && k == 0)
+            //            {
+            //                break;
+            //            }
+            //        }
+            //    }
+            //    if (A[i] == 1)
+            //    {
+            //        temp++;
+            //    }
+
+            //}
+            //maxLen = Math.Max(maxLen, temp);
+            //return maxLen;
+        }
+        #endregion
 
         #endregion
         #region LinQ
