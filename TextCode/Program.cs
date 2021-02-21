@@ -505,6 +505,7 @@ new int[] {-2,2}}, 1);
             Setvalue(a, ref b, out c, p, r, k);
            // Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c, p.d, r.e, k);
             LongestOnes(new int[] { 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1 },1);
+            LongestSubarray(new int[] { 8, 2, 4, 7 },4);
 
             Console.Read();
             Console.ReadLine();
@@ -10884,6 +10885,65 @@ new int[] {-2,2}}, 1);
             //}
             //maxLen = Math.Max(maxLen, temp);
             //return maxLen;
+        }
+        #endregion
+        #region  绝对差不超过限制的最长连续子数组
+        public static int LongestSubarray(int[] nums, int limit)
+        {
+            int n = nums.Length;
+            //List<int> temp = new List<int>();
+            int len = 0;
+            int min = nums[0], max = nums[0];//[8,8]
+            int i = 0, j = 0;
+            while (i<n)//0   1  2
+            {    
+                max = Math.Max(max,nums[i]);//8  8 4
+                min = Math.Min(min,nums[i]);//8  2 4
+                if (max-min<=limit)
+                {
+                    i++;
+                }
+                else
+                {
+                    //出现差超出界限，判断长度
+                    len = Math.Max(len,i-j);  //i=1,j=0
+                    j = i;  //j=1
+                    min = nums[i];//i=1 2
+                    max = nums[j];//j=1,2
+                    while (Math.Abs(nums[i]-nums[--j])<=limit)
+                    {
+                        min = Math.Min(nums[j],min); 
+                        max = Math.Max(nums[j],max);
+                    }
+                    i++; //2
+                    j++;//--j 1
+                }
+            }
+            return Math.Max(len, i - j); 
+            //for (int i = 0; i < n; i++)
+            //{
+
+            //    for (int j = i; j < n; j++)
+            //    {
+            //        if (min>nums[j])
+            //        {
+            //            min = nums[j];
+            //        } else if (max < nums[j])
+            //        {
+            //            max = nums[j];
+            //        }
+            //        else
+            //        {
+            //            continue;
+            //        }
+            //        if (max-min>limit)
+            //        {
+            //            continue;
+            //        }
+            //        len =Math.Max(len,j-i+1);
+            //    }
+            //}
+            return len;
         }
         #endregion
 
