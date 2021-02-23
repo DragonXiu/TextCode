@@ -506,6 +506,7 @@ new int[] {-2,2}}, 1);
            // Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c, p.d, r.e, k);
             LongestOnes(new int[] { 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1 },1);
             LongestSubarray(new int[] { 8, 2, 4, 7 },4);
+            MaxSatisfied(new int[] { 22, 609, 498, 467, 957, 156, 897, 839, 136, 382, 43, 395, 910, 662, 496, 472, 582, 573, 355, 849, 174, 77, 900, 751, 487, 530, 566, 350, 15, 351, 793, 166, 698, 583, 858, 895, 907, 942, 2, 512, 895, 30, 270, 585, 838, 271, 905, 476, 217, 536 },new int[] { 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0 },26);
 
             Console.Read();
             Console.ReadLine();
@@ -10944,6 +10945,60 @@ new int[] {-2,2}}, 1);
             //    }
             //}
             return len;
+        }
+        #endregion
+        #region 爱生气的书店老板
+        public static int MaxSatisfied(int[] customers, int[] grumpy, int X)
+        {
+            //customers = [1,0,1,2,1,1,7,5], grumpy = [0,1,0,1,0,1,0,1], X = 3
+            // 无技巧数量， 技巧数量和， 技巧数量最大值
+            int sum = 0, count = 0, max = 0;
+            for (int i = 0; i < customers.Length; i++)
+            {
+                sum += customers[i] * (1 - grumpy[i]);
+                count += customers[i] * grumpy[i];
+                if (i >= X)
+                {
+                    count -= customers[i - X] * grumpy[i - X];
+                }
+                max = Math.Max(count, max);
+            }
+            return sum + max;
+
+            //int res = 0;
+            //List<int> temp = new List<int>();
+            //for (int i = 0; i < customers.Length; i++)
+            //{
+            //    if (grumpy[i]==0)
+            //    {
+            //        res += customers[i];
+            //    }
+            //    else
+            //    {
+            //        temp.Add(i);
+            //    }
+            //}
+
+            //int len = temp[0];
+            //int n = 0;
+            //int sum =0;
+            //int sum_1 =  customers[len];
+            //for (int i = 1; i < temp.Count; i++)
+            //{
+            //    if (temp[i]-len>X)
+            //    {
+            //        sum = Math.Max(sum, sum_1);
+            //        sum_1 = sum_1 - customers[len] + customers[temp[i]];
+            //        sum = Math.Max(sum, sum_1);
+            //        n = n + 1;
+            //        len = temp[n];                   
+            //    }
+            //    else
+            //    {
+            //        sum_1 += customers[temp[i]];
+            //    }
+            //}
+            //return res + Math.Max(sum, sum_1); 
         }
         #endregion
 
