@@ -507,7 +507,7 @@ new int[] {-2,2}}, 1);
             LongestOnes(new int[] { 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1 },1);
             LongestSubarray(new int[] { 8, 2, 4, 7 },4);
             MaxSatisfied(new int[] { 22, 609, 498, 467, 957, 156, 897, 839, 136, 382, 43, 395, 910, 662, 496, 472, 582, 573, 355, 849, 174, 77, 900, 751, 487, 530, 566, 350, 15, 351, 793, 166, 698, 583, 858, 895, 907, 942, 2, 512, 895, 30, 270, 585, 838, 271, 905, 476, 217, 536 },new int[] { 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0 },26);
-
+            FindNumOfValidWords(new string[] { "aaaa", "asas", "able", "ability", "actt", "actor", "access" },new string[] { "aboveyz", "abrodyz", "abslute", "absoryz", "actresz", "gaswxyz" });
             Console.Read();
             Console.ReadLine();
         }
@@ -11001,6 +11001,80 @@ new int[] {-2,2}}, 1);
             //return res + Math.Max(sum, sum_1); 
         }
         #endregion
+        #region 猜字谜
+        public static IList<int> FindNumOfValidWords(string[] words, string[] puzzles)
+        {
+            //<1>word每个字母都能在puzzle
+            //<2>word包含puzzle第一个字母
+
+            var res = new List<int>();
+            var wordsSummary = new int[words.Length];
+
+            // 用int中的26位标记谜底a-z是否出现过
+            for (int i = 0; i < words.Length; i++)
+            {
+                foreach (var c in words[i])
+                {
+                    wordsSummary[i] |= 1 << (c - 'a');
+                }
+            }
+
+            for (int i = 0; i < puzzles.Length; i++)
+            {
+                int puzzleSummary = 0, count = 0;
+                // 用同上方法计算谜面
+                foreach (var c in puzzles[i])
+                {
+                    puzzleSummary |= 1 << (c - 'a');
+                }
+
+                for (int j = 0; j < words.Length; j++)
+                {
+                    if ((puzzleSummary | wordsSummary[j]) == puzzleSummary && ((1 << (puzzles[i][0] - 'a')) | wordsSummary[j]) == wordsSummary[j])
+                        count++;
+                }
+                res.Add(count);
+            }
+
+            return res;
+
+
+            //List<int> res = new List<int>();
+            //char a;
+            //for (int i = 0; i < puzzles.Length; i++)
+            //{
+            //    int[] nums = new int[26];
+            //    int n = 0;
+            //    a = puzzles[i][0];
+            //    foreach (var item in puzzles[i])
+            //    {
+            //        nums[item - 'a']++;
+            //    }
+            //    foreach (var item in words)
+            //    {
+            //        if (item.Contains(a))
+            //        {
+            //            bool flag = false;
+            //            foreach (var item1 in item)
+            //            {
+            //                if (nums[item1 - 'a'] == 0)
+            //                {
+            //                    flag = true;
+            //                    break;
+            //                }
+            //            }
+            //            if (!flag)
+            //            {
+            //                n++;
+            //            }
+            //        }
+            //    }
+            //    res.Add(n);
+            //}
+            //return res;
+
+        }
+        #endregion
 
         #endregion
         #region LinQ
@@ -11151,9 +11225,6 @@ new int[] {-2,2}}, 1);
         }
     }
     #endregion
-
-
-
     #region 编写质量
     #region 正确实现浅拷贝和深拷贝
     [Serializable]
@@ -11403,7 +11474,6 @@ new int[] {-2,2}}, 1);
     }
     #endregion
     #endregion
-
     public class UnionFind
     {
         private int[] parent;
@@ -11462,7 +11532,7 @@ new int[] {-2,2}}, 1);
         public string UserName { get; set; }
         public int Age { get; set; }
         public int RoleId { get; set; }
-    }
+    } 
     public class RandomizedCollection
     {
         //字典内使用HashSet是为了实现O(1)删除索引，而且索引不会重复
@@ -11530,7 +11600,6 @@ new int[] {-2,2}}, 1);
         public int Rid { get; set; }
         public string RoleName { get; set; }
     }
-
     public class Node
     {
         public int val;
