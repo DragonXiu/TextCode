@@ -11075,6 +11075,60 @@ new int[] {-2,2}}, 1);
 
         }
         #endregion
+        #region 至少有K个重复字符的最长子串
+        public int LongestSubstring(string s, int k)
+        {
+            if (s.Length < k) return 0;
+
+            Dictionary<char, int> win = new Dictionary<char, int>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!win.ContainsKey(s[i])) win.Add(s[i], 0);
+                win[s[i]]++;
+            }
+
+            List<char> keys = new List<char>();
+            foreach (char key in win.Keys)
+            {
+                if (win[key] < k)
+                {
+                    keys.Add(key);
+                }
+            }
+
+            if (keys.Count > 0)
+            {
+                int max = 0;
+                string[] strArr = s.Split(keys.ToArray());
+                foreach (string ele in strArr)
+                {
+                    int r = LongestSubstring(ele, k);
+                    if (r > max) max = r;
+                }
+                return max;
+            }
+
+            return s.Length;
+            //int[] arr = new int[26];
+            //Dictionary<char, int> dic = new Dictionary<char, int>();
+            //foreach (var item in s)
+            //{
+            //    if (dic.ContainsKey(item))
+            //    {
+            //        dic[item]++;
+            //    }
+            //    else
+            //    {
+            //        dic.Add(item,1);
+            //    }
+            //}
+            //int state = 0;
+            //for (int i = 0; i < s.Length; i++)
+            //{
+
+            //}
+        }
+        #endregion
 
         #endregion
         #region LinQ
