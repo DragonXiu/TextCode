@@ -503,11 +503,11 @@ new int[] {-2,2}}, 1);
             Rect r = new Rect(); r.e = 5;
             string k = "tt";
             Setvalue(a, ref b, out c, p, r, k);
-           // Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c, p.d, r.e, k);
-            LongestOnes(new int[] { 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1 },1);
-            LongestSubarray(new int[] { 8, 2, 4, 7 },4);
-            MaxSatisfied(new int[] { 22, 609, 498, 467, 957, 156, 897, 839, 136, 382, 43, 395, 910, 662, 496, 472, 582, 573, 355, 849, 174, 77, 900, 751, 487, 530, 566, 350, 15, 351, 793, 166, 698, 583, 858, 895, 907, 942, 2, 512, 895, 30, 270, 585, 838, 271, 905, 476, 217, 536 },new int[] { 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0 },26);
-            FindNumOfValidWords(new string[] { "aaaa", "asas", "able", "ability", "actt", "actor", "access" },new string[] { "aboveyz", "abrodyz", "abslute", "absoryz", "actresz", "gaswxyz" });
+            // Console.WriteLine(" a={0}, b={1}, c={2},p.d={[3},r.e={4}, k=5}", a, b, c, p.d, r.e, k);
+            LongestOnes(new int[] { 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1 }, 1);
+            LongestSubarray(new int[] { 8, 2, 4, 7 }, 4);
+            MaxSatisfied(new int[] { 22, 609, 498, 467, 957, 156, 897, 839, 136, 382, 43, 395, 910, 662, 496, 472, 582, 573, 355, 849, 174, 77, 900, 751, 487, 530, 566, 350, 15, 351, 793, 166, 698, 583, 858, 895, 907, 942, 2, 512, 895, 30, 270, 585, 838, 271, 905, 476, 217, 536 }, new int[] { 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0 }, 26);
+            FindNumOfValidWords(new string[] { "aaaa", "asas", "able", "ability", "actt", "actor", "access" }, new string[] { "aboveyz", "abrodyz", "abslute", "absoryz", "actresz", "gaswxyz" });
             Console.Read();
             Console.ReadLine();
         }
@@ -10760,7 +10760,7 @@ new int[] {-2,2}}, 1);
             while (index < A.Length)
             {
                 //如果字典不存在添加，在就叠加
-                if (!dic.ContainsKey(A[index])) 
+                if (!dic.ContainsKey(A[index]))
                     dic.Add(A[index], 0);
                 dic[A[index]]++;
                 if (dic.Keys.Count == K)
@@ -10799,15 +10799,15 @@ new int[] {-2,2}}, 1);
         }
         #endregion
         #region MyRegion
-        public List<int> Find(int[]nums)
+        public List<int> Find(int[] nums)
         {
             var a = nums.ToList();
             a.Sort();
             var b = a[0];
             var c = a.Count();
-            var d = a[c-1];
+            var d = a[c - 1];
             List<int> e = new List<int>();
-            for (int i = d; i <=d; i++)
+            for (int i = d; i <= d; i++)
             {
                 e.Add(i);
             }
@@ -10896,31 +10896,31 @@ new int[] {-2,2}}, 1);
             int len = 0;
             int min = nums[0], max = nums[0];//[8,8]
             int i = 0, j = 0;
-            while (i<n)//0   1  2
-            {    
-                max = Math.Max(max,nums[i]);//8  8 4
-                min = Math.Min(min,nums[i]);//8  2 4
-                if (max-min<=limit)
+            while (i < n)//0   1  2
+            {
+                max = Math.Max(max, nums[i]);//8  8 4
+                min = Math.Min(min, nums[i]);//8  2 4
+                if (max - min <= limit)
                 {
                     i++;
                 }
                 else
                 {
                     //出现差超出界限，判断长度
-                    len = Math.Max(len,i-j);  //i=1,j=0
+                    len = Math.Max(len, i - j);  //i=1,j=0
                     j = i;  //j=1
                     min = nums[i];//i=1 2
                     max = nums[j];//j=1,2
-                    while (Math.Abs(nums[i]-nums[--j])<=limit)
+                    while (Math.Abs(nums[i] - nums[--j]) <= limit)
                     {
-                        min = Math.Min(nums[j],min); 
-                        max = Math.Max(nums[j],max);
+                        min = Math.Min(nums[j], min);
+                        max = Math.Max(nums[j], max);
                     }
                     i++; //2
                     j++;//--j 1
                 }
             }
-            return Math.Max(len, i - j); 
+            return Math.Max(len, i - j);
             //for (int i = 0; i < n; i++)
             //{
 
@@ -11127,6 +11127,40 @@ new int[] {-2,2}}, 1);
             //{
 
             //}
+        }
+        #endregion
+        #region 比特位个数
+        public static  int[] CountBits(int num)
+        {
+            //比特位包含1的数量0<=x<=num
+            int left = 1;
+            int right = 2;
+            if (num==0)
+            {
+                return new int[] { 0};
+            }
+            if (num==1)
+            {
+                return new int[] { 1};
+            }
+            int[] arr = new int[] { num + 1 };
+            arr[0]= 0;
+            arr[1] = 1;
+            for (int i = 2; i <=num; i++)
+            {
+                if (i==right)
+                {
+                    left *= 2;
+                    right *= 2;
+                    arr[i] = 1;
+                }
+                else
+                {
+                    arr[i] = arr[i - left] + arr[left]; 
+                }
+            }
+          
+            return arr;
         }
         #endregion
 
@@ -11586,7 +11620,7 @@ new int[] {-2,2}}, 1);
         public string UserName { get; set; }
         public int Age { get; set; }
         public int RoleId { get; set; }
-    } 
+    }
     public class RandomizedCollection
     {
         //字典内使用HashSet是为了实现O(1)删除索引，而且索引不会重复
