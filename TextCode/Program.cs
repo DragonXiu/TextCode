@@ -508,6 +508,7 @@ new int[] {-2,2}}, 1);
             LongestSubarray(new int[] { 8, 2, 4, 7 }, 4);
             MaxSatisfied(new int[] { 22, 609, 498, 467, 957, 156, 897, 839, 136, 382, 43, 395, 910, 662, 496, 472, 582, 573, 355, 849, 174, 77, 900, 751, 487, 530, 566, 350, 15, 351, 793, 166, 698, 583, 858, 895, 907, 942, 2, 512, 895, 30, 270, 585, 838, 271, 905, 476, 217, 536 }, new int[] { 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0 }, 26);
             FindNumOfValidWords(new string[] { "aaaa", "asas", "able", "ability", "actt", "actor", "access" }, new string[] { "aboveyz", "abrodyz", "abslute", "absoryz", "actresz", "gaswxyz" });
+            MaxEnvelopes(new int[][] { new int[] { 5, 4 },new int[] { 6, 4 }, new int[] { 6, 7 }, new int[] { 2, 3 } });
             Console.Read();
             Console.ReadLine();
         }
@@ -11161,6 +11162,46 @@ new int[] {-2,2}}, 1);
             }
           
             return arr;
+        }
+        #endregion
+        #region 俄罗斯套娃信封问题
+        public static int MaxEnvelopes(int[][] envelopes)
+        {
+            if (envelopes.Length==0)
+            {
+                return 0;
+            }
+            var comparer = Comparer<int[]>.Create((int[] a, int[] b) =>
+            {
+                if (a[0] == b[0])
+                {
+                    return a[1] - b[1];
+                }
+                else
+                {
+                    return a[0] - b[0];
+                }
+            });
+            Array.Sort(envelopes, comparer);
+            int max = 1;
+            int[] dp = new int[envelopes.Length];
+            for (int i = 0; i < dp.Length; i++)
+            {
+                dp[i] = 1;
+            }
+            //一维最长公共子序列问题比的是信封高度
+            for (int i =1; i < dp.Length; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (envelopes[j][1]<envelopes[i][1])
+                    {
+                        dp[i] = Math.Max(dp[i], dp[j] + 1);
+                    }
+                }
+                max = Math.Max(max, dp[i]);
+            }
+            return max;
         }
         #endregion
 
