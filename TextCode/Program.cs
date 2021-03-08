@@ -11204,6 +11204,69 @@ new int[] {-2,2}}, 1);
             return max;
         }
         #endregion
+        #region 分割回文串 II
+        public int MinCut(string s)
+        {
+            int n = s.Length;
+            char[] cs = s.ToArray();
+            //预处理st ，st[i][j]表示区间，是否为回文串
+            bool[][] st = new bool[n][];
+            for (int i = 0; i < n; i++)
+            {
+                st[i] = new bool[n];
+                for (int j = i; j >=0; j--)
+                {
+                    //当[i,j]只有一个字符时，必然是回文串
+                    if (i==j)
+                    {
+                        st[j][i] = true;
+                    }
+                    else
+                    {
+                        //当[j,i]长度为2时，满足cs[i]==cs[j]即回文串
+                        if (i-j+1==2)
+                        {
+                            st[j][i] = cs[i] == cs[j];
+                            //当[j,i]长度大于2时，满足 (cs[i] == cs[j] && f[i + 1][j - 1]) 即回文串
+                        }
+                        else
+                        {
+                            st[j][i] = cs[i] == cs[j] && st[j + 1][i - 1];
+                        }
+                    }
+                }
+            }
+            //f(i)代表考虑前i个字符的最小分割次数
+            int[] f = new int[n];
+            for (int j = 1; j < n; j++)
+            {
+                //如果[0,j]这一段直接构成回文，则无须分割
+                if (st[0][j])
+                {
+                    f[j] =0;
+                    //如果无法直接构成回文
+                    //那么对于第j个字符，有使用分割次数，或者不使用分割次数两种选择
+                }
+                else
+                {
+                    //下边两种决策也能够合到一个循环当中做，但是需要现将f[i]为一个足够
+                    //大的数，因此干脆拆开开做
+                    //独立使用一次分割次数
+                    f[j] = f[j - 1] + 1;
+                    //第j个字符串本身的某个位置i形成区间[i,j]形成回文,[i,j]整体消耗一次分割次数
+                    //代表要与前面某个位置i形成区间[i,j]
+                    for (int i = 1; i < j; i++)
+                    {
+                        if (st[i][j])
+                        {
+                            f[j] = Math.Min(f[j], f[i - 1] + 1);
+                        }
+                    }
+                }
+            }
+            return f[n - 1];
+        }
+        #endregion
 
         #endregion
         #region LinQ
